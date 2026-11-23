@@ -1,0 +1,3196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CryptoPro Terminal</title>
+    <meta name="description" content="Криптотерминал: живые курсы, межбиржевой арбитраж с учётом комиссий, технические сигналы, мемкоины и ценовые цели.">
+    <meta name="theme-color" content="#0b0e11">
+    <meta name="color-scheme" content="dark">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23181a20'/%3E%3Cpath d='M37 6 14 37h14l-4 21 23-31H33z' fill='%23fcd535'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0b0e11;
+            --bg-card: #181a20;
+            --bg-elevated: #1e2329;
+            --bg-hover: #2b3139;
+            --text-primary: #eaecef;
+            --text-secondary: #848e9c;
+            --text-muted: #5e6673;
+            --accent-yellow: #fcd535;
+            --accent-yellow-hover: #f0b90b;
+            --accent-yellow-bg: rgba(252, 213, 53, 0.12);
+            --accent-green: #0ecb81;
+            --accent-green-bg: rgba(14, 203, 129, 0.12);
+            --accent-red: #f6465d;
+            --accent-red-bg: rgba(246, 70, 93, 0.12);
+            --accent-blue: #5b9cff;
+            --accent-blue-bg: rgba(91, 156, 255, 0.12);
+            --border-color: #2b3139;
+            --radius-sm: 6px;
+            --radius: 10px;
+            --radius-lg: 14px;
+            --shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            font-family: var(--font);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.4;
+            -webkit-tap-highlight-color: transparent;
+        }
+        button, input, select { font: inherit; color: inherit; }
+        button { cursor: pointer; background: none; border: none; }
+        a { color: inherit; }
+        :focus-visible { outline: 2px solid var(--accent-yellow); outline-offset: 2px; border-radius: 4px; }
+        [hidden] { display: none !important; }
+        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+        .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+        .muted { color: var(--text-secondary); }
+        .up { color: var(--accent-green); }
+        .down { color: var(--accent-red); }
+        .strong { font-weight: 600; }
+        .right { text-align: right; }
+        .sub { display: block; font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; font-weight: 400; font-family: var(--font); }
+        .num .sub, .sub.num { font-family: var(--mono); }
+
+        /* ---------- Seitenleiste ---------- */
+        .sidebar {
+            width: 232px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        .logo {
+            padding: 18px 20px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+        }
+        .logo-badge {
+            background: var(--accent-yellow-bg);
+            font-size: 0.62rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.05em;
+        }
+        .menu { list-style: none; padding: 14px 12px; display: flex; flex-direction: column; gap: 4px; }
+        .menu-item {
+            width: 100%;
+            padding: 11px 12px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            border-left: 3px solid transparent;
+            transition: background-color 0.15s, color 0.15s;
+        }
+        .menu-item:hover { background-color: var(--bg-elevated); color: var(--text-primary); }
+        .menu-item.active { background-color: var(--accent-yellow-bg); color: var(--accent-yellow); font-weight: 600; border-left-color: var(--accent-yellow); }
+        .menu-item .count {
+            margin-left: auto;
+            font-size: 0.7rem;
+            font-family: var(--mono);
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-radius: 10px;
+            padding: 1px 7px;
+        }
+        .menu-item .count:empty { display: none; }
+        .sidebar-foot { margin-top: auto; padding: 14px 16px; border-top: 1px solid var(--border-color); font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* ---------- Kopfzeile ---------- */
+        main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: rgba(24, 26, 32, 0.94);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .topbar-row { padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+        #header-title { font-size: 1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+        .top-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .pill strong { color: var(--text-primary); font-weight: 600; }
+        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
+        .live-dot[data-state="ws"] { background: var(--accent-green); animation: pulse 2s infinite; }
+        .live-dot[data-state="rest"] { background: var(--accent-green); }
+        .live-dot[data-state="fallback"], .live-dot[data-state="connecting"] { background: var(--accent-yellow); }
+        .live-dot[data-state="offline"] { background: var(--accent-red); }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(14, 203, 129, 0.55); }
+            70% { box-shadow: 0 0 0 7px rgba(14, 203, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(14, 203, 129, 0); }
+        }
+        .avatar-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fcd535, #f0b90b);
+            color: #181a20;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .ticker { display: flex; gap: 2px; overflow-x: auto; padding: 0 14px 8px; scrollbar-width: none; }
+        .ticker::-webkit-scrollbar { display: none; }
+        .tick {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            color: var(--text-secondary);
+        }
+        .tick:hover { background: var(--bg-elevated); }
+        .tick b { color: var(--text-primary); font-weight: 600; }
+
+        /* ---------- Abschnitte ---------- */
+        .content-section { padding: 20px; display: none; max-width: 1240px; width: 100%; margin: 0 auto; }
+        .content-section.active { display: block; animation: fadeIn 0.18s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+        h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+        h3 { font-size: 1rem; font-weight: 700; }
+        .subtitle { color: var(--text-secondary); font-size: 0.84rem; margin-top: 4px; max-width: 760px; }
+        .panel { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px; }
+        .note { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; }
+
+        .controls-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .controls-top-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; align-items: start; }
+        .control-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .control-label { font-size: 0.78rem; color: var(--text-secondary); font-weight: 500; }
+        input[type="number"], input[type="text"], input[type="search"], select {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 0.9rem;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.15s;
+        }
+        input:focus, select:focus { border-color: var(--accent-yellow); }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23848e9c'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 30px;
+        }
+        input[type="checkbox"] { accent-color: var(--accent-yellow); width: 15px; height: 15px; flex-shrink: 0; }
+        .check-inline { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-secondary); cursor: pointer; margin-top: 4px; }
+        .input-row { display: flex; gap: 8px; }
+
+        .preset-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+        .preset-pill {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: var(--mono);
+        }
+        .preset-pill:hover, .preset-pill.active { background-color: var(--accent-yellow-bg); border-color: var(--accent-yellow); color: var(--accent-yellow); }
+
+        /* Dropdown Börsen */
+        .dropdown { position: relative; }
+        .dropdown-toggle {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+        }
+        .dropdown-toggle[aria-expanded="true"] { border-color: var(--accent-yellow); }
+        .dropdown-panel {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            min-width: 260px;
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            z-index: 50;
+            box-shadow: var(--shadow);
+            padding: 10px;
+        }
+        .dropdown-actions { display: flex; justify-content: space-between; padding-bottom: 6px; margin-bottom: 6px; border-bottom: 1px solid var(--border-color); }
+        .dropdown-actions button { color: var(--accent-yellow); font-weight: 600; font-size: 0.75rem; padding: 2px; }
+        .ex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .ex-option {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 6px;
+            background-color: var(--bg-card);
+        }
+        .ex-option:hover { background-color: var(--bg-hover); }
+        .ex-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
+        .status-dot.ok { background: var(--accent-green); }
+        .status-dot.error { background: var(--accent-red); }
+        .ex-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 800;
+            flex-shrink: 0;
+            font-family: var(--font);
+        }
+
+        .coin-filter-bar { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding-top: 10px; border-top: 1px solid var(--border-color); scrollbar-width: thin; }
+        .coin-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 5px 10px;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .coin-chip:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+        .coin-chip.active { background-color: var(--accent-yellow); color: #181a20; border-color: var(--accent-yellow); }
+
+        .coin-icon, .token-icon {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #fff;
+            background: var(--c, #474d57);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .coin-icon.sm { width: 18px; height: 18px; font-size: 0.58rem; }
+        .coin-icon.lg, .token-icon.lg { width: 30px; height: 30px; font-size: 0.85rem; }
+        .coin-icon img, .token-icon img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--bg-card); }
+
+        /* Segment-Buttons */
+        .seg { display: inline-flex; gap: 4px; background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 4px; border-radius: 8px; flex-wrap: wrap; }
+        .seg-btn { color: var(--text-secondary); padding: 5px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+        .seg-btn:hover { color: var(--text-primary); }
+        .seg-btn.active { background-color: var(--accent-yellow); color: #181a20; }
+        .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+        /* Buttons */
+        .primary-btn {
+            background-color: var(--accent-yellow);
+            color: #181a20;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background-color 0.15s, transform 0.05s;
+        }
+        .primary-btn:hover { background-color: var(--accent-yellow-hover); }
+        .primary-btn:active { transform: translateY(1px); }
+        .primary-btn[disabled] { opacity: 0.6; cursor: progress; }
+        .secondary-btn {
+            background-color: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .secondary-btn:hover { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .danger-btn { color: var(--accent-red); }
+        .danger-btn:hover { border-color: var(--accent-red); color: var(--accent-red); }
+        .sm { padding: 6px 10px; font-size: 0.75rem; }
+        .icon-btn { color: var(--text-secondary); width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-row > * { flex: 1; }
+        .btn-inline { display: flex; gap: 6px; }
+        .star-btn { color: #474d57; font-size: 1.1rem; padding: 2px 4px; line-height: 1; transition: color 0.15s, transform 0.1s; }
+        .star-btn:hover { color: var(--text-secondary); }
+        .star-btn.favorited { color: var(--accent-yellow); }
+        .star-btn:active { transform: scale(1.2); }
+
+        /* Hinweise & Status */
+        .summary-bar { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 0.8rem; color: var(--text-secondary); margin: 0 2px 12px; min-height: 20px; }
+        .summary-bar b { color: var(--text-primary); font-weight: 600; }
+        .hint {
+            background: var(--accent-blue-bg);
+            border: 1px solid rgba(91, 156, 255, 0.28);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .hint.warn { background: var(--accent-yellow-bg); border-color: rgba(252, 213, 53, 0.28); }
+        .empty { text-align: center; color: var(--text-secondary); padding: 28px 16px; font-size: 0.88rem; }
+        .error-box { text-align: center; color: var(--text-secondary); padding: 24px 16px; display: flex; flex-direction: column; gap: 10px; align-items: center; font-size: 0.88rem; }
+
+        /* Tabellen */
+        .desktop-only { display: block; }
+        .mobile-only { display: none !important; }
+        .table-container { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 11px 12px; border-bottom: 1px solid var(--border-color); font-size: 0.86rem; white-space: nowrap; vertical-align: middle; }
+        th { color: var(--text-secondary); font-weight: 500; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; background-color: var(--bg-elevated); }
+        tbody tr { transition: background-color 0.12s; }
+        tbody tr:hover { background-color: rgba(43, 49, 57, 0.45); }
+        tr:last-child td { border-bottom: none; }
+        .col-star { width: 40px; }
+        .th-sort { color: inherit; font: inherit; text-transform: inherit; letter-spacing: inherit; display: inline-flex; gap: 4px; align-items: center; }
+        .th-sort:hover, .th-sort.active { color: var(--text-primary); }
+        .pair-cell { display: flex; align-items: center; gap: 10px; }
+        .ex-cell { display: flex; align-items: center; gap: 5px; margin-top: 3px; font-size: 0.74rem; color: var(--text-secondary); font-family: var(--font); }
+        .ex-cell .ex-badge { width: 16px; height: 16px; font-size: 0.5rem; }
+        tr.dim td { color: var(--text-muted); }
+
+        .badge {
+            padding: 3px 7px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+        .badge-green { background-color: var(--accent-green-bg); color: var(--accent-green); }
+        .badge-red { background-color: var(--accent-red-bg); color: var(--accent-red); }
+        .badge-yellow { background-color: var(--accent-yellow-bg); color: var(--accent-yellow); }
+        .badge-blue { background-color: var(--accent-blue-bg); color: var(--accent-blue); }
+        .badge-grey { background-color: var(--bg-hover); color: var(--text-secondary); }
+        .badge-pump { background-color: rgba(14, 203, 129, 0.16); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+
+        .spark { width: 96px; height: 28px; display: block; }
+        .spark.wide { width: 100%; height: 36px; }
+
+        /* Karten */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+        .signal-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.15s, transform 0.15s;
+            min-width: 0;
+        }
+        .signal-card[data-action] { cursor: pointer; }
+        .signal-card[data-action]:hover { border-color: #3a414b; transform: translateY(-1px); }
+        .card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .pair-name { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; min-width: 0; }
+        .card-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.82rem; flex-wrap: wrap; }
+        .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background-color: var(--bg-main); padding: 10px; border-radius: 8px; }
+        .metric > span { display: block; font-size: 0.68rem; color: var(--text-secondary); margin-bottom: 2px; }
+        .metric strong { font-size: 0.84rem; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+        .metric small { display: block; font-size: 0.68rem; font-family: var(--mono); }
+        .metric [data-live] { display: inline-block; font-size: 0.84rem; font-weight: 600; }
+        .stat [data-live] { font-size: 0.9rem; }
+        .rsi-bar { position: relative; height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent-green) 0 30%, var(--bg-hover) 30% 70%, var(--accent-red) 70% 100%); opacity: 0.85; }
+        .rsi-bar i { position: absolute; top: -3px; width: 3px; height: 12px; border-radius: 2px; background: var(--text-primary); transform: translateX(-50%); }
+        .reason { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; }
+
+        /* Lade-Platzhalter */
+        .skel {
+            display: inline-block;
+            height: 0.9em;
+            width: 70px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-hover) 37%, var(--bg-elevated) 63%);
+            background-size: 400% 100%;
+            animation: shimmer 1.4s ease infinite;
+            vertical-align: middle;
+        }
+        .skel.w40 { width: 40px; } .skel.w120 { width: 120px; }
+        .skel-card { height: 150px; border-radius: var(--radius-lg); width: 100%; }
+        @keyframes shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+        .spinner { width: 26px; height: 26px; border: 3px solid var(--border-color); border-top-color: var(--accent-yellow); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 30px; color: var(--text-secondary); font-size: 0.85rem; }
+
+        /* Preis-Aufblitzen */
+        @keyframes flashUp { from { background-color: rgba(14, 203, 129, 0.35); color: var(--accent-green); } to { background-color: transparent; } }
+        @keyframes flashDown { from { background-color: rgba(246, 70, 93, 0.35); color: var(--accent-red); } to { background-color: transparent; } }
+        .flash-up { animation: flashUp 0.9s ease-out; border-radius: 4px; }
+        .flash-down { animation: flashDown 0.9s ease-out; border-radius: 4px; }
+
+        /* Assistent */
+        .assistant-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); gap: 16px; align-items: start; }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: min(680px, calc(100vh - 230px));
+            min-height: 440px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .chat-msg { max-width: 86%; padding: 11px 15px; border-radius: 12px; font-size: 0.88rem; line-height: 1.5; white-space: pre-line; overflow-wrap: anywhere; }
+        .chat-msg.ai { background: var(--bg-elevated); border: 1px solid var(--border-color); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-msg.user { background: var(--accent-yellow); color: #181a20; align-self: flex-end; font-weight: 500; border-bottom-right-radius: 4px; }
+        .chat-msg.system { background: var(--accent-green-bg); border: 1px solid var(--accent-green); color: var(--accent-green); align-self: stretch; max-width: 100%; text-align: center; font-weight: 600; }
+        .chat-msg.typing { color: var(--text-secondary); }
+        .chat-suggestions { display: flex; gap: 6px; padding: 8px 12px; overflow-x: auto; background: var(--bg-main); border-top: 1px solid var(--border-color); scrollbar-width: none; }
+        .chat-suggestions::-webkit-scrollbar { display: none; }
+        .chip {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 5px 11px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .chip:hover { color: var(--accent-yellow); border-color: var(--accent-yellow); }
+        .chat-input-area { padding: 12px; background: var(--bg-elevated); border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+
+        .targets-panel { display: flex; flex-direction: column; gap: 12px; }
+        .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .targets-list { display: flex; flex-direction: column; gap: 10px; max-height: 560px; overflow-y: auto; }
+        .target-item { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .target-item.hit { border-color: rgba(14, 203, 129, 0.5); }
+        .target-top { display: flex; align-items: center; gap: 8px; }
+        .target-top strong { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.88rem; }
+        .target-meta, .target-foot { font-size: 0.74rem; color: var(--text-secondary); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-family: var(--mono); }
+        .target-foot b { color: var(--text-primary); font-weight: 600; }
+        .progress { height: 6px; background: var(--bg-hover); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent-yellow); border-radius: 3px; transition: width 0.4s ease; }
+        .target-item.hit .progress-fill { background: var(--accent-green); }
+
+        /* Favoriten */
+        .fav-list { display: flex; flex-direction: column; gap: 8px; }
+        .fav-item { display: flex; align-items: center; gap: 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 12px 14px; }
+        .fav-main { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; }
+        .fav-main > div { min-width: 0; }
+        .fav-main strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .fav-kind { min-width: 84px; justify-content: center; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.15s, visibility 0.15s;
+        }
+        .modal-overlay.open { opacity: 1; visibility: visible; }
+        .modal-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 720px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: var(--shadow);
+            transform: translateY(10px);
+            transition: transform 0.18s ease-out;
+        }
+        .modal-overlay.open .modal-card { transform: none; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .modal-header h3 { display: flex; align-items: center; gap: 8px; min-width: 0; }
+        .modal-close { color: var(--text-secondary); font-size: 1.4rem; width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; }
+        .modal-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+        #modal-body { display: flex; flex-direction: column; gap: 14px; }
+        .calc-box { background-color: var(--bg-main); padding: 14px; border-radius: var(--radius); display: flex; flex-direction: column; gap: 9px; }
+        .calc-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; gap: 12px; }
+        .calc-row > span:first-child { color: var(--text-secondary); }
+        .calc-row.total { border-top: 1px solid var(--border-color); padding-top: 9px; font-size: 0.95rem; }
+        .calc-row.total > span:first-child { color: var(--text-primary); font-weight: 600; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
+        .stat { background: var(--bg-main); border-radius: 8px; padding: 10px 12px; }
+        .stat > span { display: block; font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 3px; }
+        .stat strong { font-family: var(--mono); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+        .quote-table th, .quote-table td { padding: 8px; font-size: 0.8rem; }
+        .quote-table tr.buy td { background: var(--accent-green-bg); }
+        .quote-table tr.sell td { background: var(--accent-red-bg); }
+        .chart-box { width: 100%; height: 340px; background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius); overflow: hidden; }
+        iframe.chart-box { display: block; }
+        .list { padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .fee-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+        .fee-grid label { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; background: var(--bg-main); border-radius: 8px; padding: 6px 8px; }
+        .fee-grid input { padding: 5px 8px; font-size: 0.8rem; width: 72px; margin-left: auto; }
+
+        /* Toasts */
+        .toasts { position: fixed; right: 16px; bottom: 16px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; max-width: min(380px, calc(100vw - 32px)); pointer-events: none; }
+        .toast {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--accent-yellow);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow);
+            animation: toastIn 0.2s ease-out;
+            pointer-events: auto;
+        }
+        .toast.success { border-left-color: var(--accent-green); }
+        .toast.error { border-left-color: var(--accent-red); }
+        .toast.out { opacity: 0; transform: translateY(6px); transition: opacity 0.25s, transform 0.25s; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+        .app-footer { margin-top: auto; padding: 18px 20px 24px; font-size: 0.72rem; color: var(--text-muted); text-align: center; line-height: 1.6; max-width: 1240px; width: 100%; align-self: center; }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(24, 26, 32, 0.97);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+            padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+        }
+        .mobile-nav-list { display: grid; grid-template-columns: repeat(6, 1fr); list-style: none; }
+        .mobile-nav-item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.64rem;
+            color: var(--text-secondary);
+            padding: 4px 2px;
+            border-radius: 6px;
+            position: relative;
+        }
+        .mobile-nav-item .ico { font-size: 1.1rem; line-height: 1; }
+        .mobile-nav-item.active { color: var(--accent-yellow); font-weight: 600; }
+        .nav-badge {
+            position: absolute;
+            top: 0;
+            left: calc(50% + 6px);
+            background: var(--accent-yellow);
+            color: #181a20;
+            font-size: 0.58rem;
+            min-width: 15px;
+            height: 15px;
+            border-radius: 8px;
+            padding: 0 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .nav-badge:empty { display: none; }
+
+        @media (max-width: 1024px) {
+            .assistant-grid { grid-template-columns: 1fr; }
+            .chat-container { height: min(620px, calc(100dvh - 260px)); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .mobile-nav { display: block; }
+            main { padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
+            .topbar-row { padding: 9px 12px; }
+            .ticker { padding: 0 8px 7px; }
+            .pill-label { display: none; }
+            .content-section { padding: 12px; }
+            .ex-grid { grid-template-columns: 1fr; }
+            .hide-mobile { display: none !important; }
+            .controls-panel { padding: 12px; gap: 10px; }
+            .meme-controls { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .meme-controls .span-2 { grid-column: 1 / -1; }
+            .subtitle { font-size: 0.8rem; }
+            .desktop-only { display: none !important; }
+            .mobile-only { display: grid !important; }
+            h2 { font-size: 1.12rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .toasts { bottom: calc(76px + env(safe-area-inset-bottom)); left: 12px; right: 12px; max-width: none; }
+            .modal-overlay { align-items: flex-end; padding: 0; }
+            .modal-card { border-radius: 16px 16px 0 0; max-height: 92dvh; padding: 18px 16px calc(18px + env(safe-area-inset-bottom)); }
+            .chart-box { height: 280px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .chat-msg { max-width: 92%; }
+            .app-footer { padding-bottom: 16px; }
+        }
+        @media (max-width: 420px) {
+            .pill.capital { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" aria-label="Навигация">
+        <a class="logo" href="#/p2p" data-action="tab" data-tab="p2p">⚡ CryptoPro <span class="logo-badge">PRO</span></a>
+        <nav>
+            <ul class="menu">
+                <li><button class="menu-item active" data-action="tab" data-tab="p2p"><span aria-hidden="true">📈</span>Арбитраж</button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="currencies"><span aria-hidden="true">💱</span>Курсы</button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="trading"><span aria-hidden="true">📊</span>Сигналы</button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="memecoins"><span aria-hidden="true">🚀</span>Мемкоины</button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="assistant"><span aria-hidden="true">🎯</span>Цели и чат<span class="count" data-badge="targets"></span></button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="favorites"><span aria-hidden="true">⭐</span>Избранное<span class="count" data-badge="favorites"></span></button></li>
+            </ul>
+        </nav>
+        <div class="sidebar-foot">Публичные API бирж, CoinGecko и GeckoTerminal. Расчёты ориентировочные и не являются финансовой рекомендацией.</div>
+    </aside>
+
+    <main>
+        <header class="topbar">
+            <div class="topbar-row">
+                <h1 id="header-title">Межбиржевой арбитраж</h1>
+                <div class="top-right">
+                    <div class="pill" id="sync-pill" title="Подключение…">
+                        <span class="live-dot" id="sync-dot" data-state="connecting"></span>
+                        <strong id="sync-text" class="mono">…</strong>
+                        <span id="sync-age" class="mono pill-label"></span>
+                    </div>
+                    <div class="pill capital"><span class="pill-label">Капитал</span><strong id="display-capital" class="mono">—</strong></div>
+                    <button class="avatar-btn" id="avatar-btn" data-action="settings" aria-label="Настройки" title="Настройки">CP</button>
+                </div>
+            </div>
+            <div class="ticker" id="ticker" aria-label="Котировки"></div>
+        </header>
+
+        <!-- 1. Арбитраж -->
+        <section id="p2p" class="content-section active" aria-labelledby="p2p-h">
+            <div class="section-header">
+                <div>
+                    <h2 id="p2p-h">Межбиржевой арбитраж</h2>
+                    <p class="subtitle">Реальные цены стакана (bid / ask) с 8 бирж. Результат считается после торговых комиссий обеих бирж и комиссии вывода монеты.</p>
+                </div>
+                <button class="primary-btn" data-action="arb-refresh" id="arb-refresh-btn">↻ Обновить</button>
+            </div>
+
+            <div class="controls-panel">
+                <div class="controls-top-row">
+                    <div class="control-group">
+                        <label class="control-label" for="capital-input">Капитал (USDT)</label>
+                        <input type="number" id="capital-input" class="mono" min="0" step="any" inputmode="decimal">
+                        <div class="preset-pills" id="capital-presets">
+                            <button class="preset-pill" data-action="capital" data-value="100">$100</button>
+                            <button class="preset-pill" data-action="capital" data-value="500">$500</button>
+                            <button class="preset-pill" data-action="capital" data-value="1000">$1K</button>
+                            <button class="preset-pill" data-action="capital" data-value="5000">$5K</button>
+                            <button class="preset-pill" data-action="capital" data-value="10000">$10K</button>
+                            <button class="preset-pill" data-action="capital" data-value="50000">$50K</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <span class="control-label">Биржи (покупка и продажа только на выбранных)</span>
+                        <div class="dropdown" id="exchange-dropdown">
+                            <button class="dropdown-toggle" data-action="dropdown" aria-expanded="false" aria-controls="dropdown-panel">
+                                <span id="dropdown-label">Все биржи</span><span aria-hidden="true">▾</span>
+                            </button>
+                            <div class="dropdown-panel" id="dropdown-panel" hidden>
+                                <div class="dropdown-actions">
+                                    <button data-action="ex-all" data-value="1">Выбрать все</button>
+                                    <button data-action="ex-all" data-value="0">Сбросить</button>
+                                </div>
+                                <div class="ex-grid" id="ex-checkbox-grid"></div>
+                            </div>
+                        </div>
+                        <label class="check-inline"><input type="checkbox" id="only-profit"> Только прибыльные связки</label>
+                    </div>
+
+                    <div class="control-group hide-mobile">
+                        <label class="control-label" for="arb-search">Поиск монеты</label>
+                        <input type="search" id="arb-search" placeholder="Например: SOL, BTC, ETH…" autocomplete="off">
+                    </div>
+                </div>
+                <div class="coin-filter-bar" id="coin-chips-bar"></div>
+            </div>
+
+            <div class="summary-bar" id="arb-summary"></div>
+            <div id="arb-hint"></div>
+
+            <div class="table-container desktop-only">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col-star"><span class="sr-only">Избранное</span></th>
+                            <th>Пара</th>
+                            <th>Купить (ask)</th>
+                            <th>Продать (bid)</th>
+                            <th>Спред</th>
+                            <th>Чистый результат</th>
+                            <th><span class="sr-only">Действие</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="p2p-table-body"></tbody>
+                </table>
+            </div>
+            <div class="card-grid mobile-only" id="p2p-card-grid"></div>
+        </section>
+
+        <!-- 2. Курсы -->
+        <section id="currencies" class="content-section" aria-labelledby="cur-h">
+            <div class="section-header">
+                <div>
+                    <h2 id="cur-h">Курсы монет</h2>
+                    <p class="subtitle">Цены Binance в реальном времени. График за 7 дней и капитализация — CoinGecko. Эти же цены используются в арбитраже, сигналах и целях.</p>
+                </div>
+                <button class="primary-btn" data-action="cur-refresh">↻ Обновить</button>
+            </div>
+
+            <div class="table-container desktop-only">
+                <table>
+                    <thead id="currencies-head"></thead>
+                    <tbody id="currencies-table-body"></tbody>
+                </table>
+            </div>
+            <div class="card-grid mobile-only" id="currencies-card-grid"></div>
+        </section>
+
+        <!-- 3. Сигналы -->
+        <section id="trading" class="content-section" aria-labelledby="sig-h">
+            <div class="section-header">
+                <div>
+                    <h2 id="sig-h">Технические сигналы</h2>
+                    <p class="subtitle">Автоматический расчёт по свечам Binance: тренд EMA 20/50, импульс RSI 14, цели по волатильности ATR 14. Это не прогноз и не финансовая рекомендация.</p>
+                </div>
+                <div class="toolbar">
+                    <div class="seg" id="tf-bar" role="group" aria-label="Таймфрейм">
+                        <button class="seg-btn" data-action="tf" data-tf="15M">15M</button>
+                        <button class="seg-btn active" data-action="tf" data-tf="1H">1H</button>
+                        <button class="seg-btn" data-action="tf" data-tf="4H">4H</button>
+                        <button class="seg-btn" data-action="tf" data-tf="1D">1D</button>
+                    </div>
+                    <div class="seg" id="side-bar" role="group" aria-label="Направление">
+                        <button class="seg-btn active" data-action="side" data-side="ALL">Все</button>
+                        <button class="seg-btn" data-action="side" data-side="LONG">LONG</button>
+                        <button class="seg-btn" data-action="side" data-side="SHORT">SHORT</button>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-bar" id="sig-summary"></div>
+            <div class="card-grid" id="signals-grid"></div>
+        </section>
+
+        <!-- 4. Мемкоины -->
+        <section id="memecoins" class="content-section" aria-labelledby="meme-h">
+            <div class="section-header">
+                <div>
+                    <h2 id="meme-h">Мемкоины и DEX</h2>
+                    <p class="subtitle">Трендовые и новые пулы с GeckoTerminal, включая Pump.fun / PumpSwap. Оценка риска — простая эвристика по ликвидности, возрасту и активности, а не аудит контракта.</p>
+                </div>
+                <button class="secondary-btn" data-action="meme-refresh">↻ Обновить пулы</button>
+            </div>
+
+            <div class="controls-panel">
+                <div class="controls-top-row meme-controls">
+                    <div class="control-group">
+                        <label class="control-label" for="meme-network">Сеть</label>
+                        <select id="meme-network">
+                            <option value="solana">Solana (Pump.fun)</option>
+                            <option value="base">Base</option>
+                            <option value="bsc">BNB Chain</option>
+                            <option value="eth">Ethereum</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="meme-sort">Сортировка</label>
+                        <select id="meme-sort">
+                            <option value="default">По умолчанию</option>
+                            <option value="vol">Объём 24ч</option>
+                            <option value="liq">Ликвидность</option>
+                            <option value="ch24">Рост 24ч</option>
+                            <option value="new">Сначала новые</option>
+                        </select>
+                    </div>
+                    <div class="control-group span-2">
+                        <span class="control-label">Подборка</span>
+                        <div class="seg" id="meme-mode">
+                            <button class="seg-btn active" data-action="meme-mode" data-mode="trending">🔥 Тренды</button>
+                            <button class="seg-btn" data-action="meme-mode" data-mode="new">🆕 Новые пулы</button>
+                        </div>
+                    </div>
+                    <form class="control-group span-2" id="meme-search-form" role="search">
+                        <label class="control-label" for="meme-search">Поиск токена</label>
+                        <div class="input-row">
+                            <input type="search" id="meme-search" placeholder="Название или адрес…" autocomplete="off">
+                            <button class="secondary-btn" type="submit">Найти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="summary-bar" id="meme-status"></div>
+
+            <div class="table-container desktop-only">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col-star"><span class="sr-only">Избранное</span></th>
+                            <th>Токен</th>
+                            <th class="right">Цена</th>
+                            <th>24ч</th>
+                            <th>Ликвидность</th>
+                            <th>Объём 24ч</th>
+                            <th>Возраст</th>
+                            <th>Риск</th>
+                            <th><span class="sr-only">Действия</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="meme-table-body"></tbody>
+                </table>
+            </div>
+            <div class="card-grid mobile-only" id="meme-card-grid"></div>
+        </section>
+
+        <!-- 5. Ассистент и цели -->
+        <section id="assistant" class="content-section" aria-labelledby="ai-h">
+            <div class="section-header">
+                <div>
+                    <h2 id="ai-h">Ассистент и ценовые цели</h2>
+                    <p class="subtitle">Локальный помощник отвечает по живым данным терминала и следит за вашими целями. Это не ИИ и не финансовый советник.</p>
+                </div>
+            </div>
+            <div class="assistant-grid">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-box" aria-live="polite"></div>
+                    <div class="chat-suggestions">
+                        <button class="chip" data-action="chat-prompt" data-text="Цены BTC, ETH и SOL">💱 Цены BTC, ETH, SOL</button>
+                        <button class="chip" data-action="chat-prompt" data-text="Лучший арбитраж сейчас">📈 Лучший арбитраж</button>
+                        <button class="chip" data-action="chat-prompt" data-text="Сигналы по индикаторам">📊 Сигналы</button>
+                        <button class="chip" data-action="chat-prompt" data-text="Трендовые мемкоины">🚀 Тренды мемкоинов</button>
+                        <button class="chip" data-action="chat-prompt" data-text="Мои цели">🎯 Мои цели</button>
+                        <button class="chip" data-action="chat-prompt" data-text="Какие комиссии учитываются?">💸 Комиссии</button>
+                    </div>
+                    <form class="chat-input-area" id="chat-form">
+                        <input type="text" id="chat-input" placeholder="Например: цена SOL, сигнал BTC, арбитраж" autocomplete="off" aria-label="Сообщение ассистенту">
+                        <button class="primary-btn" type="submit">Отправить</button>
+                    </form>
+                </div>
+                <aside class="panel targets-panel" aria-labelledby="tgt-h">
+                    <div class="panel-head">
+                        <h3 id="tgt-h">🎯 Мои цели</h3>
+                        <button class="secondary-btn sm" data-action="tgt-clear">Убрать достигнутые</button>
+                    </div>
+                    <div id="targets-list" class="targets-list"></div>
+                    <p class="note">Цель создаётся кнопкой «🎯 Цель» у монеты, сигнала или мемкоина. Оповещения приходят, пока терминал открыт в браузере.</p>
+                </aside>
+            </div>
+        </section>
+
+        <!-- 6. Избранное -->
+        <section id="favorites" class="content-section" aria-labelledby="fav-h">
+            <div class="section-header">
+                <div>
+                    <h2 id="fav-h">Избранное</h2>
+                    <p class="subtitle">Сохранённые монеты, арбитражные пары, сигналы и токены с актуальными значениями.</p>
+                </div>
+            </div>
+            <div id="favorites-list" class="fav-list"></div>
+        </section>
+
+        <footer class="app-footer">
+            Данные: Binance, OKX, Bybit, Gate.io, Bitget, HTX, Kraken, Coinbase (публичные API), CoinGecko, GeckoTerminal.
+            Все расчёты ориентировочные и не являются финансовой рекомендацией. Торговля криптовалютой связана с высоким риском.
+        </footer>
+    </main>
+
+    <div class="modal-overlay" id="modal" aria-hidden="true">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="modal-header">
+                <h3 id="modal-title">Детали</h3>
+                <button class="modal-close" data-action="modal-close" aria-label="Закрыть">×</button>
+            </div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <nav class="mobile-nav" aria-label="Навигация">
+        <ul class="mobile-nav-list">
+            <li><button class="mobile-nav-item active" data-action="tab" data-tab="p2p"><span class="ico" aria-hidden="true">📈</span><span>Арбитраж</span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="currencies"><span class="ico" aria-hidden="true">💱</span><span>Курсы</span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="trading"><span class="ico" aria-hidden="true">📊</span><span>Сигналы</span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="memecoins"><span class="ico" aria-hidden="true">🚀</span><span>Мемы</span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="assistant"><span class="ico" aria-hidden="true">🎯</span><span>Цели</span><span class="nav-badge" data-badge="targets"></span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="favorites"><span class="ico" aria-hidden="true">⭐</span><span>Избранное</span><span class="nav-badge" data-badge="favorites"></span></button></li>
+        </ul>
+    </nav>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <script>
+    'use strict';
+
+    /* =====================================================================
+       Konfiguration
+       ===================================================================== */
+    const BINANCE_REST = 'https://data-api.binance.vision/api/v3';
+    const BINANCE_WS = 'wss://data-stream.binance.vision';
+    const GT = 'https://api.geckoterminal.com/api/v2';
+    const CG = 'https://api.coingecko.com/api/v3';
+
+    // wd = ungefähre Netzwerk-Auszahlungsgebühr in Coin-Einheiten (variiert je nach Börse und Netz)
+    const COINS = {
+        BTC:  { name: 'Bitcoin',       color: '#F7931A', glyph: '₿', cg: 'bitcoin',          wd: 0.0002, kraken: 'XBTUSDT', aliases: ['биткоин', 'биток', 'биткойн', 'bitcoin'] },
+        ETH:  { name: 'Ethereum',      color: '#627EEA', glyph: 'Ξ', cg: 'ethereum',         wd: 0.0015, aliases: ['эфир', 'эфириум', 'ethereum'] },
+        SOL:  { name: 'Solana',        color: '#9945FF', glyph: 'S', cg: 'solana',           wd: 0.01,   aliases: ['солана', 'solana'] },
+        XRP:  { name: 'XRP',           color: '#4b5563', glyph: 'X', cg: 'ripple',           wd: 0.25,   aliases: ['рипл', 'ripple'] },
+        GRAM: { name: 'Gram (ex-TON)', color: '#0098EA', glyph: 'G', cg: 'the-open-network', wd: 0.05,   kraken: 'TONUSDT', krakenBase: 'TON', no: ['Coinbase'], aliases: ['ton', 'тон', 'грам', 'toncoin'] },
+        SUI:  { name: 'Sui',           color: '#4DA2FF', glyph: 'S', cg: 'sui',              wd: 0.1,    no: ['Kraken', 'Coinbase'], aliases: ['суи'] },
+        DOGE: { name: 'Dogecoin',      color: '#C2A633', glyph: 'Ð', cg: 'dogecoin',         wd: 5,      kraken: 'XDGUSDT', aliases: ['доге', 'додж', 'dogecoin'] },
+        AVAX: { name: 'Avalanche',     color: '#E84142', glyph: 'A', cg: 'avalanche-2',      wd: 0.01,   aliases: ['авакс', 'avalanche'] },
+        LINK: { name: 'Chainlink',     color: '#2A5ADA', glyph: '⬡', cg: 'chainlink',        wd: 0.5,    aliases: ['линк', 'chainlink'] },
+        ADA:  { name: 'Cardano',       color: '#0033AD', glyph: '₳', cg: 'cardano',          wd: 1,      aliases: ['кардано', 'cardano'] }
+    };
+    const COIN_CODES = Object.keys(COINS);
+
+    // fee = Taker-Gebühr in % beim Basis-Level (in den Einstellungen änderbar)
+    const EXCHANGES = {
+        Binance:   { short: 'BN', color: '#F3BA2F', text: '#000', fee: 0.10, trade: c => `https://www.binance.com/en/trade/${c}_USDT?type=spot` },
+        OKX:       { short: 'OK', color: '#FFFFFF', text: '#000', fee: 0.10, trade: c => `https://www.okx.com/trade-spot/${c.toLowerCase()}-usdt` },
+        Bybit:     { short: 'BY', color: '#F7A600', text: '#000', fee: 0.10, trade: c => `https://www.bybit.com/trade/spot/${c}/USDT` },
+        'Gate.io': { short: 'GT', color: '#2354E6', text: '#FFF', fee: 0.20, trade: c => `https://www.gate.io/trade/${c}_USDT` },
+        Bitget:    { short: 'BG', color: '#00F0FF', text: '#000', fee: 0.10, trade: c => `https://www.bitget.com/spot/${c}USDT` },
+        HTX:       { short: 'HT', color: '#2A64F6', text: '#FFF', fee: 0.20, trade: c => `https://www.htx.com/trade/${c.toLowerCase()}_usdt` },
+        Kraken:    { short: 'KR', color: '#5741D9', text: '#FFF', fee: 0.40, trade: c => `https://pro.kraken.com/app/trade/${(COINS[c].krakenBase || c).toLowerCase()}-usdt` },
+        Coinbase:  { short: 'CB', color: '#0052FF', text: '#FFF', fee: 0.60, trade: c => `https://www.coinbase.com/advanced-trade/spot/${c}-USDT` }
+    };
+    const EX_NAMES = Object.keys(EXCHANGES);
+
+    const TF = {
+        '15M': { api: '15m', tv: '15',  ttl: 60e3,  label: '15 минут' },
+        '1H':  { api: '1h',  tv: '60',  ttl: 120e3, label: '1 час' },
+        '4H':  { api: '4h',  tv: '240', ttl: 300e3, label: '4 часа' },
+        '1D':  { api: '1d',  tv: 'D',   ttl: 600e3, label: '1 день' }
+    };
+
+    const NETWORKS = {
+        solana: { label: 'Solana', ds: 'solana' },
+        base:   { label: 'Base', ds: 'base' },
+        bsc:    { label: 'BNB Chain', ds: 'bsc' },
+        eth:    { label: 'Ethereum', ds: 'ethereum' }
+    };
+
+    const TITLES = {
+        p2p: 'Межбиржевой арбитраж',
+        currencies: 'Курсы монет',
+        trading: 'Технические сигналы',
+        memecoins: 'Мемкоины и DEX',
+        assistant: 'Ассистент и цели',
+        favorites: 'Избранное'
+    };
+
+    /* =====================================================================
+       Hilfsfunktionen
+       ===================================================================== */
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+    const ESC_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, ch => ESC_MAP[ch]);
+    const num = (v) => { const n = parseFloat(v); return Number.isFinite(n) ? n : null; };
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+    function safeUrl(u) {
+        try {
+            const x = new URL(u);
+            return x.protocol === 'https:' ? x.href : '#';
+        } catch (_) {
+            return '#';
+        }
+    }
+
+    const LS = {
+        get(key, fallback) {
+            try {
+                const v = localStorage.getItem(key);
+                return v == null ? fallback : JSON.parse(v);
+            } catch (_) {
+                return fallback;
+            }
+        },
+        set(key, value) {
+            try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) { /* Speicher nicht verfügbar */ }
+        }
+    };
+
+    const SUBSCRIPT = '₀₁₂₃₄₅₆₇₈₉';
+    function trimZeros(s, minDec = 2) {
+        if (!s.includes('.')) return s;
+        let [i, d] = s.split('.');
+        d = d.replace(/0+$/, '');
+        while (d.length < minDec) d += '0';
+        return `${i}.${d}`;
+    }
+    function fmtNum(v) {
+        if (v == null || !Number.isFinite(v)) return '—';
+        const a = Math.abs(v);
+        let s;
+        if (a >= 1000) s = a.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        else if (a >= 100) s = a.toFixed(2);
+        else if (a >= 1) s = trimZeros(a.toFixed(4), 2);
+        else if (a === 0) s = '0.00';
+        else if (a >= 0.0001) s = trimZeros(a.toPrecision(4), 2);
+        else {
+            // 0.0000349 -> 0.0₄349
+            let zeros = Math.floor(-Math.log10(a));
+            let digits = Math.round(a * 10 ** (zeros + 3));
+            if (digits >= 10000) { digits = Math.round(digits / 10); zeros -= 1; }
+            const sub = String(zeros).split('').map(x => SUBSCRIPT[x]).join('');
+            s = `0.0${sub}${String(digits).replace(/0+$/, '')}`;
+        }
+        return (v < 0 ? '−' : '') + s;
+    }
+    const fmtUsd = (v) => (v == null || !Number.isFinite(v)) ? '—' : (v < 0 ? '−$' : '$') + fmtNum(Math.abs(v));
+    function fmtMoney(v) {
+        if (v == null || !Number.isFinite(v)) return '—';
+        const s = Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return (v >= 0 ? '+$' : '−$') + s;
+    }
+    function fmtPct(v, d = 2) {
+        if (v == null || !Number.isFinite(v)) return '—';
+        const sign = v > 0 ? '+' : v < 0 ? '−' : '';
+        return `${sign}${Math.abs(v).toFixed(d)}%`;
+    }
+    function fmtCompact(v) {
+        if (v == null || !Number.isFinite(v)) return '—';
+        const a = Math.abs(v);
+        const s = a >= 1e12 ? (a / 1e12).toFixed(2) + 'T'
+            : a >= 1e9 ? (a / 1e9).toFixed(2) + 'B'
+            : a >= 1e6 ? (a / 1e6).toFixed(2) + 'M'
+            : a >= 1e3 ? (a / 1e3).toFixed(1) + 'K'
+            : a.toFixed(0);
+        return (v < 0 ? '−$' : '$') + s;
+    }
+    function fmtUnits(v) {
+        if (!Number.isFinite(v)) return '—';
+        if (v >= 1000) return v.toLocaleString('en-US', { maximumFractionDigits: 2 });
+        if (v >= 1) return trimZeros(v.toFixed(4), 2);
+        return trimZeros(v.toPrecision(4), 2);
+    }
+    function fmtAge(ts) {
+        if (!ts) return '—';
+        const m = (Date.now() - ts) / 60e3;
+        if (m < 60) return `${Math.max(1, Math.round(m))} мин`;
+        const h = m / 60;
+        if (h < 48) return `${Math.round(h)} ч`;
+        const d = h / 24;
+        if (d < 60) return `${Math.round(d)} дн`;
+        return `${Math.round(d / 30)} мес`;
+    }
+    function timeAgo(ts) {
+        if (!ts) return '—';
+        const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+        if (s < 5) return 'только что';
+        if (s < 60) return `${s} с назад`;
+        const m = Math.round(s / 60);
+        if (m < 60) return `${m} мин назад`;
+        return `${Math.round(m / 60)} ч назад`;
+    }
+    const pctClass = (v) => v == null ? 'muted' : v >= 0 ? 'up' : 'down';
+    function hashColor(str) {
+        let h = 0;
+        for (const ch of String(str)) h = (h * 31 + ch.charCodeAt(0)) % 360;
+        return `hsl(${h}, 55%, 42%)`;
+    }
+    function debounce(fn, ms) {
+        let t;
+        return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+    }
+
+    async function fetchJson(url, ms = 7000) {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), ms);
+        try {
+            const res = await fetch(url, { signal: ctrl.signal, cache: 'no-store' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return await res.json();
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+    function describeError(e) {
+        const msg = String(e && e.message || e || '');
+        if (e && e.name === 'AbortError') return 'таймаут ответа';
+        if (/HTTP (403|451)/.test(msg)) return 'недоступно в вашем регионе';
+        if (/HTTP 429/.test(msg)) return 'лимит запросов, повтор позже';
+        if (/HTTP/.test(msg)) return msg;
+        if (/fetch|network|load/i.test(msg)) return 'нет доступа из браузера (CORS/сеть)';
+        return msg || 'ошибка';
+    }
+
+    /* =====================================================================
+       Zustand
+       ===================================================================== */
+    const savedSettings = LS.get('cp_settings', {});
+    const state = {
+        tab: 'p2p',
+        prices: {},          // code -> { price, change, bid, ask, t, src }
+        lastPriceT: 0,
+        market: LS.get('cp_market', null),   // CoinGecko: { t, data: { code: { image, mcap, spark, ch7d } } }
+        ex: {},              // Börse -> { status, quotes, t, error, fails, nextTry }
+        arb: { rows: [], t: 0, loading: false, promise: null },
+        settings: {
+            username: '',
+            capital: 1000,
+            fees: {},
+            withdrawFees: true,
+            enabledEx: EX_NAMES.slice(),
+            onlyProfit: false,
+            ...savedSettings
+        },
+        favorites: LS.get('cp_favorites', []),
+        targets: LS.get('cp_targets', []),
+        coinQuery: '',
+        curSort: { key: 'mcap', dir: -1 },
+        tf: '1H',
+        sigSide: 'ALL',
+        signals: {},         // tf -> { t, data: { code: analysis } }
+        sigError: {},
+        sigPromise: null,
+        memes: { network: 'solana', mode: 'trending', query: '', sort: 'default', list: [], t: 0, tried: 0, key: '', loading: false, error: '', req: 0 },
+        sigTried: {},
+        memePools: {},       // id -> pool (für Favoriten/Ziele)
+        memeTrackedT: 0
+    };
+    state.settings.enabledEx = (state.settings.enabledEx || []).filter(e => EXCHANGES[e]);
+
+    function saveSettings() { LS.set('cp_settings', state.settings); }
+    function getCapital() {
+        const v = Number(state.settings.capital);
+        return Number.isFinite(v) && v > 0 ? v : 0;
+    }
+    const exFee = (ex) => {
+        const custom = num(state.settings.fees[ex]);
+        return custom != null && custom >= 0 ? custom : EXCHANGES[ex].fee;
+    };
+    const supports = (ex, code) => !(COINS[code].no || []).includes(ex);
+
+    /* =====================================================================
+       UI-Grundbausteine
+       ===================================================================== */
+    function toast(message, type = 'info', ms = 3800) {
+        const box = $('#toasts');
+        const el = document.createElement('div');
+        el.className = `toast ${type}`;
+        el.textContent = message;
+        box.appendChild(el);
+        setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, ms);
+    }
+
+    let lastFocus = null;
+    function openModal(titleHtml, bodyHtml) {
+        const modal = $('#modal');
+        $('#modal-title').innerHTML = titleHtml;
+        $('#modal-body').innerHTML = bodyHtml;
+        if (!modal.classList.contains('open')) lastFocus = document.activeElement;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => $('.modal-close', modal).focus(), 30);
+    }
+    function closeModal() {
+        const modal = $('#modal');
+        if (!modal.classList.contains('open')) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        state.draft = null;
+        setTimeout(() => { if (!modal.classList.contains('open')) $('#modal-body').innerHTML = ''; }, 200);
+        if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+    }
+    const modalOpen = () => $('#modal').classList.contains('open');
+
+    function exBadge(name) {
+        const m = EXCHANGES[name] || { color: '#474d57', text: '#fff', short: String(name).slice(0, 2).toUpperCase() };
+        return `<span class="ex-badge" style="background:${m.color};color:${m.text}" aria-hidden="true">${esc(m.short)}</span>`;
+    }
+    function coinIcon(code, size = '') {
+        const c = COINS[code];
+        const img = state.market && state.market.data && state.market.data[code] && state.market.data[code].image;
+        return `<span class="coin-icon ${size}" style="--c:${c.color}" aria-hidden="true">${esc(c.glyph)}${img ? `<img src="${esc(safeUrl(img))}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</span>`;
+    }
+    function tokenIcon(p, size = '') {
+        const letter = (p.symbol || '?').slice(0, 1).toUpperCase();
+        return `<span class="token-icon ${size}" style="--c:${hashColor(p.symbol)}" aria-hidden="true">${esc(letter)}${p.image ? `<img src="${esc(safeUrl(p.image))}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</span>`;
+    }
+    function starBtn(id, label) {
+        const fav = isFav(id);
+        return `<button class="star-btn ${fav ? 'favorited' : ''}" data-action="fav" data-id="${esc(id)}" aria-pressed="${fav}" aria-label="В избранное: ${esc(label)}" title="Избранное">★</button>`;
+    }
+    function sparkline(values, wide = false) {
+        if (!Array.isArray(values) || values.length < 2) return '<span class="muted">—</span>';
+        const step = Math.max(1, Math.floor(values.length / 60));
+        const pts = values.filter((_, i) => i % step === 0 || i === values.length - 1);
+        const min = Math.min(...pts), max = Math.max(...pts), range = max - min || 1;
+        const path = pts.map((v, i) => `${(i / (pts.length - 1) * 100).toFixed(2)},${(26 - (v - min) / range * 24).toFixed(2)}`).join(' ');
+        const color = pts[pts.length - 1] >= pts[0] ? 'var(--accent-green)' : 'var(--accent-red)';
+        return `<svg class="spark ${wide ? 'wide' : ''}" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><polyline points="${path}" fill="none" stroke="${color}" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
+    }
+    const skel = (cls = '') => `<span class="skel ${cls}"></span>`;
+
+    // Platzhalter, falls ein Coin-/Token-Bild nicht lädt
+    document.addEventListener('error', (e) => {
+        const t = e.target;
+        if (t && t.tagName === 'IMG' && t.parentElement && t.parentElement.matches('.coin-icon, .token-icon')) t.remove();
+    }, true);
+
+    function updateBadges() {
+        const active = state.targets.filter(t => t.status === 'active').length;
+        $$('[data-badge="targets"]').forEach(el => { el.textContent = active ? String(active) : ''; });
+        $$('[data-badge="favorites"]').forEach(el => { el.textContent = state.favorites.length ? String(state.favorites.length) : ''; });
+    }
+
+    /* =====================================================================
+       Preise (Binance live + Fallback CoinGecko)
+       ===================================================================== */
+    function setPrice(code, price, change, bid, ask, src) {
+        if (!COINS[code] || !(price > 0)) return;
+        const prev = state.prices[code];
+        state.prices[code] = {
+            price,
+            change: Number.isFinite(change) ? change : (prev ? prev.change : null),
+            bid: bid > 0 ? bid : null,
+            ask: ask > 0 ? ask : null,
+            t: Date.now(),
+            src
+        };
+        state.lastPriceT = Date.now();
+    }
+    const isLivePrice = (p) => p && p.src !== 'cache' && Date.now() - p.t < 120e3;
+
+    function loadPriceCache() {
+        const c = LS.get('cp_prices', null);
+        if (!c || !c.prices) return;
+        Object.entries(c.prices).forEach(([code, p]) => {
+            if (COINS[code] && p.price > 0) state.prices[code] = { price: p.price, change: p.change, bid: null, ask: null, t: c.t, src: 'cache' };
+        });
+        state.lastPriceT = c.t || 0;
+    }
+    let lastCacheSave = 0;
+    function savePriceCache() {
+        if (Date.now() - lastCacheSave < 30e3) return;
+        lastCacheSave = Date.now();
+        const prices = {};
+        Object.entries(state.prices).forEach(([code, p]) => { if (p.src !== 'cache') prices[code] = { price: p.price, change: p.change }; });
+        if (Object.keys(prices).length) LS.set('cp_prices', { t: Date.now(), prices });
+    }
+
+    let pcTimer = null;
+    function pricesChanged() {
+        if (pcTimer) return;
+        pcTimer = setTimeout(() => {
+            pcTimer = null;
+            if (state.arb.t && state.ex.Binance && state.ex.Binance.status !== 'ok') {
+                syncBinanceQuotes();
+                if (state.ex.Binance.status === 'ok') {
+                    computeArbitrage();
+                    patchExchangeStatus();
+                    if (state.tab === 'p2p') renderArbitrage();
+                }
+            }
+            patchLive();
+            checkTargets();
+            patchTargets();
+            renderSyncStatus();
+            savePriceCache();
+        }, 400);
+    }
+
+    // Aktualisiert nur die Zellen mit data-live, ohne Tabellen neu zu zeichnen
+    function patchLive() {
+        const cap = getCapital();
+        $$('[data-live]').forEach(el => {
+            const p = state.prices[el.dataset.code];
+            if (!p) return;
+            const kind = el.dataset.live;
+            let text, val;
+            if (kind === 'price') { val = p.price; text = fmtUsd(val); }
+            else if (kind === 'change') {
+                val = p.change; text = fmtPct(val);
+                if (el.classList.contains('badge')) {
+                    el.classList.remove('badge-grey');
+                    el.classList.toggle('badge-green', val >= 0);
+                    el.classList.toggle('badge-red', val < 0);
+                } else {
+                    el.classList.toggle('up', val >= 0);
+                    el.classList.toggle('down', val < 0);
+                }
+            }
+            else if (kind === 'units') { val = cap / p.price; text = `${fmtUnits(val)} ${el.dataset.code}`; }
+            else return;
+            if (el.textContent === text) return;
+            const old = parseFloat(el.dataset.v);
+            el.textContent = text;
+            el.dataset.v = val;
+            if (kind === 'price' && Number.isFinite(old) && old !== val) {
+                el.classList.remove('flash-up', 'flash-down');
+                void el.offsetWidth;
+                el.classList.add(val > old ? 'flash-up' : 'flash-down');
+            }
+        });
+    }
+    const livePrice = (code, extra = '') => {
+        const p = state.prices[code];
+        return `<span class="num ${extra}" data-live="price" data-code="${code}"${p ? ` data-v="${p.price}"` : ''}>${p ? fmtUsd(p.price) : skel()}</span>`;
+    };
+    const liveChange = (code, asBadge = true) => {
+        const p = state.prices[code];
+        const v = p ? p.change : null;
+        const cls = asBadge ? `badge num ${v == null ? 'badge-grey' : v >= 0 ? 'badge-green' : 'badge-red'}` : `num ${pctClass(v)}`;
+        return `<span class="${cls}" data-live="change" data-code="${code}">${v == null ? '—' : fmtPct(v)}</span>`;
+    };
+
+    const SYNC_MODES = {
+        connecting: ['…', 'Подключение к источникам цен…'],
+        cache: ['КЭШ', 'Показаны сохранённые цены, подключение к Binance…'],
+        ws: ['LIVE', 'Онлайн: Binance WebSocket, цены в реальном времени'],
+        rest: ['LIVE', 'Онлайн: Binance REST, обновление каждые 15 секунд'],
+        fallback: ['CG', 'Резерв: CoinGecko (Binance недоступен), обновление каждые 15 секунд'],
+        offline: ['OFFLINE', 'Нет соединения — показаны последние сохранённые цены']
+    };
+    function renderSyncStatus() {
+        let mode = Feed.mode;
+        if (mode === 'connecting' && Object.keys(state.prices).length) mode = 'cache';
+        const [label, title] = SYNC_MODES[mode] || SYNC_MODES.connecting;
+        $('#sync-dot').dataset.state = mode;
+        $('#sync-text').textContent = label;
+        $('#sync-pill').title = title;
+        $('#sync-age').textContent = state.lastPriceT ? timeAgo(state.lastPriceT) : '';
+    }
+
+    const Feed = {
+        mode: 'connecting',
+        ws: null,
+        retries: 0,
+        lastMsg: 0,
+        restTimer: null,
+        reconnectTimer: null,
+
+        start() {
+            this.connect();
+            this.poll(true);
+        },
+        connect() {
+            if (!('WebSocket' in window)) return;
+            clearTimeout(this.reconnectTimer);
+            const streams = COIN_CODES.map(c => `${c.toLowerCase()}usdt@ticker`).join('/');
+            let ws;
+            try {
+                ws = new WebSocket(`${BINANCE_WS}/stream?streams=${streams}`);
+            } catch (_) {
+                this.scheduleReconnect();
+                return;
+            }
+            this.ws = ws;
+            ws.onopen = () => { this.retries = 0; };
+            ws.onmessage = (ev) => {
+                let msg;
+                try { msg = JSON.parse(ev.data); } catch (_) { return; }
+                const d = msg && msg.data;
+                if (!d || typeof d.s !== 'string') return;
+                const code = d.s.replace(/USDT$/, '');
+                if (!COINS[code]) return;
+                this.lastMsg = Date.now();
+                setPrice(code, +d.c, +d.P, +d.b, +d.a, 'ws');
+                this.setMode('ws');
+                pricesChanged();
+            };
+            ws.onclose = () => {
+                if (this.ws !== ws) return;
+                this.ws = null;
+                this.scheduleReconnect();
+            };
+            ws.onerror = () => { try { ws.close(); } catch (_) { /* egal */ } };
+        },
+        scheduleReconnect() {
+            clearTimeout(this.reconnectTimer);
+            const delay = Math.min(60e3, 1000 * 2 ** this.retries);
+            this.retries = Math.min(this.retries + 1, 8);
+            this.reconnectTimer = setTimeout(() => this.connect(), delay);
+        },
+        wsHealthy() {
+            return this.ws && this.ws.readyState === 1 && Date.now() - this.lastMsg < 20e3;
+        },
+        async poll(force = false) {
+            clearTimeout(this.restTimer);
+            if (force || (!this.wsHealthy() && !document.hidden)) await this.fetchRest();
+            this.restTimer = setTimeout(() => this.poll(), 15e3);
+        },
+        async fetchRest() {
+            try {
+                const syms = JSON.stringify(COIN_CODES.map(c => c + 'USDT'));
+                const list = await fetchJson(`${BINANCE_REST}/ticker/24hr?symbols=${encodeURIComponent(syms)}`);
+                let n = 0;
+                (Array.isArray(list) ? list : []).forEach(t => {
+                    const code = String(t.symbol).replace(/USDT$/, '');
+                    if (COINS[code] && +t.lastPrice > 0) {
+                        setPrice(code, +t.lastPrice, +t.priceChangePercent, +t.bidPrice, +t.askPrice, 'rest');
+                        n++;
+                    }
+                });
+                if (!n) throw new Error('пустой ответ');
+                if (!this.wsHealthy()) this.setMode('rest');
+            } catch (_) {
+                try {
+                    const ids = COIN_CODES.map(c => COINS[c].cg).join(',');
+                    const data = await fetchJson(`${CG}/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+                    let n = 0;
+                    COIN_CODES.forEach(code => {
+                        const e = data[COINS[code].cg];
+                        if (e && e.usd > 0) { setPrice(code, e.usd, Number(e.usd_24h_change), null, null, 'cg'); n++; }
+                    });
+                    if (!n) throw new Error('пустой ответ');
+                    if (!this.wsHealthy()) this.setMode('fallback');
+                } catch (_) {
+                    if (!this.wsHealthy()) this.setMode('offline');
+                }
+            }
+            pricesChanged();
+        },
+        setMode(m) {
+            if (this.mode === m) return;
+            this.mode = m;
+            renderSyncStatus();
+        }
+    };
+
+    async function loadMarket(force = false) {
+        if (!force && state.market && Date.now() - state.market.t < 15 * 60e3) return;
+        try {
+            const ids = COIN_CODES.map(c => COINS[c].cg).join(',');
+            const list = await fetchJson(`${CG}/coins/markets?vs_currency=usd&ids=${ids}&sparkline=true&price_change_percentage=7d`, 9000);
+            const data = {};
+            list.forEach(m => {
+                const code = COIN_CODES.find(c => COINS[c].cg === m.id);
+                if (!code) return;
+                const spark = (m.sparkline_in_7d && m.sparkline_in_7d.price || []);
+                data[code] = {
+                    image: m.image || '',
+                    mcap: num(m.market_cap),
+                    vol: num(m.total_volume),
+                    ch7d: num(m.price_change_percentage_7d_in_currency),
+                    spark: spark.filter((_, i) => i % 3 === 0 || i === spark.length - 1)
+                };
+            });
+            if (Object.keys(data).length) {
+                state.market = { t: Date.now(), data };
+                LS.set('cp_market', state.market);
+                renderChrome();
+                if (state.tab === 'currencies') renderCurrencies();
+            }
+        } catch (_) { /* Bilder & Charts optional */ }
+    }
+    const marketOf = (code) => (state.market && state.market.data && state.market.data[code]) || {};
+
+    /* =====================================================================
+       Börsen-Kurse für Arbitrage
+       ===================================================================== */
+    function quote(bid, ask) {
+        const b = +bid, a = +ask;
+        return b > 0 && a > 0 && a >= b * 0.95 ? { bid: b, ask: a } : null;
+    }
+    const perCoin = (urlFn, parse) => async (codes) => {
+        // Probe mit der ersten Münze: ist die Börse gar nicht erreichbar, sparen wir uns die übrigen Anfragen
+        const [first, ...rest] = codes;
+        const firstQuote = parse(await fetchJson(urlFn(first)));
+        const results = await Promise.allSettled(rest.map(c => fetchJson(urlFn(c)).then(j => [c, parse(j)])));
+        const quotes = {};
+        if (firstQuote) quotes[first] = firstQuote;
+        let firstError = null;
+        results.forEach(r => {
+            if (r.status === 'fulfilled' && r.value[1]) quotes[r.value[0]] = r.value[1];
+            else if (r.status === 'rejected' && !firstError) firstError = r.reason;
+        });
+        if (!Object.keys(quotes).length) throw firstError || new Error('нет данных');
+        return quotes;
+    };
+    const waitFor = (cond, ms) => new Promise(resolve => {
+        const start = Date.now();
+        const check = () => (cond() || Date.now() - start > ms) ? resolve() : setTimeout(check, 150);
+        check();
+    });
+
+    // Bybit sperrt REST-Abfragen aus dem Browser (CORS) — WebSocket mit Level-1-Orderbuch funktioniert
+    const BybitFeed = {
+        ws: null,
+        quotes: {},
+        t: 0,
+        retries: 0,
+        timer: null,
+        ping: null,
+        error: '',
+        ensure() {
+            if (this.ws || this.timer) return;
+            this.connect();
+        },
+        connect() {
+            this.timer = null;
+            let ws;
+            try {
+                ws = new WebSocket('wss://stream.bybit.com/v5/public/spot');
+            } catch (_) {
+                this.error = 'WebSocket недоступен';
+                return;
+            }
+            this.ws = ws;
+            ws.onopen = () => {
+                this.retries = 0;
+                this.error = '';
+                const args = COIN_CODES.filter(c => supports('Bybit', c)).map(c => `orderbook.1.${c}USDT`);
+                ws.send(JSON.stringify({ op: 'subscribe', args }));
+                clearInterval(this.ping);
+                this.ping = setInterval(() => { if (ws.readyState === 1) ws.send('{"op":"ping"}'); }, 20000);
+            };
+            ws.onmessage = (ev) => {
+                let m;
+                try { m = JSON.parse(ev.data); } catch (_) { return; }
+                if (!m || !m.topic || !m.data) return;
+                const code = String(m.data.s || '').replace(/USDT$/, '');
+                if (!COINS[code]) return;
+                const prev = this.quotes[code] || {};
+                const b = m.data.b && m.data.b[0];
+                const a = m.data.a && m.data.a[0];
+                const q = quote(b ? b[0] : prev.bid, a ? a[0] : prev.ask);
+                if (q) { this.quotes[code] = q; this.t = Date.now(); }
+            };
+            ws.onclose = () => {
+                clearInterval(this.ping);
+                if (this.ws !== ws) return;
+                this.ws = null;
+                this.error = this.t ? 'соединение прервано' : 'нет доступа (регион или сеть)';
+                const delay = Math.min(120e3, 2000 * 2 ** this.retries);
+                this.retries = Math.min(this.retries + 1, 8);
+                this.timer = setTimeout(() => this.connect(), delay);
+            };
+            ws.onerror = () => { try { ws.close(); } catch (_) { /* egal */ } };
+        },
+        healthy() {
+            return this.ws && this.ws.readyState === 1 && Date.now() - this.t < 60e3 && Object.keys(this.quotes).length > 0;
+        }
+    };
+
+    const FETCHERS = {
+        OKX: perCoin(
+            c => `https://www.okx.com/api/v5/market/ticker?instId=${c}-USDT`,
+            j => j.data && j.data[0] && quote(j.data[0].bidPx, j.data[0].askPx)
+        ),
+        Bybit: async () => {
+            BybitFeed.ensure();
+            await waitFor(() => BybitFeed.healthy() || (!BybitFeed.ws && BybitFeed.error), 4000);
+            if (!BybitFeed.healthy()) throw new Error(BybitFeed.error || 'нет данных');
+            return { ...BybitFeed.quotes };
+        },
+        'Gate.io': perCoin(
+            c => `https://api.gateio.ws/api/v4/spot/tickers?currency_pair=${c}_USDT`,
+            j => Array.isArray(j) && j[0] && quote(j[0].highest_bid, j[0].lowest_ask)
+        ),
+        Bitget: perCoin(
+            c => `https://api.bitget.com/api/v2/spot/market/tickers?symbol=${c}USDT`,
+            j => j.data && j.data[0] && quote(j.data[0].bidPr, j.data[0].askPr)
+        ),
+        HTX: perCoin(
+            c => `https://api.huobi.pro/market/detail/merged?symbol=${c.toLowerCase()}usdt`,
+            j => j.tick && quote(j.tick.bid && j.tick.bid[0], j.tick.ask && j.tick.ask[0])
+        ),
+        Kraken: async (codes) => {
+            const map = {};
+            codes.forEach(c => { map[COINS[c].kraken || `${c}USDT`] = c; });
+            const j = await fetchJson(`https://api.kraken.com/0/public/Ticker?pair=${Object.keys(map).join(',')}`);
+            if (j.error && j.error.length) throw new Error(j.error.join(', '));
+            const quotes = {};
+            Object.entries(j.result || {}).forEach(([key, t]) => {
+                const code = map[key];
+                const q = quote(t.b && t.b[0], t.a && t.a[0]);
+                if (code && q) quotes[code] = q;
+            });
+            if (!Object.keys(quotes).length) throw new Error('нет данных');
+            return quotes;
+        },
+        Coinbase: perCoin(
+            c => `https://api.exchange.coinbase.com/products/${c}-USDT/ticker`,
+            j => quote(j.bid, j.ask)
+        )
+    };
+
+    function syncBinanceQuotes() {
+        const quotes = {};
+        COIN_CODES.forEach(code => {
+            const p = state.prices[code];
+            if (p && (p.src === 'ws' || p.src === 'rest') && Date.now() - p.t < 120e3 && p.bid && p.ask) quotes[code] = { bid: p.bid, ask: p.ask };
+        });
+        const ok = Object.keys(quotes).length > 0;
+        state.ex.Binance = { status: ok ? 'ok' : 'error', quotes, t: Date.now(), error: ok ? '' : 'нет живых данных Binance', fails: 0, nextTry: 0 };
+    }
+    function freshQuote(ex, code) {
+        const s = state.ex[ex];
+        if (!s || s.status !== 'ok' || Date.now() - s.t > 180e3) return null;
+        return s.quotes[code] || null;
+    }
+
+    function refreshExchanges(force = false) {
+        if (state.arb.promise) return state.arb.promise;
+        state.arb.loading = true;
+        setArbButtonBusy(true);
+        if (state.tab === 'p2p' && !state.arb.t) renderArbitrage();
+        state.arb.promise = (async () => {
+            const now = Date.now();
+            await Promise.all(Object.keys(FETCHERS).map(async name => {
+                const s = state.ex[name] || (state.ex[name] = { status: 'idle', quotes: {}, t: 0, error: '', fails: 0, nextTry: 0 });
+                if (!force && s.nextTry > now) return;
+                const codes = COIN_CODES.filter(c => supports(name, c));
+                try {
+                    const quotes = await FETCHERS[name](codes);
+                    Object.assign(s, { status: 'ok', quotes, t: Date.now(), error: '', fails: 0, nextTry: 0 });
+                } catch (e) {
+                    s.fails += 1;
+                    s.status = 'error';
+                    s.error = describeError(e);
+                    s.nextTry = Date.now() + Math.min(300e3, 30e3 * 2 ** (s.fails - 1));
+                }
+            }));
+            syncBinanceQuotes();
+            state.arb.t = Date.now();
+            computeArbitrage();
+            patchExchangeStatus();
+            if (state.tab === 'p2p') renderArbitrage();
+            if (state.tab === 'favorites') renderFavorites();
+        })().finally(() => {
+            state.arb.loading = false;
+            state.arb.promise = null;
+            setArbButtonBusy(false);
+        });
+        return state.arb.promise;
+    }
+    function setArbButtonBusy(busy) {
+        const btn = $('#arb-refresh-btn');
+        if (!btn) return;
+        btn.disabled = busy;
+        btn.textContent = busy ? 'Загрузка…' : '↻ Обновить';
+    }
+
+    /* =====================================================================
+       Arbitrage-Berechnung
+       ===================================================================== */
+    function calcArb(code, buyEx, ask, sellEx, bid, capital) {
+        const feeBuy = exFee(buyEx) / 100;
+        const feeSell = exFee(sellEx) / 100;
+        const coinsBought = capital / ask * (1 - feeBuy);
+        const wdCoin = state.settings.withdrawFees ? COINS[code].wd : 0;
+        const coinsArrived = Math.max(0, coinsBought - wdCoin);
+        const gross = coinsArrived * bid;
+        const proceeds = gross * (1 - feeSell);
+        const net = proceeds - capital;
+        return {
+            code, buyEx, sellEx, ask, bid, capital,
+            feeBuy, feeSell, coinsBought, wdCoin, wdUsd: wdCoin * bid, coinsArrived,
+            feeBuyUsd: capital * feeBuy, feeSellUsd: gross * feeSell,
+            spreadPct: (bid / ask - 1) * 100,
+            proceeds, net, netPct: capital ? net / capital * 100 : 0
+        };
+    }
+    function computeArbitrage() {
+        const cap = getCapital() || 1000;
+        const enabled = state.settings.enabledEx;
+        state.arb.rows = COIN_CODES.map(code => {
+            const quotes = enabled.map(ex => ({ ex, q: freshQuote(ex, code) })).filter(x => x.q);
+            // Ausreißer (z. B. anderer Token mit gleichem Ticker) verwerfen
+            const mids = quotes.map(x => (x.q.bid + x.q.ask) / 2).sort((a, b) => a - b);
+            const median = mids.length ? mids[Math.floor(mids.length / 2)] : 0;
+            const valid = quotes.filter(x => Math.abs((x.q.bid + x.q.ask) / 2 / median - 1) < 0.08);
+            let best = null;
+            for (const b of valid) {
+                for (const s of valid) {
+                    if (b.ex === s.ex) continue;
+                    const r = calcArb(code, b.ex, b.q.ask, s.ex, s.q.bid, cap);
+                    if (!best || r.net > best.net) best = r;
+                }
+            }
+            return { code, quotes: valid, best };
+        });
+    }
+
+    /* =====================================================================
+       Rendering: Kopfzeile, Filter
+       ===================================================================== */
+    function renderChrome() {
+        $('#ticker').innerHTML = COIN_CODES.map(code => `
+            <button class="tick" data-action="tab" data-tab="currencies" title="${esc(COINS[code].name)}">
+                ${coinIcon(code, 'sm')}<b>${code}</b>${livePrice(code)}${liveChange(code, false)}
+            </button>`).join('');
+        $('#coin-chips-bar').innerHTML = `<button class="coin-chip ${state.coinQuery ? '' : 'active'}" data-action="coin-chip" data-code="">Все монеты</button>` +
+            COIN_CODES.map(code => `<button class="coin-chip ${state.coinQuery === code ? 'active' : ''}" data-action="coin-chip" data-code="${code}">${coinIcon(code, 'sm')} ${code}</button>`).join('');
+    }
+    function renderAvatar() {
+        const name = String(state.settings.username || '').replace(/^@/, '').trim();
+        const initials = name ? name.split(/[\s_.-]+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() : 'CP';
+        $('#avatar-btn').textContent = initials || 'CP';
+    }
+    function renderCapital() {
+        const cap = getCapital();
+        $('#display-capital').textContent = cap ? '$' + cap.toLocaleString('en-US', { maximumFractionDigits: 2 }) : '—';
+        $$('#capital-presets .preset-pill').forEach(b => b.classList.toggle('active', Number(b.dataset.value) === cap));
+    }
+    function renderExchangeGrid() {
+        $('#ex-checkbox-grid').innerHTML = EX_NAMES.map(ex => `
+            <label class="ex-option" data-ex="${esc(ex)}">
+                <input type="checkbox" value="${esc(ex)}" ${state.settings.enabledEx.includes(ex) ? 'checked' : ''}>
+                ${exBadge(ex)}
+                <span class="ex-name">${esc(ex)}</span>
+                <span class="status-dot"></span>
+            </label>`).join('');
+        patchExchangeStatus();
+    }
+    function patchExchangeStatus() {
+        $$('#ex-checkbox-grid .ex-option').forEach(el => {
+            const s = state.ex[el.dataset.ex];
+            const dot = $('.status-dot', el);
+            const st = s ? s.status : 'idle';
+            dot.className = `status-dot ${st}`;
+            el.title = st === 'ok' ? `Онлайн · пар: ${Object.keys(s.quotes).length} · комиссия ${exFee(el.dataset.ex)}%`
+                : st === 'error' ? `Недоступна: ${s.error}` : 'Загрузка…';
+        });
+        updateExLabel();
+    }
+    function updateExLabel() {
+        const n = state.settings.enabledEx.length;
+        const online = EX_NAMES.filter(ex => state.ex[ex] && state.ex[ex].status === 'ok').length;
+        const label = n === EX_NAMES.length ? `Все биржи · онлайн ${online}/${EX_NAMES.length}` : n === 0 ? 'Биржи не выбраны' : `Выбрано бирж: ${n}`;
+        $('#dropdown-label').textContent = label;
+    }
+    function toggleDropdown(open) {
+        const panel = $('#dropdown-panel');
+        const btn = $('[data-action="dropdown"]');
+        const willOpen = open ?? panel.hidden;
+        panel.hidden = !willOpen;
+        btn.setAttribute('aria-expanded', String(willOpen));
+    }
+
+    /* =====================================================================
+       Rendering: Arbitrage
+       ===================================================================== */
+    function renderArbitrage() {
+        const tbody = $('#p2p-table-body');
+        const grid = $('#p2p-card-grid');
+        renderArbSummary();
+
+        if (!state.arb.t) {
+            tbody.innerHTML = Array.from({ length: 6 }, () => `<tr><td></td><td>${skel('w120')}</td><td>${skel()}</td><td>${skel()}</td><td>${skel('w40')}</td><td>${skel()}</td><td></td></tr>`).join('');
+            grid.innerHTML = Array.from({ length: 3 }, () => `<div class="skel skel-card"></div>`).join('');
+            $('#arb-hint').innerHTML = '';
+            return;
+        }
+
+        const query = state.coinQuery.trim().toUpperCase();
+        let rows = state.arb.rows.filter(r => !query || r.code.includes(query) || COINS[r.code].name.toUpperCase().includes(query));
+        if (state.settings.onlyProfit) rows = rows.filter(r => r.best && r.best.net > 0);
+        rows.sort((a, b) => (b.best ? b.best.net : -Infinity) - (a.best ? a.best.net : -Infinity));
+
+        const profitable = state.arb.rows.filter(r => r.best && r.best.net > 0).length;
+        let hint = '';
+        if (!state.settings.enabledEx.length) hint = '<div class="hint warn">Выберите хотя бы две биржи в фильтре.</div>';
+        else if (!profitable) hint = '<div class="hint">Сейчас нет связок с прибылью после комиссий. Для ликвидных монет это нормально: спреды между крупными биржами обычно меньше суммы торговых комиссий и комиссии вывода.</div>';
+        if (!getCapital()) hint += '<div class="hint warn">Капитал не указан — расчёт показан для $1,000.</div>';
+        $('#arb-hint').innerHTML = hint;
+
+        if (!rows.length) {
+            const msg = state.settings.onlyProfit ? 'Прибыльных связок под выбранные фильтры нет' : 'Нет пар под выбранные фильтры';
+            tbody.innerHTML = `<tr><td colspan="7" class="empty">${msg}</td></tr>`;
+            grid.innerHTML = `<div class="empty">${msg}</div>`;
+            return;
+        }
+
+        tbody.innerHTML = rows.map(r => {
+            const b = r.best;
+            const pair = `${r.code}/USDT`;
+            if (!b) {
+                return `<tr class="dim">
+                    <td>${starBtn('arb:' + r.code, pair)}</td>
+                    <td><div class="pair-cell">${coinIcon(r.code)}<div><strong>${pair}</strong><span class="sub">цена есть на ${r.quotes.length} бирж.</span></div></div></td>
+                    <td colspan="4">Недостаточно данных: нужны цены минимум с двух выбранных бирж</td>
+                    <td><button class="secondary-btn sm" data-action="arb-open" data-code="${r.code}">Цены</button></td>
+                </tr>`;
+            }
+            return `<tr>
+                <td>${starBtn('arb:' + r.code, pair)}</td>
+                <td><div class="pair-cell">${coinIcon(r.code)}<div><strong>${pair}</strong><span class="sub">цены с ${r.quotes.length} бирж</span></div></div></td>
+                <td class="num">${fmtUsd(b.ask)}<div class="ex-cell">${exBadge(b.buyEx)} ${esc(b.buyEx)} · ${exFee(b.buyEx)}%</div></td>
+                <td class="num">${fmtUsd(b.bid)}<div class="ex-cell">${exBadge(b.sellEx)} ${esc(b.sellEx)} · ${exFee(b.sellEx)}%</div></td>
+                <td><span class="badge num ${b.spreadPct > 0 ? 'badge-green' : 'badge-red'}">${fmtPct(b.spreadPct, 3)}</span></td>
+                <td class="num strong ${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)}<span class="sub">${fmtPct(b.netPct, 3)} от капитала</span></td>
+                <td><button class="primary-btn sm" data-action="arb-open" data-code="${r.code}">Расчёт</button></td>
+            </tr>`;
+        }).join('');
+
+        grid.innerHTML = rows.map(r => {
+            const b = r.best;
+            const pair = `${r.code}/USDT`;
+            return `<div class="signal-card" data-action="arb-open" data-code="${r.code}" role="button" tabindex="0" aria-label="Расчёт ${pair}">
+                <div class="card-top">
+                    <div class="pair-name">${coinIcon(r.code)} ${pair} ${b ? `<span class="badge num ${b.spreadPct > 0 ? 'badge-green' : 'badge-red'}">${fmtPct(b.spreadPct, 3)}</span>` : ''}</div>
+                    ${starBtn('arb:' + r.code, pair)}
+                </div>
+                ${b ? `
+                <div class="metrics">
+                    <div class="metric"><span>Купить · ${esc(b.buyEx)}</span><strong>${fmtUsd(b.ask)}</strong></div>
+                    <div class="metric"><span>Продать · ${esc(b.sellEx)}</span><strong>${fmtUsd(b.bid)}</strong></div>
+                    <div class="metric"><span>Результат</span><strong class="${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)}</strong></div>
+                </div>` : `<div class="reason">Недостаточно данных: цена есть на ${r.quotes.length} бирж.</div>`}
+            </div>`;
+        }).join('');
+    }
+    function renderArbSummary() {
+        const el = $('#arb-summary');
+        if (!state.arb.t) { el.innerHTML = '<span>Загружаю цены с бирж…</span>'; return; }
+        const online = EX_NAMES.filter(ex => state.ex[ex] && state.ex[ex].status === 'ok').length;
+        const profitable = state.arb.rows.filter(r => r.best && r.best.net > 0).length;
+        el.innerHTML = `
+            <span>Бирж онлайн: <b>${online}/${EX_NAMES.length}</b></span>
+            <span>Прибыльных связок: <b class="${profitable ? 'up' : ''}">${profitable}/${COIN_CODES.length}</b></span>
+            <span>Комиссия вывода: <b>${state.settings.withdrawFees ? 'учитывается' : 'не учитывается'}</b></span>
+            <span>Обновлено: <b data-ago="${state.arb.t}">${timeAgo(state.arb.t)}</b></span>`;
+    }
+
+    function openArbModal(code) {
+        const row = state.arb.rows.find(r => r.code === code);
+        if (!row) { toast('Данные ещё загружаются', 'info'); return; }
+        const b = row.best;
+        const quoteRows = EX_NAMES.map(ex => {
+            const s = state.ex[ex];
+            const q = freshQuote(ex, code);
+            const enabled = state.settings.enabledEx.includes(ex);
+            let status;
+            if (!supports(ex, code)) status = '<span class="muted">нет пары</span>';
+            else if (!s || s.status === 'idle') status = '<span class="muted">загрузка</span>';
+            else if (s.status === 'error') status = `<span class="down" title="${esc(s.error)}">недоступна</span>`;
+            else if (!q) status = '<span class="muted">нет цены</span>';
+            else if (!row.quotes.some(x => x.ex === ex) && enabled) status = '<span class="down">отклонение</span>';
+            else status = enabled ? '<span class="up">онлайн</span>' : '<span class="muted">выключена</span>';
+            const cls = b && ex === b.buyEx ? 'buy' : b && ex === b.sellEx ? 'sell' : '';
+            return `<tr class="${cls}"><td><div class="pair-cell">${exBadge(ex)} ${esc(ex)}</div></td><td class="num right">${q ? fmtUsd(q.bid) : '—'}</td><td class="num right">${q ? fmtUsd(q.ask) : '—'}</td><td class="num right">${exFee(ex)}%</td><td>${status}</td></tr>`;
+        }).join('');
+
+        const calc = b ? `
+            <div class="calc-box">
+                <div class="calc-row"><span>Капитал</span><strong class="num">${fmtUsd(b.capital)}</strong></div>
+                <div class="calc-row"><span>Покупка на ${esc(b.buyEx)} по ask ${fmtUsd(b.ask)}</span><strong class="num">${fmtUnits(b.coinsBought)} ${code}</strong></div>
+                <div class="calc-row"><span>Комиссия покупки (${exFee(b.buyEx)}%)</span><strong class="num down">−${fmtUsd(b.feeBuyUsd)}</strong></div>
+                <div class="calc-row"><span>Комиссия вывода (~${b.wdCoin} ${code})</span><strong class="num ${b.wdUsd ? 'down' : 'muted'}">${b.wdUsd ? '−' + fmtUsd(b.wdUsd) : 'не учитывается'}</strong></div>
+                <div class="calc-row"><span>Продажа на ${esc(b.sellEx)} по bid ${fmtUsd(b.bid)}</span><strong class="num">${fmtUnits(b.coinsArrived)} ${code}</strong></div>
+                <div class="calc-row"><span>Комиссия продажи (${exFee(b.sellEx)}%)</span><strong class="num down">−${fmtUsd(b.feeSellUsd)}</strong></div>
+                <div class="calc-row"><span>Спред до комиссий</span><strong class="num ${b.spreadPct >= 0 ? 'up' : 'down'}">${fmtPct(b.spreadPct, 3)}</strong></div>
+                <div class="calc-row total"><span>Чистый результат</span><strong class="num ${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)} (${fmtPct(b.netPct, 3)})</strong></div>
+            </div>
+            <div class="btn-row">
+                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES[b.buyEx].trade(code)))}" target="_blank" rel="noopener noreferrer">Купить на ${esc(b.buyEx)} ↗</a>
+                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES[b.sellEx].trade(code)))}" target="_blank" rel="noopener noreferrer">Продать на ${esc(b.sellEx)} ↗</a>
+            </div>` : '<div class="hint warn">Для расчёта нужны цены минимум с двух выбранных бирж.</div>';
+
+        openModal(`${coinIcon(code)} Арбитраж ${code}/USDT`, `
+            ${calc}
+            <div class="table-container">
+                <table class="quote-table">
+                    <thead><tr><th>Биржа</th><th class="right">Bid (продажа)</th><th class="right">Ask (покупка)</th><th class="right">Комиссия</th><th>Статус</th></tr></thead>
+                    <tbody>${quoteRows}</tbody>
+                </table>
+            </div>
+            <ul class="list">
+                <li>Расчёт по лучшей цене стакана без учёта глубины: на крупный капитал средняя цена будет хуже.</li>
+                <li>Перевод между биржами занимает от минут до часа — за это время спред может исчезнуть.</li>
+                <li>Перед переводом проверьте, что вывод и депозит в нужной сети открыты. Комиссии бирж можно изменить в настройках (иконка профиля).</li>
+            </ul>
+            <p class="note">Обновлено ${timeAgo(state.arb.t)}.</p>`);
+    }
+
+    /* =====================================================================
+       Rendering: Kurse
+       ===================================================================== */
+    function renderCurrencies() {
+        const sortKey = state.curSort.key, dir = state.curSort.dir;
+        const list = COIN_CODES.map(code => ({ code, p: state.prices[code], m: marketOf(code) }));
+        const val = (x) => sortKey === 'price' ? (x.p ? x.p.price : -1)
+            : sortKey === 'change' ? (x.p && x.p.change != null ? x.p.change : -1e9)
+            : sortKey === 'ch7d' ? (x.m.ch7d != null ? x.m.ch7d : -1e9)
+            : (x.m.mcap || 0);
+        list.sort((a, b) => (val(a) - val(b)) * dir);
+
+        const th = (key, label, cls = '') => {
+            const active = sortKey === key;
+            const arrow = active ? (dir < 0 ? '↓' : '↑') : '';
+            return `<th class="${cls}"><button class="th-sort ${active ? 'active' : ''}" data-action="cur-sort" data-key="${key}">${label} ${arrow}</button></th>`;
+        };
+        $('#currencies-head').innerHTML = `<tr>
+            <th class="col-star"><span class="sr-only">Избранное</span></th>
+            <th>Монета</th>
+            ${th('price', 'Цена', 'right')}
+            ${th('change', '24ч')}
+            ${th('ch7d', '7 дней')}
+            ${th('mcap', 'Капитализация')}
+            <th>На ваш капитал</th>
+            <th><span class="sr-only">Действие</span></th>
+        </tr>`;
+
+        $('#currencies-table-body').innerHTML = list.map(({ code, p, m }) => `
+            <tr>
+                <td>${starBtn('coin:' + code, code)}</td>
+                <td><div class="pair-cell">${coinIcon(code)}<div><strong>${code}</strong><span class="sub">${esc(COINS[code].name)}</span></div></div></td>
+                <td class="right strong">${livePrice(code)}</td>
+                <td>${liveChange(code)}</td>
+                <td><div class="pair-cell">${sparkline(m.spark)}<span class="num ${pctClass(m.ch7d)}" style="font-size:.75rem">${fmtPct(m.ch7d, 1)}</span></div></td>
+                <td class="num">${fmtCompact(m.mcap)}</td>
+                <td><span class="num" data-live="units" data-code="${code}">${p ? `${fmtUnits(getCapital() / p.price)} ${code}` : skel()}</span></td>
+                <td><button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">🎯 Цель</button></td>
+            </tr>`).join('');
+
+        $('#currencies-card-grid').innerHTML = list.map(({ code, p, m }) => `
+            <div class="signal-card">
+                <div class="card-top">
+                    <div class="pair-name">${coinIcon(code, 'lg')}<div><div>${code}</div><span class="sub">${esc(COINS[code].name)}</span></div></div>
+                    ${starBtn('coin:' + code, code)}
+                </div>
+                <div class="card-row">
+                    <strong style="font-size:1.1rem">${livePrice(code)}</strong>
+                    ${liveChange(code)}
+                </div>
+                ${sparkline(m.spark, true)}
+                <div class="card-row">
+                    <span class="muted">На капитал: <span class="num" data-live="units" data-code="${code}">${p ? `${fmtUnits(getCapital() / p.price)} ${code}` : '—'}</span></span>
+                    <button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">🎯 Цель</button>
+                </div>
+            </div>`).join('');
+    }
+
+    /* =====================================================================
+       Signale (EMA / RSI / ATR)
+       ===================================================================== */
+    function ema(values, period) {
+        const k = 2 / (period + 1);
+        let e = values.slice(0, period).reduce((a, b) => a + b, 0) / period;
+        for (let i = period; i < values.length; i++) e = values[i] * k + e * (1 - k);
+        return e;
+    }
+    function rsi(closes, period = 14) {
+        let gain = 0, loss = 0;
+        for (let i = 1; i <= period; i++) {
+            const d = closes[i] - closes[i - 1];
+            if (d >= 0) gain += d; else loss -= d;
+        }
+        gain /= period; loss /= period;
+        for (let i = period + 1; i < closes.length; i++) {
+            const d = closes[i] - closes[i - 1];
+            gain = (gain * (period - 1) + Math.max(d, 0)) / period;
+            loss = (loss * (period - 1) + Math.max(-d, 0)) / period;
+        }
+        return loss === 0 ? 100 : 100 - 100 / (1 + gain / loss);
+    }
+    function atr(highs, lows, closes, period = 14) {
+        const tr = [];
+        for (let i = 1; i < closes.length; i++) {
+            tr.push(Math.max(highs[i] - lows[i], Math.abs(highs[i] - closes[i - 1]), Math.abs(lows[i] - closes[i - 1])));
+        }
+        let a = tr.slice(0, period).reduce((x, y) => x + y, 0) / period;
+        for (let i = period; i < tr.length; i++) a = (a * (period - 1) + tr[i]) / period;
+        return a;
+    }
+    function analyze(rows) {
+        if (!Array.isArray(rows) || rows.length < 60) return null;
+        const c = rows.map(r => +r[4]), h = rows.map(r => +r[2]), l = rows.map(r => +r[3]);
+        if (c.some(v => !(v > 0))) return null;
+        const ema20 = ema(c, 20), ema50 = ema(c, 50);
+        const r = rsi(c, 14), a = atr(h, l, c, 14);
+        const close = c[c.length - 1];
+        const up = ema20 > ema50;
+        let side = 'NEUTRAL', reason;
+        if (up && r >= 50 && r <= 70) { side = 'LONG'; reason = 'EMA 20 выше EMA 50, RSI подтверждает восходящий импульс.'; }
+        else if (!up && r >= 30 && r <= 50) { side = 'SHORT'; reason = 'EMA 20 ниже EMA 50, RSI подтверждает нисходящий импульс.'; }
+        else if (r > 70) reason = 'RSI выше 70 — перекупленность, вход по тренду рискован.';
+        else if (r < 30) reason = 'RSI ниже 30 — перепроданность, возможен отскок.';
+        else reason = up ? 'Тренд вверх, но RSI ниже 50 — нет подтверждения.' : 'Тренд вниз, но RSI выше 50 — нет подтверждения.';
+        return { close, ema20, ema50, rsi: r, atr: a, atrPct: a / close * 100, gapPct: (ema20 / ema50 - 1) * 100, side, reason, spark: c.slice(-60) };
+    }
+    function signalLevels(code, sig) {
+        const p = state.prices[code];
+        const entry = p ? p.price : sig.close;
+        if (sig.side === 'LONG') return { entry, tp: entry + 2 * sig.atr, sl: entry - sig.atr };
+        if (sig.side === 'SHORT') return { entry, tp: entry - 2 * sig.atr, sl: entry + sig.atr };
+        return { entry, tp: null, sl: null };
+    }
+
+    function loadSignals(force = false) {
+        const tf = state.tf;
+        const cache = state.signals[tf];
+        if (!force && cache && Date.now() - cache.t < TF[tf].ttl) return Promise.resolve();
+        if (state.sigPromise && state.sigPromise.tf === tf) return state.sigPromise;
+        if (!force && !cache && state.sigError[tf] && Date.now() - (state.sigTried[tf] || 0) < 30e3) return Promise.resolve();
+        state.sigTried[tf] = Date.now();
+        const promise = (async () => {
+            const results = await Promise.allSettled(COIN_CODES.map(code =>
+                fetchJson(`${BINANCE_REST}/klines?symbol=${code}USDT&interval=${TF[tf].api}&limit=200`).then(rows => [code, analyze(rows)])));
+            const data = {};
+            results.forEach(r => { if (r.status === 'fulfilled' && r.value[1]) data[r.value[0]] = r.value[1]; });
+            if (Object.keys(data).length) { state.signals[tf] = { t: Date.now(), data }; state.sigError[tf] = ''; }
+            else state.sigError[tf] = describeError(results.find(r => r.status === 'rejected')?.reason || 'нет данных');
+        })().finally(() => {
+            if (state.sigPromise === promise) state.sigPromise = null;
+            if (state.tab === 'trading' && state.tf === tf) renderSignals();
+            if (state.tab === 'favorites') renderFavorites();
+        });
+        promise.tf = tf;
+        state.sigPromise = promise;
+        if (state.tab === 'trading') renderSignals();
+        return promise;
+    }
+
+    function renderSignals() {
+        const grid = $('#signals-grid');
+        const summary = $('#sig-summary');
+        const cache = state.signals[state.tf];
+        $$('#tf-bar .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === state.tf));
+        $$('#side-bar .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.side === state.sigSide));
+
+        if (!cache) {
+            if (state.sigError[state.tf] && !state.sigPromise) {
+                summary.innerHTML = '';
+                grid.innerHTML = `<div class="error-box" style="grid-column:1/-1">Не удалось загрузить свечи: ${esc(state.sigError[state.tf])}<button class="secondary-btn" data-action="sig-refresh">Повторить</button></div>`;
+            } else {
+                summary.innerHTML = '<span>Загружаю свечи Binance…</span>';
+                grid.innerHTML = Array.from({ length: 6 }, () => '<div class="skel skel-card"></div>').join('');
+            }
+            return;
+        }
+
+        const entries = COIN_CODES.filter(c => cache.data[c]).map(code => ({ code, sig: cache.data[code] }));
+        const order = { LONG: 0, SHORT: 0, NEUTRAL: 1 };
+        let list = entries.filter(x => state.sigSide === 'ALL' || x.sig.side === state.sigSide);
+        list.sort((a, b) => order[a.sig.side] - order[b.sig.side] || Math.abs(b.sig.gapPct) - Math.abs(a.sig.gapPct));
+
+        const longs = entries.filter(x => x.sig.side === 'LONG').length;
+        const shorts = entries.filter(x => x.sig.side === 'SHORT').length;
+        summary.innerHTML = `
+            <span>Таймфрейм: <b>${TF[state.tf].label}</b></span>
+            <span>LONG: <b class="up">${longs}</b></span>
+            <span>SHORT: <b class="down">${shorts}</b></span>
+            <span>Без сигнала: <b>${entries.length - longs - shorts}</b></span>
+            <span>Расчёт: <b data-ago="${cache.t}">${timeAgo(cache.t)}</b></span>`;
+
+        if (!list.length) {
+            grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Нет сигналов с выбранным направлением на этом таймфрейме</div>';
+            return;
+        }
+
+        grid.innerHTML = list.map(({ code, sig }) => {
+            const lv = signalLevels(code, sig);
+            const sideBadge = sig.side === 'LONG' ? 'badge-green' : sig.side === 'SHORT' ? 'badge-red' : 'badge-grey';
+            const sideLabel = sig.side === 'NEUTRAL' ? 'НЕЙТРАЛЬНО' : sig.side;
+            const tpPct = lv.tp ? (lv.tp / lv.entry - 1) * 100 : null;
+            const slPct = lv.sl ? (lv.sl / lv.entry - 1) * 100 : null;
+            return `<div class="signal-card" data-action="sig-open" data-code="${code}" role="button" tabindex="0" aria-label="Подробнее ${code}">
+                <div class="card-top">
+                    <div class="pair-name">${coinIcon(code)} ${code}/USDT <span class="badge ${sideBadge}">${sideLabel}</span><span class="badge badge-yellow">${state.tf}</span></div>
+                    ${starBtn('sig:' + code, code + ' сигнал')}
+                </div>
+                <div class="metrics">
+                    <div class="metric"><span>Цена (live)</span>${livePrice(code)}</div>
+                    <div class="metric"><span>Цель TP</span><strong class="up">${lv.tp ? fmtUsd(lv.tp) : '—'}</strong>${tpPct != null ? `<small class="up">${fmtPct(tpPct)}</small>` : ''}</div>
+                    <div class="metric"><span>Стоп SL</span><strong class="down">${lv.sl ? fmtUsd(lv.sl) : '—'}</strong>${slPct != null ? `<small class="down">${fmtPct(slPct)}</small>` : ''}</div>
+                </div>
+                <div>
+                    <div class="card-row" style="margin-bottom:6px"><span class="muted">RSI 14</span><strong class="num">${sig.rsi.toFixed(1)}</strong></div>
+                    <div class="rsi-bar"><i style="left:${clamp(sig.rsi, 0, 100)}%"></i></div>
+                </div>
+                <div class="reason">${esc(sig.reason)} Тренд EMA: <span class="num ${sig.gapPct >= 0 ? 'up' : 'down'}">${fmtPct(sig.gapPct)}</span>, волатильность ATR: <span class="num">${sig.atrPct.toFixed(2)}%</span>.</div>
+                <div class="btn-row">
+                    <button class="secondary-btn sm" data-action="sig-open" data-code="${code}">📈 График</button>
+                    <button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">🎯 Цель</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    let tvPromise = null;
+    function loadTradingView() {
+        if (window.TradingView) return Promise.resolve();
+        if (!tvPromise) {
+            tvPromise = new Promise((resolve, reject) => {
+                const s = document.createElement('script');
+                s.src = 'https://s3.tradingview.com/tv.js';
+                s.async = true;
+                s.onload = resolve;
+                s.onerror = () => { tvPromise = null; reject(new Error('TradingView')); };
+                document.head.appendChild(s);
+            });
+        }
+        return tvPromise;
+    }
+    async function openSignalModal(code) {
+        const tf = state.tf;
+        if (!state.signals[tf]) await loadSignals(false);
+        const cache = state.signals[tf];
+        const sig = cache && cache.data[code];
+        const lv = sig ? signalLevels(code, sig) : null;
+        openModal(`${coinIcon(code)} ${code}/USDT · ${tf}`, `
+            <div class="chart-box" id="tv_chart"><div class="loader"><div class="spinner"></div><span>Загрузка графика…</span></div></div>
+            ${sig ? `
+            <div class="stat-grid">
+                <div class="stat"><span>Цена (live)</span>${livePrice(code, 'strong')}</div>
+                <div class="stat"><span>Направление</span><strong class="${sig.side === 'LONG' ? 'up' : sig.side === 'SHORT' ? 'down' : ''}">${sig.side === 'NEUTRAL' ? 'Нейтрально' : sig.side}</strong></div>
+                <div class="stat"><span>Take Profit (2×ATR)</span><strong class="up">${lv.tp ? fmtUsd(lv.tp) : '—'}</strong></div>
+                <div class="stat"><span>Stop Loss (1×ATR)</span><strong class="down">${lv.sl ? fmtUsd(lv.sl) : '—'}</strong></div>
+                <div class="stat"><span>EMA 20 / EMA 50</span><strong>${fmtUsd(sig.ema20)} / ${fmtUsd(sig.ema50)}</strong></div>
+                <div class="stat"><span>RSI 14</span><strong>${sig.rsi.toFixed(1)}</strong></div>
+                <div class="stat"><span>ATR 14</span><strong>${fmtUsd(sig.atr)} (${sig.atrPct.toFixed(2)}%)</strong></div>
+            </div>
+            <div class="hint">${esc(sig.reason)}</div>` : '<div class="hint warn">Индикаторы для этой монеты сейчас недоступны.</div>'}
+            <ul class="list">
+                <li>LONG — EMA 20 выше EMA 50 и RSI между 50 и 70; SHORT — EMA 20 ниже EMA 50 и RSI между 30 и 50.</li>
+                <li>Цели считаются от текущей цены: TP = 2 × ATR, SL = 1 × ATR (соотношение 2 : 1).</li>
+                <li>Индикаторы запаздывают и не гарантируют результат. Это не финансовая рекомендация.</li>
+            </ul>
+            <div class="btn-row">
+                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES.Binance.trade(code)))}" target="_blank" rel="noopener noreferrer">Открыть на Binance ↗</a>
+                <button class="primary-btn" data-action="target" data-kind="coin" data-key="${code}">🎯 Поставить цель</button>
+            </div>`);
+
+        loadTradingView().then(() => {
+            const box = document.getElementById('tv_chart');
+            if (!box || !window.TradingView) return;
+            box.innerHTML = '';
+            new window.TradingView.widget({
+                autosize: true,
+                symbol: `BINANCE:${code}USDT`,
+                interval: TF[tf].tv,
+                timezone: 'Etc/UTC',
+                theme: 'dark',
+                style: '1',
+                locale: 'ru',
+                allow_symbol_change: false,
+                hide_side_toolbar: true,
+                container_id: 'tv_chart'
+            });
+        }).catch(() => {
+            const box = document.getElementById('tv_chart');
+            if (box) box.innerHTML = '<div class="error-box">График TradingView не загрузился.</div>';
+        });
+    }
+
+    /* =====================================================================
+       Memecoins (GeckoTerminal)
+       ===================================================================== */
+    function parsePools(j, network) {
+        const tokens = {}, dexes = {};
+        (j.included || []).forEach(x => {
+            if (x.type === 'token') tokens[x.id] = x.attributes || {};
+            if (x.type === 'dex') dexes[x.id] = x.attributes || {};
+        });
+        return (j.data || []).map(p => {
+            const a = p.attributes || {}, rel = p.relationships || {};
+            const price = num(a.base_token_price_usd);
+            if (!(price > 0) || !a.address) return null;
+            const tok = tokens[rel.base_token && rel.base_token.data && rel.base_token.data.id] || {};
+            const dexId = (rel.dex && rel.dex.data && rel.dex.data.id) || '';
+            const pc = a.price_change_percentage || {};
+            const tx = (a.transactions || {}).h24 || {};
+            const image = tok.image_url && /^https:/.test(tok.image_url) ? tok.image_url : '';
+            const pool = {
+                id: `meme:${network}:${a.address}`,
+                network,
+                address: a.address,
+                name: a.name || '',
+                symbol: tok.symbol || String(a.name || '?').split(' / ')[0],
+                tokenName: tok.name || '',
+                tokenAddress: tok.address || '',
+                image,
+                dexId,
+                dexName: (dexes[dexId] && dexes[dexId].name) || dexId,
+                price,
+                ch1h: num(pc.h1),
+                ch24: num(pc.h24),
+                liq: num(a.reserve_in_usd),
+                vol24: num(a.volume_usd && a.volume_usd.h24),
+                fdv: num(a.fdv_usd),
+                mcap: num(a.market_cap_usd),
+                created: Date.parse(a.pool_created_at) || null,
+                buys: Number(tx.buys) || 0,
+                sells: Number(tx.sells) || 0,
+                traders: Number(tx.unique_traders) || 0
+            };
+            pool.risk = assessRisk(pool);
+            return pool;
+        }).filter(Boolean);
+    }
+    function assessRisk(p) {
+        const f = [];
+        if (p.liq == null || p.liq < 20000) f.push([2, `Низкая ликвидность (${fmtCompact(p.liq)})`]);
+        else if (p.liq < 100000) f.push([1, `Ликвидность ниже $100K (${fmtCompact(p.liq)})`]);
+        const ageH = p.created ? (Date.now() - p.created) / 36e5 : null;
+        if (ageH == null) f.push([1, 'Возраст пула неизвестен']);
+        else if (ageH < 24) f.push([2, `Пулу меньше суток (${fmtAge(p.created)})`]);
+        else if (ageH < 24 * 7) f.push([1, `Пулу меньше недели (${fmtAge(p.created)})`]);
+        if (p.sells > 0 && p.sells > p.buys * 1.5) f.push([1, `Продаж заметно больше, чем покупок (${p.sells} / ${p.buys} за 24ч)`]);
+        if (p.fdv && p.liq && p.fdv / p.liq > 50) f.push([1, `FDV в ${Math.round(p.fdv / p.liq)}× больше ликвидности`]);
+        if (p.ch24 != null && Math.abs(p.ch24) > 300) f.push([1, 'Экстремальная волатильность за 24ч']);
+        const level = f.some(x => x[0] === 2) ? 'high' : f.length ? 'medium' : 'moderate';
+        return { level, factors: f.map(x => x[1]) };
+    }
+    const RISK = {
+        high: ['Высокий', 'badge-red'],
+        medium: ['Средний', 'badge-yellow'],
+        moderate: ['Умеренный', 'badge-blue']
+    };
+    function riskBadge(risk) {
+        const [label, cls] = RISK[risk.level];
+        const title = risk.factors.length ? risk.factors.join('; ') : 'Явных тревожных признаков нет — риск мемкоинов всё равно высокий';
+        return `<span class="badge ${cls}" title="${esc(title)}">${label}</span>`;
+    }
+    function dexBadge(p) {
+        const isPump = /pump/i.test(p.dexId);
+        return `<span class="badge ${isPump ? 'badge-pump' : 'badge-grey'}">${isPump ? '💊 ' : ''}${esc(p.dexName || p.dexId || 'DEX')}</span>`;
+    }
+    const memeKey = () => `${state.memes.network}|${state.memes.query ? 'q:' + state.memes.query : state.memes.mode}`;
+    const findMeme = (id) => state.memes.list.find(p => p.id === id) || state.memePools[id] || null;
+    function memeLinks(p) {
+        const links = [];
+        const addr = /^[A-Za-z0-9]+$/.test(p.address) ? p.address : '';
+        if (addr && NETWORKS[p.network]) {
+            links.push(['GeckoTerminal', `https://www.geckoterminal.com/${p.network}/pools/${addr}`]);
+            links.push(['DexScreener', `https://dexscreener.com/${NETWORKS[p.network].ds}/${addr}`]);
+        }
+        if (/pump/i.test(p.dexId) && /^[A-Za-z0-9]+$/.test(p.tokenAddress)) links.push(['Pump.fun', `https://pump.fun/coin/${p.tokenAddress}`]);
+        return links;
+    }
+
+    function loadMemes(force = false) {
+        const m = state.memes;
+        const key = memeKey();
+        if (!force && m.key === key && m.list.length && Date.now() - m.t < 60e3) return Promise.resolve();
+        if (m.loading && m.loadingKey === key) return m.promise;
+        const req = ++m.req;
+        m.tried = Date.now();
+        m.loading = true;
+        m.loadingKey = key;
+        if (m.key !== key) { m.list = []; m.error = ''; }
+        if (state.tab === 'memecoins') renderMemes();
+        const inc = 'include=base_token,dex&page=1';
+        const url = m.query
+            ? `${GT}/search/pools?query=${encodeURIComponent(m.query)}&network=${m.network}&${inc}`
+            : `${GT}/networks/${m.network}/${m.mode === 'new' ? 'new_pools' : 'trending_pools'}?${inc}`;
+        m.promise = fetchJson(url, 10000).then(j => {
+            if (req !== m.req) return;
+            m.list = parsePools(j, m.network);
+            m.t = Date.now();
+            m.key = key;
+            m.error = '';
+            m.list.forEach(p => { if (state.memePools[p.id] || isFav(p.id) || state.targets.some(t => t.ref === p.id)) state.memePools[p.id] = p; });
+            checkTargets();
+            patchTargets();
+        }).catch(e => {
+            if (req !== m.req) return;
+            m.error = describeError(e);
+            m.key = key;
+        }).finally(() => {
+            if (req !== m.req) return;
+            m.loading = false;
+            if (state.tab === 'memecoins') renderMemes();
+        });
+        return m.promise;
+    }
+
+    function renderMemes() {
+        const m = state.memes;
+        const tbody = $('#meme-table-body');
+        const grid = $('#meme-card-grid');
+        const status = $('#meme-status');
+        $$('#meme-mode .seg-btn').forEach(b => b.classList.toggle('active', !m.query && b.dataset.mode === m.mode));
+
+        const source = m.query ? `поиск «${esc(m.query)}» <button class="secondary-btn sm" data-action="meme-clear">✕ Сбросить</button>` : (m.mode === 'new' ? 'новые пулы' : 'тренды');
+        status.innerHTML = `<span>Источник: <b>GeckoTerminal</b> · ${esc(NETWORKS[m.network].label)} · ${source}</span>` +
+            (m.t && m.key === memeKey() && !m.loading ? `<span>Обновлено: <b data-ago="${m.t}">${timeAgo(m.t)}</b></span>` : '') +
+            (m.loading ? '<span>Загрузка…</span>' : '');
+
+        if (m.loading && !m.list.length) {
+            tbody.innerHTML = `<tr><td colspan="9"><div class="loader"><div class="spinner"></div><span>Загрузка пулов…</span></div></td></tr>`;
+            grid.innerHTML = `<div class="loader"><div class="spinner"></div><span>Загрузка пулов…</span></div>`;
+            return;
+        }
+        if (m.error && !m.list.length) {
+            const box = `<div class="error-box">Не удалось загрузить пулы: ${esc(m.error)}<button class="secondary-btn" data-action="meme-refresh">Повторить</button></div>`;
+            tbody.innerHTML = `<tr><td colspan="9">${box}</td></tr>`;
+            grid.innerHTML = box;
+            return;
+        }
+        if (!m.list.length) {
+            tbody.innerHTML = `<tr><td colspan="9" class="empty">Ничего не найдено</td></tr>`;
+            grid.innerHTML = `<div class="empty">Ничего не найдено</div>`;
+            return;
+        }
+
+        const list = m.list.slice();
+        const by = {
+            vol: (a, b) => (b.vol24 || 0) - (a.vol24 || 0),
+            liq: (a, b) => (b.liq || 0) - (a.liq || 0),
+            ch24: (a, b) => (b.ch24 ?? -1e9) - (a.ch24 ?? -1e9),
+            new: (a, b) => (b.created || 0) - (a.created || 0)
+        }[m.sort];
+        if (by) list.sort(by);
+
+        tbody.innerHTML = list.map(p => `
+            <tr>
+                <td>${starBtn(p.id, p.name)}</td>
+                <td><div class="pair-cell">${tokenIcon(p)}<div><strong>${esc(p.name)}</strong><span class="sub">${dexBadge(p)} ${esc(p.tokenName)}</span></div></div></td>
+                <td class="num right">${fmtUsd(p.price)}<span class="sub ${pctClass(p.ch1h)}">1ч ${fmtPct(p.ch1h, 1)}</span></td>
+                <td><span class="badge num ${p.ch24 == null ? 'badge-grey' : p.ch24 >= 0 ? 'badge-green' : 'badge-red'}">${fmtPct(p.ch24, 1)}</span></td>
+                <td class="num">${fmtCompact(p.liq)}</td>
+                <td class="num">${fmtCompact(p.vol24)}</td>
+                <td>${fmtAge(p.created)}</td>
+                <td>${riskBadge(p.risk)}</td>
+                <td><div class="btn-inline">
+                    <button class="secondary-btn sm" data-action="meme-open" data-id="${esc(p.id)}">Детали</button>
+                    <button class="primary-btn sm" data-action="target" data-kind="meme" data-key="${esc(p.id)}">🎯 Цель</button>
+                </div></td>
+            </tr>`).join('');
+
+        grid.innerHTML = list.map(p => `
+            <div class="signal-card" data-action="meme-open" data-id="${esc(p.id)}" role="button" tabindex="0" aria-label="Детали ${esc(p.name)}">
+                <div class="card-top">
+                    <div class="pair-name">${tokenIcon(p, 'lg')}<div><div>${esc(p.name)}</div><span class="sub">${dexBadge(p)}</span></div></div>
+                    ${starBtn(p.id, p.name)}
+                </div>
+                <div class="card-row">
+                    <strong class="num" style="font-size:1.05rem">${fmtUsd(p.price)}</strong>
+                    <span class="badge num ${p.ch24 == null ? 'badge-grey' : p.ch24 >= 0 ? 'badge-green' : 'badge-red'}">${fmtPct(p.ch24, 1)}</span>
+                </div>
+                <div class="metrics">
+                    <div class="metric"><span>Ликвидность</span><strong>${fmtCompact(p.liq)}</strong></div>
+                    <div class="metric"><span>Объём 24ч</span><strong>${fmtCompact(p.vol24)}</strong></div>
+                    <div class="metric"><span>Возраст</span><strong>${fmtAge(p.created)}</strong></div>
+                </div>
+                <div class="card-row">
+                    <span class="muted">Риск: ${riskBadge(p.risk)}</span>
+                    <button class="primary-btn sm" data-action="target" data-kind="meme" data-key="${esc(p.id)}">🎯 Цель</button>
+                </div>
+            </div>`).join('');
+    }
+
+    function openMemeModal(id) {
+        const p = findMeme(id);
+        if (!p) { toast('Данные токена недоступны — обновите список', 'error'); return; }
+        const links = memeLinks(p);
+        const gtAddr = /^[A-Za-z0-9]+$/.test(p.address) ? p.address : '';
+        const [riskLabel, riskCls] = RISK[p.risk.level];
+        openModal(`${tokenIcon(p)} ${esc(p.name)}`, `
+            ${gtAddr ? `<iframe class="chart-box" src="https://www.geckoterminal.com/${p.network}/pools/${gtAddr}?embed=1&info=0&swaps=0&light_chart=0" title="График ${esc(p.name)}" loading="lazy" referrerpolicy="no-referrer" allow="clipboard-write"></iframe>` : ''}
+            <div class="stat-grid">
+                <div class="stat"><span>Цена</span><strong>${fmtUsd(p.price)}</strong></div>
+                <div class="stat"><span>1ч / 24ч</span><strong><span class="${pctClass(p.ch1h)}">${fmtPct(p.ch1h, 1)}</span> / <span class="${pctClass(p.ch24)}">${fmtPct(p.ch24, 1)}</span></strong></div>
+                <div class="stat"><span>Ликвидность</span><strong>${fmtCompact(p.liq)}</strong></div>
+                <div class="stat"><span>Объём 24ч</span><strong>${fmtCompact(p.vol24)}</strong></div>
+                <div class="stat"><span>FDV</span><strong>${fmtCompact(p.fdv)}</strong></div>
+                <div class="stat"><span>Возраст пула</span><strong>${fmtAge(p.created)}</strong></div>
+                <div class="stat"><span>Сделки 24ч (пок./прод.)</span><strong>${p.buys} / ${p.sells}</strong></div>
+                <div class="stat"><span>Площадка</span><strong>${esc(p.dexName || p.dexId)}</strong></div>
+            </div>
+            <div class="calc-box">
+                <div class="calc-row"><span>Оценка риска (эвристика)</span><span class="badge ${riskCls}">${riskLabel}</span></div>
+                ${p.risk.factors.length ? `<ul class="list">${p.risk.factors.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : '<p class="note">Явных тревожных признаков по ликвидности и возрасту нет. Это не проверка контракта: мемкоины остаются очень рискованными.</p>'}
+            </div>
+            ${p.tokenAddress ? `<p class="note">Адрес токена: <span class="mono" style="word-break:break-all">${esc(p.tokenAddress)}</span></p>` : ''}
+            <div class="btn-row">
+                ${links.map(([label, url]) => `<a class="secondary-btn" href="${esc(safeUrl(url))}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}
+            </div>
+            <div class="btn-row">
+                <button class="secondary-btn" data-action="fav" data-id="${esc(p.id)}">${isFav(p.id) ? '★ В избранном' : '☆ В избранное'}</button>
+                <button class="primary-btn" data-action="target" data-kind="meme" data-key="${esc(p.id)}">🎯 Поставить цель</button>
+            </div>`);
+    }
+
+    async function refreshTrackedMemes() {
+        if (Date.now() - state.memeTrackedT < 5000) return;
+        state.memeTrackedT = Date.now();
+        const ids = new Set([
+            ...state.targets.filter(t => t.kind === 'meme' && t.status === 'active').map(t => t.ref),
+            ...state.favorites.filter(f => f.kind === 'meme').map(f => f.id)
+        ]);
+        if (!ids.size) return;
+        const byNet = {};
+        ids.forEach(id => {
+            const [, net, addr] = id.split(':');
+            if (NETWORKS[net] && /^[A-Za-z0-9]+$/.test(addr || '')) (byNet[net] = byNet[net] || []).push(addr);
+        });
+        await Promise.allSettled(Object.entries(byNet).map(async ([net, addrs]) => {
+            for (let i = 0; i < addrs.length; i += 30) {
+                const j = await fetchJson(`${GT}/networks/${net}/pools/multi/${addrs.slice(i, i + 30).join(',')}?include=base_token,dex`, 10000);
+                parsePools(j, net).forEach(p => { p.fetchedAt = Date.now(); state.memePools[p.id] = p; });
+            }
+        }));
+        checkTargets();
+        patchTargets();
+        if (state.tab === 'favorites') renderFavorites();
+    }
+
+    /* =====================================================================
+       Ziele / Preisalarme
+       ===================================================================== */
+    function currentPriceFor(t) {
+        if (t.kind === 'coin') {
+            const p = state.prices[t.code];
+            return p ? { price: p.price, live: isLivePrice(p) } : null;
+        }
+        const listed = state.memes.list.find(p => p.id === t.ref);
+        const p = listed && state.memes.t ? { price: listed.price, t: state.memes.t } : state.memePools[t.ref] ? { price: state.memePools[t.ref].price, t: state.memePools[t.ref].fetchedAt || state.memes.t } : null;
+        return p ? { price: p.price, live: Date.now() - (p.t || 0) < 10 * 60e3 } : null;
+    }
+
+    function openTargetModal(kind, key) {
+        let entry, label, presets;
+        if (kind === 'coin') {
+            const p = state.prices[key];
+            if (!p) { toast('Цена ещё не загружена', 'error'); return; }
+            entry = p.price;
+            label = `${key}/USDT`;
+            presets = [['+5%', 1.05], ['+10%', 1.1], ['+25%', 1.25], ['×2', 2], ['−5%', 0.95], ['−10%', 0.9]];
+        } else {
+            const p = findMeme(key);
+            if (!p) { toast('Данные токена недоступны', 'error'); return; }
+            entry = p.price;
+            label = p.name;
+            presets = [['×2', 2], ['×3', 3], ['×5', 5], ['×10', 10], ['−30%', 0.7], ['−50%', 0.5]];
+        }
+        const mult = kind === 'coin' ? 1.1 : 2;
+        state.draft = { kind, key, entry, label };
+        const icon = kind === 'coin' ? coinIcon(key) : tokenIcon(findMeme(key));
+        openModal(`${icon} Новая цель: ${esc(label)}`, `
+            <div class="calc-box">
+                <div class="calc-row"><span>Цена сейчас</span><strong class="num">${fmtUsd(entry)}</strong></div>
+            </div>
+            <div class="control-group">
+                <span class="control-label">Быстрый выбор</span>
+                <div class="preset-pills">${presets.map(([l, m]) => `<button class="preset-pill ${m === mult ? 'active' : ''}" data-action="tgt-preset" data-mult="${m}">${l}</button>`).join('')}</div>
+            </div>
+            <div class="form-grid">
+                <div class="control-group">
+                    <label class="control-label" for="tgt-price">Целевая цена (USD)</label>
+                    <input type="number" id="tgt-price" class="mono" step="any" min="0" inputmode="decimal" value="${+(entry * mult).toPrecision(6)}">
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="tgt-amount">Сумма позиции (USDT)</label>
+                    <input type="number" id="tgt-amount" class="mono" step="any" min="0" inputmode="decimal" value="${getCapital() || 100}">
+                </div>
+            </div>
+            <div class="calc-box" id="tgt-preview"></div>
+            <button class="primary-btn" data-action="tgt-create">🎯 Создать цель</button>
+            <p class="note">Цель выше текущей цены сработает при росте, ниже — при падении (как стоп). Проверка идёт по живым ценам, пока терминал открыт в браузере${'Notification' in window ? '; можно включить системные уведомления' : ''}.</p>`);
+        updateTargetPreview();
+    }
+    function updateTargetPreview() {
+        const d = state.draft;
+        const box = $('#tgt-preview');
+        if (!d || !box) return;
+        const target = num($('#tgt-price').value);
+        const amount = num($('#tgt-amount').value);
+        if (!(target > 0) || !(amount > 0)) { box.innerHTML = '<div class="calc-row"><span>Укажите цену и сумму</span></div>'; return; }
+        const ratio = target / d.entry;
+        const value = amount * ratio;
+        box.innerHTML = `
+            <div class="calc-row"><span>Изменение цены</span><strong class="num ${ratio >= 1 ? 'up' : 'down'}">${fmtPct((ratio - 1) * 100)} (×${ratio.toFixed(2)})</strong></div>
+            <div class="calc-row"><span>Позиция при достижении</span><strong class="num">${fmtUsd(amount)} → ${fmtUsd(value)}</strong></div>
+            <div class="calc-row total"><span>Результат</span><strong class="num ${value >= amount ? 'up' : 'down'}">${fmtMoney(value - amount)}</strong></div>`;
+        $$('[data-action="tgt-preset"]').forEach(b => b.classList.toggle('active', Math.abs(Number(b.dataset.mult) - ratio) < 1e-4));
+    }
+    function createTarget() {
+        const d = state.draft;
+        if (!d) return;
+        const target = num($('#tgt-price').value);
+        const amount = num($('#tgt-amount').value);
+        if (!(target > 0) || !(amount > 0)) { toast('Укажите корректную цену и сумму', 'error'); return; }
+        if (Math.abs(target / d.entry - 1) < 0.0005) { toast('Цель должна отличаться от текущей цены', 'error'); return; }
+        const t = {
+            id: 'tgt_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+            kind: d.kind,
+            label: d.label,
+            entry: d.entry,
+            target,
+            amount,
+            createdAt: Date.now(),
+            status: 'active'
+        };
+        if (d.kind === 'coin') t.code = d.key;
+        else {
+            t.ref = d.key;
+            const p = findMeme(d.key);
+            if (p) state.memePools[p.id] = p;
+        }
+        state.targets.unshift(t);
+        LS.set('cp_targets', state.targets);
+        closeModal();
+        updateBadges();
+        renderTargets();
+        appendChat('ai', `Цель создана: ${t.label} — ${fmtUsd(t.target)} (${fmtPct((t.target / t.entry - 1) * 100)} от ${fmtUsd(t.entry)}). Сообщу, когда цена дойдёт.`);
+        toast(`🎯 Цель для ${t.label} создана — см. «Ассистент и цели»`, 'success');
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission().catch(() => { /* abgelehnt */ });
+        }
+    }
+    function checkTargets() {
+        let changed = false;
+        state.targets.forEach(t => {
+            if (t.status !== 'active') return;
+            const cur = currentPriceFor(t);
+            if (!cur || !cur.live) return;
+            const up = t.target >= t.entry;
+            if ((up && cur.price >= t.target) || (!up && cur.price <= t.target)) {
+                t.status = 'hit';
+                t.hitAt = Date.now();
+                t.hitPrice = cur.price;
+                changed = true;
+                notifyHit(t);
+            }
+        });
+        if (changed) {
+            LS.set('cp_targets', state.targets);
+            updateBadges();
+            renderTargets();
+        }
+    }
+    function notifyHit(t) {
+        const ratio = t.hitPrice / t.entry;
+        const msg = `🎯 Цель достигнута: ${t.label} — ${fmtUsd(t.hitPrice)} (${fmtPct((ratio - 1) * 100)}). Позиция ${fmtUsd(t.amount)} → ${fmtUsd(t.amount * ratio)}.`;
+        toast(msg, 'success', 8000);
+        appendChat('system', msg);
+        if ('Notification' in window && Notification.permission === 'granted') {
+            try { new Notification('CryptoPro: цель достигнута', { body: msg }); } catch (_) { /* nicht unterstützt */ }
+        }
+    }
+    function renderTargets() {
+        const box = $('#targets-list');
+        if (!box) return;
+        if (!state.targets.length) {
+            box.innerHTML = '<div class="empty">Целей пока нет.<br>Нажмите «🎯 Цель» у монеты, сигнала или мемкоина.</div>';
+            return;
+        }
+        const list = state.targets.slice().sort((a, b) => (a.status === 'active' ? 0 : 1) - (b.status === 'active' ? 0 : 1) || b.createdAt - a.createdAt);
+        box.innerHTML = list.map(t => {
+            const hit = t.status === 'hit';
+            const tPct = (t.target / t.entry - 1) * 100;
+            return `<div class="target-item ${hit ? 'hit' : ''}" data-tid="${esc(t.id)}">
+                <div class="target-top">
+                    <strong title="${esc(t.label)}">${esc(t.label)}</strong>
+                    <span class="badge ${hit ? 'badge-green' : 'badge-yellow'}">${hit ? '✅ Достигнута' : 'Активна'}</span>
+                    <button class="icon-btn" data-action="tgt-del" data-id="${esc(t.id)}" aria-label="Удалить цель ${esc(t.label)}" title="Удалить">✕</button>
+                </div>
+                <div class="target-meta"><span>Вход ${fmtUsd(t.entry)} → цель ${fmtUsd(t.target)}</span><span class="${tPct >= 0 ? 'up' : 'down'}">${fmtPct(tPct)}</span></div>
+                <div class="progress"><div class="progress-fill" data-tprog style="width:0%"></div></div>
+                <div class="target-foot"><span>${hit ? 'Сработала' : 'Сейчас'}: <b data-tcur>—</b> <span data-tchg></span></span><span>${fmtUsd(t.amount)} → <b>${fmtUsd(t.amount * t.target / t.entry)}</b></span></div>
+            </div>`;
+        }).join('');
+        patchTargets();
+    }
+    function patchTargets() {
+        $$('#targets-list [data-tid]').forEach(el => {
+            const t = state.targets.find(x => x.id === el.dataset.tid);
+            if (!t) return;
+            const cur = t.status === 'hit' ? { price: t.hitPrice } : currentPriceFor(t);
+            const fill = $('[data-tprog]', el);
+            const curEl = $('[data-tcur]', el);
+            const chgEl = $('[data-tchg]', el);
+            if (!cur) { curEl.textContent = '—'; return; }
+            const progress = t.status === 'hit' ? 1 : clamp((cur.price - t.entry) / (t.target - t.entry), 0, 1);
+            fill.style.width = (progress * 100).toFixed(1) + '%';
+            curEl.textContent = fmtUsd(cur.price);
+            const chg = (cur.price / t.entry - 1) * 100;
+            chgEl.textContent = `(${fmtPct(chg)})`;
+            chgEl.className = chg >= 0 ? 'up' : 'down';
+        });
+    }
+    function deleteTarget(id) {
+        state.targets = state.targets.filter(t => t.id !== id);
+        LS.set('cp_targets', state.targets);
+        updateBadges();
+        renderTargets();
+    }
+
+    /* =====================================================================
+       Favoriten
+       ===================================================================== */
+    const isFav = (id) => state.favorites.some(f => f.id === id);
+    function favItemFor(id) {
+        const [kind, a] = id.split(':');
+        if ((kind === 'coin' || kind === 'arb' || kind === 'sig') && COINS[a]) return { id, kind, code: a };
+        if (kind === 'meme') {
+            const p = findMeme(id);
+            if (!p) return null;
+            state.memePools[p.id] = p;
+            return { id, kind, label: p.name, symbol: p.symbol, image: p.image, network: p.network };
+        }
+        return null;
+    }
+    function toggleFav(id) {
+        const idx = state.favorites.findIndex(f => f.id === id);
+        if (idx >= 0) {
+            state.favorites.splice(idx, 1);
+            toast('Удалено из избранного');
+        } else {
+            const item = favItemFor(id);
+            if (!item) return;
+            state.favorites.push(item);
+            toast('⭐ Добавлено в избранное', 'success');
+        }
+        LS.set('cp_favorites', state.favorites);
+        const fav = isFav(id);
+        $$(`[data-action="fav"][data-id="${CSS.escape(id)}"]`).forEach(b => {
+            if (b.classList.contains('star-btn')) {
+                b.classList.toggle('favorited', fav);
+                b.setAttribute('aria-pressed', String(fav));
+            } else {
+                b.textContent = fav ? '★ В избранном' : '☆ В избранное';
+            }
+        });
+        updateBadges();
+        if (state.tab === 'favorites') renderFavorites();
+    }
+    function renderFavorites() {
+        const box = $('#favorites-list');
+        if (!state.favorites.length) {
+            box.innerHTML = '<div class="panel empty">Избранное пока пусто. Нажмите ★ у монеты, пары, сигнала или токена.</div>';
+            return;
+        }
+        const kinds = { coin: ['Монета', 'badge-blue'], arb: ['Арбитраж', 'badge-yellow'], sig: ['Сигнал', 'badge-green'], meme: ['Мемкоин', 'badge-pump'] };
+        box.innerHTML = state.favorites.map(f => {
+            const [kindLabel, kindCls] = kinds[f.kind] || ['—', 'badge-grey'];
+            let icon = '', title = '', metric = '';
+            if (f.kind === 'meme') {
+                const p = findMeme(f.id);
+                icon = tokenIcon(p || { symbol: f.symbol, image: f.image });
+                title = esc(f.label);
+                metric = p ? `${fmtUsd(p.price)} · <span class="${pctClass(p.ch24)}">${fmtPct(p.ch24, 1)} за 24ч</span> · ${esc(NETWORKS[f.network] ? NETWORKS[f.network].label : '')}` : 'Загрузка данных…';
+            } else {
+                icon = coinIcon(f.code);
+                if (f.kind === 'coin') {
+                    title = `${f.code} · ${esc(COINS[f.code].name)}`;
+                    metric = `${livePrice(f.code)} · ${liveChange(f.code, false)} за 24ч`;
+                } else if (f.kind === 'arb') {
+                    title = `${f.code}/USDT`;
+                    const row = state.arb.rows.find(r => r.code === f.code);
+                    metric = row && row.best
+                        ? `${esc(row.best.buyEx)} → ${esc(row.best.sellEx)} · спред <span class="num">${fmtPct(row.best.spreadPct, 3)}</span> · итог <span class="num ${row.best.net >= 0 ? 'up' : 'down'}">${fmtMoney(row.best.net)}</span>`
+                        : (state.arb.t ? 'Недостаточно данных' : 'Загрузка…');
+                } else {
+                    title = `${f.code}/USDT · ${state.tf}`;
+                    const sig = state.signals[state.tf] && state.signals[state.tf].data[f.code];
+                    metric = sig ? `<span class="${sig.side === 'LONG' ? 'up' : sig.side === 'SHORT' ? 'down' : ''}">${sig.side === 'NEUTRAL' ? 'Нейтрально' : sig.side}</span> · RSI <span class="num">${sig.rsi.toFixed(1)}</span>` : 'Индикаторы ещё не загружены';
+                }
+            }
+            return `<div class="fav-item">
+                <span class="badge fav-kind ${kindCls}">${kindLabel}</span>
+                <div class="fav-main">${icon}<div><strong>${title}</strong><span class="sub">${metric}</span></div></div>
+                <button class="secondary-btn sm" data-action="fav-open" data-id="${esc(f.id)}">Открыть</button>
+                <button class="icon-btn" data-action="fav" data-id="${esc(f.id)}" aria-label="Удалить из избранного" title="Удалить">✕</button>
+            </div>`;
+        }).join('');
+        if (!state.signals[state.tf] && !state.sigPromise && !state.sigError[state.tf] && state.favorites.some(f => f.kind === 'sig')) loadSignals(false);
+    }
+    function openFav(id) {
+        const f = state.favorites.find(x => x.id === id);
+        if (!f) return;
+        if (f.kind === 'coin') switchTab('currencies');
+        else if (f.kind === 'arb') openArbModal(f.code);
+        else if (f.kind === 'sig') openSignalModal(f.code);
+        else openMemeModal(f.id);
+    }
+
+    /* =====================================================================
+       Assistent (lokal, regelbasiert)
+       ===================================================================== */
+    const ALIASES = [];
+    COIN_CODES.forEach(code => {
+        [code.toLowerCase(), ...(COINS[code].aliases || [])].forEach(a => ALIASES.push([new RegExp(`(^|[^a-zа-яё0-9])${a}`, 'i'), code]));
+    });
+    function detectCoins(text) {
+        const found = [];
+        ALIASES.forEach(([re, code]) => { if (re.test(text) && !found.includes(code)) found.push(code); });
+        return found;
+    }
+    function appendChat(kind, text) {
+        const box = $('#chat-box');
+        const div = document.createElement('div');
+        div.className = `chat-msg ${kind}`;
+        div.textContent = text;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+        return div;
+    }
+    async function sendChat(text) {
+        const value = String(text || '').trim();
+        if (!value) return;
+        appendChat('user', value);
+        const pending = appendChat('ai typing', 'Смотрю данные…');
+        let reply;
+        try { reply = await assistantReply(value); } catch (_) { reply = 'Не удалось получить данные. Попробуйте ещё раз чуть позже.'; }
+        pending.classList.remove('typing');
+        pending.textContent = reply;
+        $('#chat-box').scrollTop = $('#chat-box').scrollHeight;
+    }
+    async function assistantReply(text) {
+        const t = text.toLowerCase();
+        const codes = detectCoins(t);
+        if (/цел|алерт|уведом|оповещ/.test(t)) return targetsSummary();
+        if (/комисс|fee/.test(t)) return feesSummary();
+        if (/арбитр|спред|связк|профит/.test(t)) {
+            if (!state.arb.t) await refreshExchanges(true);
+            return arbSummary(codes);
+        }
+        if (/мем|pump|памп|dex|токен|пулы|пулов/.test(t)) {
+            await loadMemes(false);
+            return memeSummary();
+        }
+        if (/сигнал|тренд|rsi|индикат|ema|вход|лонг|шорт|long|short/.test(t)) {
+            await loadSignals(false);
+            return signalSummary(codes);
+        }
+        if (codes.length || /цен|курс|стоит|price|сколько/.test(t)) return priceSummary(codes.length ? codes : ['BTC', 'ETH', 'SOL']);
+        return 'Я понимаю такие запросы:\n• «цена SOL» или «курс BTC и ETH»\n• «лучший арбитраж» или «арбитраж XRP»\n• «сигнал BTC» или «сигналы»\n• «трендовые мемкоины»\n• «мои цели»\n• «какие комиссии учитываются»\n\nЦель можно поставить кнопкой «🎯 Цель» у любой монеты, сигнала или мемкоина.';
+    }
+    function priceSummary(codes) {
+        const lines = codes.map(code => {
+            const p = state.prices[code];
+            if (!p) return `${code}: цена ещё загружается`;
+            return `${code}: ${fmtUsd(p.price)} (${fmtPct(p.change)} за 24ч)${p.src === 'cache' ? ' — из кэша' : ''}`;
+        });
+        const src = { ws: 'Binance (реальное время)', rest: 'Binance', cg: 'CoinGecko', cache: 'кэш' }[(state.prices[codes[0]] || {}).src] || 'Binance';
+        return `${lines.join('\n')}\n\nИсточник: ${src}.`;
+    }
+    function arbSummary(codes) {
+        let rows = state.arb.rows.filter(r => r.best);
+        if (codes.length) rows = rows.filter(r => codes.includes(r.code));
+        if (!rows.length) return 'Пока недостаточно цен с бирж для расчёта. Попробуйте через минуту.';
+        rows.sort((a, b) => b.best.net - a.best.net);
+        const cap = getCapital() || 1000;
+        const lines = rows.slice(0, codes.length ? rows.length : 3).map(r => {
+            const b = r.best;
+            return `${r.code}: купить на ${b.buyEx} ${fmtUsd(b.ask)} → продать на ${b.sellEx} ${fmtUsd(b.bid)}, спред ${fmtPct(b.spreadPct, 3)}, итог ${fmtMoney(b.net)}`;
+        });
+        const profitable = state.arb.rows.filter(r => r.best && r.best.net > 0).length;
+        return `Лучшие связки на капитал ${fmtUsd(cap)}:\n${lines.join('\n')}\n\nПрибыльных после комиссий: ${profitable} из ${COIN_CODES.length}. Итог = продажа по bid − покупка по ask − торговые комиссии обеих бирж − комиссия вывода.`;
+    }
+    function signalSummary(codes) {
+        const cache = state.signals[state.tf];
+        if (!cache) return 'Индикаторы сейчас недоступны — не удалось загрузить свечи Binance.';
+        let list = COIN_CODES.filter(c => cache.data[c]);
+        if (codes.length) list = list.filter(c => codes.includes(c));
+        else list = list.filter(c => cache.data[c].side !== 'NEUTRAL');
+        if (!list.length) return `На таймфрейме ${state.tf} сейчас нет монет с подтверждённым сигналом. Откройте раздел «Сигналы», чтобы посмотреть все индикаторы.`;
+        const lines = list.map(code => {
+            const s = cache.data[code];
+            const lv = signalLevels(code, s);
+            const side = s.side === 'NEUTRAL' ? 'нейтрально' : s.side;
+            return `${code} (${state.tf}): ${side}, RSI ${s.rsi.toFixed(1)}${lv.tp ? `, TP ${fmtUsd(lv.tp)} / SL ${fmtUsd(lv.sl)}` : ''}`;
+        });
+        return `${lines.join('\n')}\n\nРасчёт по EMA 20/50, RSI 14 и ATR 14. Это не финансовая рекомендация.`;
+    }
+    function memeSummary() {
+        const list = state.memes.list.slice().sort((a, b) => (b.vol24 || 0) - (a.vol24 || 0)).slice(0, 5);
+        if (!list.length) return 'Список пулов сейчас недоступен. Попробуйте обновить раздел «Мемкоины».';
+        const lines = list.map(p => `${p.name}: ${fmtUsd(p.price)}, 24ч ${fmtPct(p.ch24, 1)}, ликвидность ${fmtCompact(p.liq)}, риск: ${RISK[p.risk.level][0].toLowerCase()}`);
+        return `Топ по объёму (${NETWORKS[state.memes.network].label}, ${state.memes.query ? 'поиск' : state.memes.mode === 'new' ? 'новые пулы' : 'тренды'}):\n${lines.join('\n')}\n\nМемкоины крайне волатильны — используйте только деньги, которые готовы потерять.`;
+    }
+    function targetsSummary() {
+        const active = state.targets.filter(t => t.status === 'active');
+        const hit = state.targets.filter(t => t.status === 'hit');
+        if (!state.targets.length) return 'Целей пока нет. Нажмите «🎯 Цель» у монеты, сигнала или мемкоина — я сообщу, когда цена дойдёт.';
+        const lines = active.map(t => {
+            const cur = currentPriceFor(t);
+            return `• ${t.label}: цель ${fmtUsd(t.target)}, сейчас ${cur ? fmtUsd(cur.price) : '—'}`;
+        });
+        return `Активных целей: ${active.length}${lines.length ? '\n' + lines.join('\n') : ''}${hit.length ? `\nДостигнуто: ${hit.length}` : ''}`;
+    }
+    function feesSummary() {
+        const fees = EX_NAMES.map(ex => `${ex}: ${exFee(ex)}%`).join(', ');
+        return `Торговые комиссии (тейкер): ${fees}.\nКомиссия вывода монеты ${state.settings.withdrawFees ? 'учитывается' : 'отключена'} — это ориентировочные значения сети.\nВсё можно изменить в настройках (иконка профиля справа вверху).`;
+    }
+
+    /* =====================================================================
+       Einstellungen
+       ===================================================================== */
+    function openSettings() {
+        const notif = 'Notification' in window ? Notification.permission : 'unsupported';
+        const notifLabel = { granted: 'включены', denied: 'запрещены в браузере', default: 'не включены', unsupported: 'не поддерживаются' }[notif];
+        openModal('⚙️ Настройки', `
+            <div class="control-group">
+                <label class="control-label" for="set-username">Имя (для аватара)</label>
+                <input type="text" id="set-username" value="${esc(state.settings.username)}" maxlength="40" placeholder="Например: Alex Trader">
+            </div>
+            <div class="control-group">
+                <span class="control-label">Торговые комиссии бирж (тейкер, %) — укажите свой уровень</span>
+                <div class="fee-grid">${EX_NAMES.map(ex => `
+                    <label>${exBadge(ex)} ${esc(ex)}<input type="number" class="mono" step="0.01" min="0" max="5" data-fee="${esc(ex)}" value="${exFee(ex)}" aria-label="Комиссия ${esc(ex)}"></label>`).join('')}
+                </div>
+            </div>
+            <label class="check-inline"><input type="checkbox" id="set-wd" ${state.settings.withdrawFees ? 'checked' : ''}> Учитывать комиссию вывода монеты в арбитраже</label>
+            <div class="calc-box">
+                <div class="calc-row"><span>Системные уведомления: ${notifLabel}</span>
+                ${notif === 'default' ? '<button class="secondary-btn sm" data-action="notif-enable">Включить</button>' : ''}</div>
+            </div>
+            <div class="btn-row">
+                <button class="secondary-btn" data-action="fees-reset">Сбросить комиссии</button>
+                <button class="secondary-btn danger-btn" data-action="reset-data">Удалить избранное и цели</button>
+            </div>
+            <p class="note">Настройки, избранное и цели хранятся только в этом браузере.</p>`);
+    }
+    function applySettingsChange() {
+        computeArbitrage();
+        renderArbitrage();
+        patchExchangeStatus();
+        if (state.tab === 'favorites') renderFavorites();
+    }
+
+    /* =====================================================================
+       Tabs & Ereignisse
+       ===================================================================== */
+    function switchTab(tab) {
+        if (!TITLES[tab]) tab = 'p2p';
+        state.tab = tab;
+        $$('.content-section').forEach(s => s.classList.toggle('active', s.id === tab));
+        $$('.menu-item, .mobile-nav-item').forEach(el => {
+            const on = el.dataset.tab === tab;
+            el.classList.toggle('active', on);
+            if (on) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
+        });
+        $('#header-title').textContent = TITLES[tab];
+        document.title = `${TITLES[tab]} · CryptoPro Terminal`;
+        try { history.replaceState(null, '', '#/' + tab); } catch (_) { /* file:// */ }
+
+        if (tab === 'p2p') { renderArbitrage(); if (Date.now() - state.arb.t > 30e3) refreshExchanges(false); }
+        if (tab === 'currencies') { renderCurrencies(); loadMarket(false); }
+        if (tab === 'trading') { renderSignals(); loadSignals(false); }
+        if (tab === 'memecoins') { renderMemes(); loadMemes(false); }
+        if (tab === 'assistant') renderTargets();
+        if (tab === 'favorites') { renderFavorites(); refreshTrackedMemes(); if (Date.now() - state.arb.t > 60e3) refreshExchanges(false); }
+        window.scrollTo({ top: 0 });
+    }
+
+    const ACTIONS = {
+        'tab': (el) => switchTab(el.dataset.tab),
+        'settings': () => openSettings(),
+        'modal-close': () => closeModal(),
+        'dropdown': () => toggleDropdown(),
+        'ex-all': (el) => {
+            state.settings.enabledEx = el.dataset.value === '1' ? EX_NAMES.slice() : [];
+            saveSettings();
+            $$('#ex-checkbox-grid input').forEach(cb => { cb.checked = state.settings.enabledEx.includes(cb.value); });
+            updateExLabel();
+            computeArbitrage();
+            renderArbitrage();
+        },
+        'capital': (el) => setCapital(Number(el.dataset.value), true),
+        'coin-chip': (el) => {
+            state.coinQuery = el.dataset.code;
+            $('#arb-search').value = state.coinQuery;
+            $$('#coin-chips-bar .coin-chip').forEach(c => c.classList.toggle('active', c.dataset.code === state.coinQuery));
+            renderArbitrage();
+        },
+        'arb-refresh': () => refreshExchanges(true),
+        'arb-open': (el) => openArbModal(el.dataset.code),
+        'cur-refresh': () => { Feed.poll(true); loadMarket(true); toast('Курсы обновляются…'); },
+        'cur-sort': (el) => {
+            const key = el.dataset.key;
+            state.curSort = state.curSort.key === key ? { key, dir: -state.curSort.dir } : { key, dir: -1 };
+            renderCurrencies();
+        },
+        'tf': (el) => { state.tf = el.dataset.tf; renderSignals(); loadSignals(false); },
+        'side': (el) => { state.sigSide = el.dataset.side; renderSignals(); },
+        'sig-open': (el) => openSignalModal(el.dataset.code),
+        'sig-refresh': () => loadSignals(true),
+        'meme-mode': (el) => {
+            state.memes.mode = el.dataset.mode;
+            state.memes.query = '';
+            $('#meme-search').value = '';
+            loadMemes(false);
+        },
+        'meme-clear': () => { state.memes.query = ''; $('#meme-search').value = ''; loadMemes(false); },
+        'meme-refresh': () => loadMemes(true),
+        'meme-open': (el) => openMemeModal(el.dataset.id),
+        'fav': (el) => toggleFav(el.dataset.id),
+        'fav-open': (el) => openFav(el.dataset.id),
+        'target': (el) => openTargetModal(el.dataset.kind, el.dataset.key),
+        'tgt-preset': (el) => {
+            const d = state.draft;
+            if (!d) return;
+            $('#tgt-price').value = +(d.entry * Number(el.dataset.mult)).toPrecision(6);
+            updateTargetPreview();
+        },
+        'tgt-create': () => createTarget(),
+        'tgt-del': (el) => deleteTarget(el.dataset.id),
+        'tgt-clear': () => {
+            const n = state.targets.filter(t => t.status === 'hit').length;
+            state.targets = state.targets.filter(t => t.status !== 'hit');
+            LS.set('cp_targets', state.targets);
+            renderTargets();
+            toast(n ? `Убрано достигнутых целей: ${n}` : 'Достигнутых целей нет');
+        },
+        'chat-prompt': (el) => sendChat(el.dataset.text),
+        'notif-enable': () => {
+            if (!('Notification' in window)) return;
+            Notification.requestPermission().then(() => openSettings()).catch(() => { /* abgelehnt */ });
+        },
+        'fees-reset': () => {
+            state.settings.fees = {};
+            saveSettings();
+            applySettingsChange();
+            openSettings();
+            toast('Комиссии сброшены к стандартным');
+        },
+        'reset-data': () => {
+            if (!confirm('Удалить всё избранное и все цели?')) return;
+            state.favorites = [];
+            state.targets = [];
+            LS.set('cp_favorites', []);
+            LS.set('cp_targets', []);
+            updateBadges();
+            renderTargets();
+            closeModal();
+            switchTab(state.tab);
+            toast('Избранное и цели удалены');
+        }
+    };
+
+    document.addEventListener('click', (e) => {
+        const dd = $('#exchange-dropdown');
+        if (!$('#dropdown-panel').hidden && !dd.contains(e.target)) toggleDropdown(false);
+        if (e.target === $('#modal')) { closeModal(); return; }
+        // echte Links in Karten nicht abfangen
+        if (e.target.closest('a[href]:not([data-action])')) return;
+        const el = e.target.closest('[data-action]');
+        if (!el) return;
+        const fn = ACTIONS[el.dataset.action];
+        if (!fn) return;
+        if (el.tagName === 'A') e.preventDefault();
+        fn(el, e);
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (modalOpen()) closeModal();
+            else if (!$('#dropdown-panel').hidden) toggleDropdown(false);
+            return;
+        }
+        if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role="button"][data-action]')) {
+            e.preventDefault();
+            e.target.click();
+        }
+    });
+
+    const debouncedArbRender = debounce(() => { computeArbitrage(); renderArbitrage(); }, 150);
+    function setCapital(value, fromPreset = false) {
+        state.settings.capital = Number.isFinite(value) && value > 0 ? value : 0;
+        saveSettings();
+        if (fromPreset) $('#capital-input').value = state.settings.capital;
+        renderCapital();
+        patchLive();
+        debouncedArbRender();
+    }
+
+    document.addEventListener('input', (e) => {
+        const t = e.target;
+        if (t.id === 'capital-input') setCapital(parseFloat(t.value));
+        else if (t.id === 'arb-search') {
+            state.coinQuery = t.value.trim().toUpperCase();
+            $$('#coin-chips-bar .coin-chip').forEach(c => c.classList.toggle('active', c.dataset.code === state.coinQuery));
+            renderArbitrage();
+        }
+        else if (t.id === 'tgt-price' || t.id === 'tgt-amount') updateTargetPreview();
+    });
+    document.addEventListener('change', (e) => {
+        const t = e.target;
+        if (t.closest && t.closest('#ex-checkbox-grid')) {
+            state.settings.enabledEx = $$('#ex-checkbox-grid input:checked').map(cb => cb.value);
+            saveSettings();
+            updateExLabel();
+            computeArbitrage();
+            renderArbitrage();
+        } else if (t.id === 'only-profit') {
+            state.settings.onlyProfit = t.checked;
+            saveSettings();
+            renderArbitrage();
+        } else if (t.id === 'meme-network') {
+            state.memes.network = t.value;
+            loadMemes(false);
+        } else if (t.id === 'meme-sort') {
+            state.memes.sort = t.value;
+            renderMemes();
+        } else if (t.id === 'set-username') {
+            state.settings.username = t.value.trim().slice(0, 40);
+            saveSettings();
+            renderAvatar();
+        } else if (t.dataset && t.dataset.fee) {
+            const v = num(t.value);
+            if (v != null && v >= 0 && v <= 5) state.settings.fees[t.dataset.fee] = v;
+            else delete state.settings.fees[t.dataset.fee];
+            saveSettings();
+            applySettingsChange();
+        } else if (t.id === 'set-wd') {
+            state.settings.withdrawFees = t.checked;
+            saveSettings();
+            applySettingsChange();
+        }
+    });
+    $('#chat-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = $('#chat-input');
+        const v = input.value;
+        input.value = '';
+        sendChat(v);
+    });
+    $('#meme-search-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        state.memes.query = $('#meme-search').value.trim().slice(0, 60);
+        loadMemes(false);
+    });
+
+    /* =====================================================================
+       Zeitsteuerung & Start
+       ===================================================================== */
+    function updateAgo() {
+        $$('[data-ago]').forEach(el => { el.textContent = timeAgo(Number(el.dataset.ago)); });
+        $('#sync-age').textContent = state.lastPriceT ? timeAgo(state.lastPriceT) : '';
+    }
+    function scheduler() {
+        if (document.hidden) return;
+        const now = Date.now();
+        const arbEvery = state.tab === 'p2p' ? 30e3 : 120e3;
+        if (now - state.arb.t > arbEvery) refreshExchanges(false);
+        if (state.tab === 'memecoins' && now - state.memes.t > 60e3 && now - state.memes.tried > 30e3) loadMemes(false);
+        if (state.tab === 'trading') loadSignals(false);
+        if (now - state.memeTrackedT > 60e3) refreshTrackedMemes();
+        if (!state.market || now - state.market.t > 15 * 60e3) loadMarket(false);
+        syncBinanceQuotes();
+    }
+
+    function init() {
+        $('#capital-input').value = getCapital() || '';
+        $('#only-profit').checked = !!state.settings.onlyProfit;
+        loadPriceCache();
+        renderChrome();
+        renderAvatar();
+        renderCapital();
+        renderExchangeGrid();
+        renderSyncStatus();
+        updateBadges();
+        appendChat('ai', 'Привет! Я локальный ассистент терминала: отвечаю по живым данным — ценам, арбитражу, сигналам и мемкоинам — и слежу за вашими ценовыми целями.\n\nСпросите, например: «цена SOL», «лучший арбитраж» или «сигнал BTC». Я не ИИ и не даю финансовых советов.');
+
+        switchTab(location.hash.replace(/^#\/?/, '') || 'p2p');
+        Feed.start();
+        loadMarket(false);
+        refreshExchanges(true);
+        refreshTrackedMemes();
+
+        setInterval(updateAgo, 1000);
+        setInterval(scheduler, 5000);
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) return;
+            Feed.poll(!Feed.wsHealthy());
+            scheduler();
+        });
+    }
+    init();
+    </script>
+</body>
+</html>
