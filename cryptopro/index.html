@@ -162,6 +162,17 @@
             70% { box-shadow: 0 0 0 7px rgba(14, 203, 129, 0); }
             100% { box-shadow: 0 0 0 0 rgba(14, 203, 129, 0); }
         }
+        .lang-select {
+            width: auto;
+            padding: 5px 24px 5px 9px;
+            font-size: 0.76rem;
+            font-family: var(--mono);
+            font-weight: 600;
+            background-color: var(--bg-elevated);
+            border-radius: var(--radius-sm);
+            background-position: right 8px center;
+            cursor: pointer;
+        }
         .avatar-btn {
             width: 34px;
             height: 34px;
@@ -726,52 +737,58 @@
     </style>
 </head>
 <body>
-    <aside class="sidebar" aria-label="Навигация">
+    <aside class="sidebar" data-i18n-aria="nav.aria">
         <a class="logo" href="#/p2p" data-action="tab" data-tab="p2p">⚡ CryptoPro <span class="logo-badge">PRO</span></a>
         <nav>
             <ul class="menu">
-                <li><button class="menu-item active" data-action="tab" data-tab="p2p"><span aria-hidden="true">📈</span>Арбитраж</button></li>
-                <li><button class="menu-item" data-action="tab" data-tab="currencies"><span aria-hidden="true">💱</span>Курсы</button></li>
-                <li><button class="menu-item" data-action="tab" data-tab="trading"><span aria-hidden="true">📊</span>Сигналы</button></li>
-                <li><button class="menu-item" data-action="tab" data-tab="memecoins"><span aria-hidden="true">🚀</span>Мемкоины</button></li>
-                <li><button class="menu-item" data-action="tab" data-tab="assistant"><span aria-hidden="true">🎯</span>Цели и чат<span class="count" data-badge="targets"></span></button></li>
-                <li><button class="menu-item" data-action="tab" data-tab="favorites"><span aria-hidden="true">⭐</span>Избранное<span class="count" data-badge="favorites"></span></button></li>
+                <li><button class="menu-item active" data-action="tab" data-tab="p2p"><span aria-hidden="true">📈</span><span data-i18n="nav.p2p"></span></button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="currencies"><span aria-hidden="true">💱</span><span data-i18n="nav.cur"></span></button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="trading"><span aria-hidden="true">📊</span><span data-i18n="nav.sig"></span></button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="memecoins"><span aria-hidden="true">🚀</span><span data-i18n="nav.meme"></span></button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="assistant"><span aria-hidden="true">🎯</span><span data-i18n="nav.ai"></span><span class="count" data-badge="targets"></span></button></li>
+                <li><button class="menu-item" data-action="tab" data-tab="favorites"><span aria-hidden="true">⭐</span><span data-i18n="nav.fav"></span><span class="count" data-badge="favorites"></span></button></li>
             </ul>
         </nav>
-        <div class="sidebar-foot">Публичные API бирж, CoinGecko и GeckoTerminal. Расчёты ориентировочные и не являются финансовой рекомендацией.</div>
+        <div class="sidebar-foot" data-i18n="sidebar.foot"></div>
     </aside>
 
     <main>
         <header class="topbar">
             <div class="topbar-row">
-                <h1 id="header-title">Межбиржевой арбитраж</h1>
+                <h1 id="header-title"></h1>
                 <div class="top-right">
-                    <div class="pill" id="sync-pill" title="Подключение…">
+                    <div class="pill" id="sync-pill">
                         <span class="live-dot" id="sync-dot" data-state="connecting"></span>
                         <strong id="sync-text" class="mono">…</strong>
                         <span id="sync-age" class="mono pill-label"></span>
                     </div>
-                    <div class="pill capital"><span class="pill-label">Капитал</span><strong id="display-capital" class="mono">—</strong></div>
-                    <button class="avatar-btn" id="avatar-btn" data-action="settings" aria-label="Настройки" title="Настройки">CP</button>
+                    <div class="pill capital"><span class="pill-label" data-i18n="hdr.capital"></span><strong id="display-capital" class="mono">—</strong></div>
+                    <select id="lang-select" class="lang-select" data-i18n-aria="hdr.lang" data-i18n-title="hdr.lang">
+                        <option value="de">DE</option>
+                        <option value="ru">RU</option>
+                        <option value="en">EN</option>
+                        <option value="uk">UA</option>
+                    </select>
+                    <button class="avatar-btn" id="avatar-btn" data-action="settings" data-i18n-aria="hdr.settings" data-i18n-title="hdr.settings">CP</button>
                 </div>
             </div>
-            <div class="ticker" id="ticker" aria-label="Котировки"></div>
+            <div class="ticker" id="ticker" data-i18n-aria="hdr.ticker"></div>
         </header>
 
-        <!-- 1. Арбитраж -->
+        <!-- 1. Arbitrage -->
         <section id="p2p" class="content-section active" aria-labelledby="p2p-h">
             <div class="section-header">
                 <div>
-                    <h2 id="p2p-h">Межбиржевой арбитраж</h2>
-                    <p class="subtitle">Реальные цены стакана (bid / ask) с 8 бирж. Результат считается после торговых комиссий обеих бирж и комиссии вывода монеты.</p>
+                    <h2 id="p2p-h" data-i18n="title.p2p"></h2>
+                    <p class="subtitle" data-i18n="p2p.sub"></p>
                 </div>
-                <button class="primary-btn" data-action="arb-refresh" id="arb-refresh-btn">↻ Обновить</button>
+                <button class="primary-btn" data-action="arb-refresh" id="arb-refresh-btn" data-i18n="btn.refresh"></button>
             </div>
 
             <div class="controls-panel">
                 <div class="controls-top-row">
                     <div class="control-group">
-                        <label class="control-label" for="capital-input">Капитал (USDT)</label>
+                        <label class="control-label" for="capital-input" data-i18n="p2p.capital"></label>
                         <input type="number" id="capital-input" class="mono" min="0" step="any" inputmode="decimal">
                         <div class="preset-pills" id="capital-presets">
                             <button class="preset-pill" data-action="capital" data-value="100">$100</button>
@@ -784,25 +801,25 @@
                     </div>
 
                     <div class="control-group">
-                        <span class="control-label">Биржи (покупка и продажа только на выбранных)</span>
+                        <span class="control-label" data-i18n="p2p.exlabel"></span>
                         <div class="dropdown" id="exchange-dropdown">
                             <button class="dropdown-toggle" data-action="dropdown" aria-expanded="false" aria-controls="dropdown-panel">
-                                <span id="dropdown-label">Все биржи</span><span aria-hidden="true">▾</span>
+                                <span id="dropdown-label"></span><span aria-hidden="true">▾</span>
                             </button>
                             <div class="dropdown-panel" id="dropdown-panel" hidden>
                                 <div class="dropdown-actions">
-                                    <button data-action="ex-all" data-value="1">Выбрать все</button>
-                                    <button data-action="ex-all" data-value="0">Сбросить</button>
+                                    <button data-action="ex-all" data-value="1" data-i18n="p2p.selall"></button>
+                                    <button data-action="ex-all" data-value="0" data-i18n="p2p.selnone"></button>
                                 </div>
                                 <div class="ex-grid" id="ex-checkbox-grid"></div>
                             </div>
                         </div>
-                        <label class="check-inline"><input type="checkbox" id="only-profit"> Только прибыльные связки</label>
+                        <label class="check-inline"><input type="checkbox" id="only-profit"> <span data-i18n="p2p.onlyprofit"></span></label>
                     </div>
 
                     <div class="control-group hide-mobile">
-                        <label class="control-label" for="arb-search">Поиск монеты</label>
-                        <input type="search" id="arb-search" placeholder="Например: SOL, BTC, ETH…" autocomplete="off">
+                        <label class="control-label" for="arb-search" data-i18n="p2p.search"></label>
+                        <input type="search" id="arb-search" data-i18n-ph="p2p.search.ph" autocomplete="off">
                     </div>
                 </div>
                 <div class="coin-filter-bar" id="coin-chips-bar"></div>
@@ -815,13 +832,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class="col-star"><span class="sr-only">Избранное</span></th>
-                            <th>Пара</th>
-                            <th>Купить (ask)</th>
-                            <th>Продать (bid)</th>
-                            <th>Спред</th>
-                            <th>Чистый результат</th>
-                            <th><span class="sr-only">Действие</span></th>
+                            <th class="col-star"><span class="sr-only" data-i18n="th.fav"></span></th>
+                            <th data-i18n="th.pair"></th>
+                            <th data-i18n="th.buy"></th>
+                            <th data-i18n="th.sell"></th>
+                            <th data-i18n="th.spread"></th>
+                            <th data-i18n="th.net"></th>
+                            <th><span class="sr-only" data-i18n="th.action"></span></th>
                         </tr>
                     </thead>
                     <tbody id="p2p-table-body"></tbody>
@@ -830,14 +847,14 @@
             <div class="card-grid mobile-only" id="p2p-card-grid"></div>
         </section>
 
-        <!-- 2. Курсы -->
+        <!-- 2. Kurse -->
         <section id="currencies" class="content-section" aria-labelledby="cur-h">
             <div class="section-header">
                 <div>
-                    <h2 id="cur-h">Курсы монет</h2>
-                    <p class="subtitle">Цены Binance в реальном времени. График за 7 дней и капитализация — CoinGecko. Эти же цены используются в арбитраже, сигналах и целях.</p>
+                    <h2 id="cur-h" data-i18n="title.cur"></h2>
+                    <p class="subtitle" data-i18n="cur.sub"></p>
                 </div>
-                <button class="primary-btn" data-action="cur-refresh">↻ Обновить</button>
+                <button class="primary-btn" data-action="cur-refresh" data-i18n="btn.refresh"></button>
             </div>
 
             <div class="table-container desktop-only">
@@ -849,22 +866,22 @@
             <div class="card-grid mobile-only" id="currencies-card-grid"></div>
         </section>
 
-        <!-- 3. Сигналы -->
+        <!-- 3. Signale -->
         <section id="trading" class="content-section" aria-labelledby="sig-h">
             <div class="section-header">
                 <div>
-                    <h2 id="sig-h">Технические сигналы</h2>
-                    <p class="subtitle">Автоматический расчёт по свечам Binance: тренд EMA 20/50, импульс RSI 14, цели по волатильности ATR 14. Это не прогноз и не финансовая рекомендация.</p>
+                    <h2 id="sig-h" data-i18n="title.sig"></h2>
+                    <p class="subtitle" data-i18n="sig.sub"></p>
                 </div>
                 <div class="toolbar">
-                    <div class="seg" id="tf-bar" role="group" aria-label="Таймфрейм">
+                    <div class="seg" id="tf-bar" role="group" data-i18n-aria="sig.tf.aria">
                         <button class="seg-btn" data-action="tf" data-tf="15M">15M</button>
                         <button class="seg-btn active" data-action="tf" data-tf="1H">1H</button>
                         <button class="seg-btn" data-action="tf" data-tf="4H">4H</button>
                         <button class="seg-btn" data-action="tf" data-tf="1D">1D</button>
                     </div>
-                    <div class="seg" id="side-bar" role="group" aria-label="Направление">
-                        <button class="seg-btn active" data-action="side" data-side="ALL">Все</button>
+                    <div class="seg" id="side-bar" role="group" data-i18n-aria="sig.side.aria">
+                        <button class="seg-btn active" data-action="side" data-side="ALL" data-i18n="sig.all"></button>
                         <button class="seg-btn" data-action="side" data-side="LONG">LONG</button>
                         <button class="seg-btn" data-action="side" data-side="SHORT">SHORT</button>
                     </div>
@@ -874,20 +891,20 @@
             <div class="card-grid" id="signals-grid"></div>
         </section>
 
-        <!-- 4. Мемкоины -->
+        <!-- 4. Memecoins -->
         <section id="memecoins" class="content-section" aria-labelledby="meme-h">
             <div class="section-header">
                 <div>
-                    <h2 id="meme-h">Мемкоины и DEX</h2>
-                    <p class="subtitle">Трендовые и новые пулы с GeckoTerminal, включая Pump.fun / PumpSwap. Оценка риска — простая эвристика по ликвидности, возрасту и активности, а не аудит контракта.</p>
+                    <h2 id="meme-h" data-i18n="title.meme"></h2>
+                    <p class="subtitle" data-i18n="meme.sub"></p>
                 </div>
-                <button class="secondary-btn" data-action="meme-refresh">↻ Обновить пулы</button>
+                <button class="secondary-btn" data-action="meme-refresh" data-i18n="meme.refresh"></button>
             </div>
 
             <div class="controls-panel">
                 <div class="controls-top-row meme-controls">
                     <div class="control-group">
-                        <label class="control-label" for="meme-network">Сеть</label>
+                        <label class="control-label" for="meme-network" data-i18n="meme.net"></label>
                         <select id="meme-network">
                             <option value="solana">Solana (Pump.fun)</option>
                             <option value="base">Base</option>
@@ -896,27 +913,27 @@
                         </select>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="meme-sort">Сортировка</label>
+                        <label class="control-label" for="meme-sort" data-i18n="meme.sort"></label>
                         <select id="meme-sort">
-                            <option value="default">По умолчанию</option>
-                            <option value="vol">Объём 24ч</option>
-                            <option value="liq">Ликвидность</option>
-                            <option value="ch24">Рост 24ч</option>
-                            <option value="new">Сначала новые</option>
+                            <option value="default" data-i18n="meme.sort.default"></option>
+                            <option value="vol" data-i18n="meme.sort.vol"></option>
+                            <option value="liq" data-i18n="meme.sort.liq"></option>
+                            <option value="ch24" data-i18n="meme.sort.ch24"></option>
+                            <option value="new" data-i18n="meme.sort.new"></option>
                         </select>
                     </div>
                     <div class="control-group span-2">
-                        <span class="control-label">Подборка</span>
+                        <span class="control-label" data-i18n="meme.mode"></span>
                         <div class="seg" id="meme-mode">
-                            <button class="seg-btn active" data-action="meme-mode" data-mode="trending">🔥 Тренды</button>
-                            <button class="seg-btn" data-action="meme-mode" data-mode="new">🆕 Новые пулы</button>
+                            <button class="seg-btn active" data-action="meme-mode" data-mode="trending" data-i18n="meme.trending"></button>
+                            <button class="seg-btn" data-action="meme-mode" data-mode="new" data-i18n="meme.new"></button>
                         </div>
                     </div>
                     <form class="control-group span-2" id="meme-search-form" role="search">
-                        <label class="control-label" for="meme-search">Поиск токена</label>
+                        <label class="control-label" for="meme-search" data-i18n="meme.search"></label>
                         <div class="input-row">
-                            <input type="search" id="meme-search" placeholder="Название или адрес…" autocomplete="off">
-                            <button class="secondary-btn" type="submit">Найти</button>
+                            <input type="search" id="meme-search" data-i18n-ph="meme.search.ph" autocomplete="off">
+                            <button class="secondary-btn" type="submit" data-i18n="meme.find"></button>
                         </div>
                     </form>
                 </div>
@@ -928,15 +945,15 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class="col-star"><span class="sr-only">Избранное</span></th>
-                            <th>Токен</th>
-                            <th class="right">Цена</th>
-                            <th>24ч</th>
-                            <th>Ликвидность</th>
-                            <th>Объём 24ч</th>
-                            <th>Возраст</th>
-                            <th>Риск</th>
-                            <th><span class="sr-only">Действия</span></th>
+                            <th class="col-star"><span class="sr-only" data-i18n="th.fav"></span></th>
+                            <th data-i18n="th.token"></th>
+                            <th class="right" data-i18n="th.price"></th>
+                            <th data-i18n="th.24h"></th>
+                            <th data-i18n="th.liq"></th>
+                            <th data-i18n="th.vol"></th>
+                            <th data-i18n="th.age"></th>
+                            <th data-i18n="th.risk"></th>
+                            <th><span class="sr-only" data-i18n="th.actions"></span></th>
                         </tr>
                     </thead>
                     <tbody id="meme-table-body"></tbody>
@@ -945,76 +962,66 @@
             <div class="card-grid mobile-only" id="meme-card-grid"></div>
         </section>
 
-        <!-- 5. Ассистент и цели -->
+        <!-- 5. Assistent & Ziele -->
         <section id="assistant" class="content-section" aria-labelledby="ai-h">
             <div class="section-header">
                 <div>
-                    <h2 id="ai-h">Ассистент и ценовые цели</h2>
-                    <p class="subtitle">Локальный помощник отвечает по живым данным терминала и следит за вашими целями. Это не ИИ и не финансовый советник.</p>
+                    <h2 id="ai-h" data-i18n="title.ai"></h2>
+                    <p class="subtitle" data-i18n="ai.sub"></p>
                 </div>
             </div>
             <div class="assistant-grid">
                 <div class="chat-container">
                     <div class="chat-messages" id="chat-box" aria-live="polite"></div>
-                    <div class="chat-suggestions">
-                        <button class="chip" data-action="chat-prompt" data-text="Цены BTC, ETH и SOL">💱 Цены BTC, ETH, SOL</button>
-                        <button class="chip" data-action="chat-prompt" data-text="Лучший арбитраж сейчас">📈 Лучший арбитраж</button>
-                        <button class="chip" data-action="chat-prompt" data-text="Сигналы по индикаторам">📊 Сигналы</button>
-                        <button class="chip" data-action="chat-prompt" data-text="Трендовые мемкоины">🚀 Тренды мемкоинов</button>
-                        <button class="chip" data-action="chat-prompt" data-text="Мои цели">🎯 Мои цели</button>
-                        <button class="chip" data-action="chat-prompt" data-text="Какие комиссии учитываются?">💸 Комиссии</button>
-                    </div>
+                    <div class="chat-suggestions" id="chat-chips"></div>
                     <form class="chat-input-area" id="chat-form">
-                        <input type="text" id="chat-input" placeholder="Например: цена SOL, сигнал BTC, арбитраж" autocomplete="off" aria-label="Сообщение ассистенту">
-                        <button class="primary-btn" type="submit">Отправить</button>
+                        <input type="text" id="chat-input" data-i18n-ph="ai.ph" data-i18n-aria="ai.aria" autocomplete="off">
+                        <button class="primary-btn" type="submit" data-i18n="ai.send"></button>
                     </form>
                 </div>
                 <aside class="panel targets-panel" aria-labelledby="tgt-h">
                     <div class="panel-head">
-                        <h3 id="tgt-h">🎯 Мои цели</h3>
-                        <button class="secondary-btn sm" data-action="tgt-clear">Убрать достигнутые</button>
+                        <h3 id="tgt-h" data-i18n="tgt.panel"></h3>
+                        <button class="secondary-btn sm" data-action="tgt-clear" data-i18n="tgt.clear"></button>
                     </div>
                     <div id="targets-list" class="targets-list"></div>
-                    <p class="note">Цель создаётся кнопкой «🎯 Цель» у монеты, сигнала или мемкоина. Оповещения приходят, пока терминал открыт в браузере.</p>
+                    <p class="note" data-i18n="tgt.panelnote"></p>
                 </aside>
             </div>
         </section>
 
-        <!-- 6. Избранное -->
+        <!-- 6. Favoriten -->
         <section id="favorites" class="content-section" aria-labelledby="fav-h">
             <div class="section-header">
                 <div>
-                    <h2 id="fav-h">Избранное</h2>
-                    <p class="subtitle">Сохранённые монеты, арбитражные пары, сигналы и токены с актуальными значениями.</p>
+                    <h2 id="fav-h" data-i18n="title.fav"></h2>
+                    <p class="subtitle" data-i18n="fav.sub"></p>
                 </div>
             </div>
             <div id="favorites-list" class="fav-list"></div>
         </section>
 
-        <footer class="app-footer">
-            Данные: Binance, OKX, Bybit, Gate.io, Bitget, HTX, Kraken, Coinbase (публичные API), CoinGecko, GeckoTerminal.
-            Все расчёты ориентировочные и не являются финансовой рекомендацией. Торговля криптовалютой связана с высоким риском.
-        </footer>
+        <footer class="app-footer" data-i18n="footer"></footer>
     </main>
 
     <div class="modal-overlay" id="modal" aria-hidden="true">
         <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div class="modal-header">
-                <h3 id="modal-title">Детали</h3>
-                <button class="modal-close" data-action="modal-close" aria-label="Закрыть">×</button>
+                <h3 id="modal-title"></h3>
+                <button class="modal-close" data-action="modal-close" data-i18n-aria="modal.close">×</button>
             </div>
             <div id="modal-body"></div>
         </div>
     </div>
 
-    <nav class="mobile-nav" aria-label="Навигация">
+    <nav class="mobile-nav" data-i18n-aria="nav.aria">
         <ul class="mobile-nav-list">
-            <li><button class="mobile-nav-item active" data-action="tab" data-tab="p2p"><span class="ico" aria-hidden="true">📈</span><span>Арбитраж</span></button></li>
-            <li><button class="mobile-nav-item" data-action="tab" data-tab="currencies"><span class="ico" aria-hidden="true">💱</span><span>Курсы</span></button></li>
-            <li><button class="mobile-nav-item" data-action="tab" data-tab="trading"><span class="ico" aria-hidden="true">📊</span><span>Сигналы</span></button></li>
-            <li><button class="mobile-nav-item" data-action="tab" data-tab="memecoins"><span class="ico" aria-hidden="true">🚀</span><span>Мемы</span></button></li>
-            <li><button class="mobile-nav-item" data-action="tab" data-tab="assistant"><span class="ico" aria-hidden="true">🎯</span><span>Цели</span><span class="nav-badge" data-badge="targets"></span></button></li>
-            <li><button class="mobile-nav-item" data-action="tab" data-tab="favorites"><span class="ico" aria-hidden="true">⭐</span><span>Избранное</span><span class="nav-badge" data-badge="favorites"></span></button></li>
+            <li><button class="mobile-nav-item active" data-action="tab" data-tab="p2p"><span class="ico" aria-hidden="true">📈</span><span data-i18n="nav.p2p"></span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="currencies"><span class="ico" aria-hidden="true">💱</span><span data-i18n="nav.cur"></span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="trading"><span class="ico" aria-hidden="true">📊</span><span data-i18n="nav.sig"></span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="memecoins"><span class="ico" aria-hidden="true">🚀</span><span data-i18n="nav.meme.short"></span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="assistant"><span class="ico" aria-hidden="true">🎯</span><span data-i18n="nav.ai.short"></span><span class="nav-badge" data-badge="targets"></span></button></li>
+            <li><button class="mobile-nav-item" data-action="tab" data-tab="favorites"><span class="ico" aria-hidden="true">⭐</span><span data-i18n="nav.fav"></span><span class="nav-badge" data-badge="favorites"></span></button></li>
         </ul>
     </nav>
 
@@ -1022,6 +1029,401 @@
 
     <script>
     'use strict';
+
+    /* =====================================================================
+       Sprachen: [Russisch, Deutsch, Englisch, Ukrainisch]
+       ===================================================================== */
+    const LANGS = { de: 'Deutsch', ru: 'Русский', en: 'English', uk: 'Українська' };
+    const LANG_IDX = { ru: 0, de: 1, en: 2, uk: 3 };
+    const TV_LOCALE = { ru: 'ru', de: 'de_DE', en: 'en', uk: 'en' };
+
+    const STR = {
+        // Navigation & Titel
+        'nav.aria': ['Навигация', 'Navigation', 'Navigation', 'Навігація'],
+        'nav.p2p': ['Арбитраж', 'Arbitrage', 'Arbitrage', 'Арбітраж'],
+        'nav.cur': ['Курсы', 'Kurse', 'Prices', 'Курси'],
+        'nav.sig': ['Сигналы', 'Signale', 'Signals', 'Сигнали'],
+        'nav.meme': ['Мемкоины', 'Memecoins', 'Memecoins', 'Мемкоїни'],
+        'nav.meme.short': ['Мемы', 'Memes', 'Memes', 'Меми'],
+        'nav.ai': ['Цели и чат', 'Ziele & Chat', 'Targets & chat', 'Цілі та чат'],
+        'nav.ai.short': ['Цели', 'Ziele', 'Targets', 'Цілі'],
+        'nav.fav': ['Избранное', 'Favoriten', 'Favorites', 'Обране'],
+        'title.p2p': ['Межбиржевой арбитраж', 'Börsen-Arbitrage', 'Cross-exchange arbitrage', 'Міжбіржовий арбітраж'],
+        'title.cur': ['Курсы монет', 'Coin-Kurse', 'Coin prices', 'Курси монет'],
+        'title.sig': ['Технические сигналы', 'Technische Signale', 'Technical signals', 'Технічні сигнали'],
+        'title.meme': ['Мемкоины и DEX', 'Memecoins & DEX', 'Memecoins & DEX', 'Мемкоїни та DEX'],
+        'title.ai': ['Ассистент и цели', 'Assistent & Ziele', 'Assistant & targets', 'Асистент і цілі'],
+        'title.fav': ['Избранное', 'Favoriten', 'Favorites', 'Обране'],
+        'meta.desc': ['Криптотерминал: живые курсы, межбиржевой арбитраж с учётом комиссий, технические сигналы, мемкоины и ценовые цели.', 'Krypto-Terminal: Live-Kurse, Börsen-Arbitrage nach Gebühren, technische Signale, Memecoins und Preisziele.', 'Crypto terminal: live prices, cross-exchange arbitrage after fees, technical signals, memecoins and price targets.', 'Криптотермінал: живі курси, міжбіржовий арбітраж з урахуванням комісій, технічні сигнали, мемкоїни та цінові цілі.'],
+        'sidebar.foot': ['Публичные API бирж, CoinGecko и GeckoTerminal. Расчёты ориентировочные и не являются финансовой рекомендацией.', 'Öffentliche APIs der Börsen, CoinGecko und GeckoTerminal. Alle Berechnungen sind Richtwerte und keine Finanzberatung.', 'Public exchange APIs, CoinGecko and GeckoTerminal. All figures are estimates, not financial advice.', 'Публічні API бірж, CoinGecko та GeckoTerminal. Розрахунки орієнтовні й не є фінансовою рекомендацією.'],
+        'footer': ['Данные: Binance, OKX, Bybit, Gate.io, Bitget, HTX, Kraken, Coinbase (публичные API), CoinGecko, GeckoTerminal. Все расчёты ориентировочные и не являются финансовой рекомендацией. Торговля криптовалютой связана с высоким риском.', 'Daten: Binance, OKX, Bybit, Gate.io, Bitget, HTX, Kraken, Coinbase (öffentliche APIs), CoinGecko, GeckoTerminal. Alle Berechnungen sind Richtwerte und keine Finanzberatung. Kryptohandel ist mit hohem Risiko verbunden.', 'Data: Binance, OKX, Bybit, Gate.io, Bitget, HTX, Kraken, Coinbase (public APIs), CoinGecko, GeckoTerminal. All figures are estimates and not financial advice. Crypto trading carries high risk.', 'Дані: Binance, OKX, Bybit, Gate.io, Bitget, HTX, Kraken, Coinbase (публічні API), CoinGecko, GeckoTerminal. Усі розрахунки орієнтовні й не є фінансовою рекомендацією. Торгівля криптовалютою пов’язана з високим ризиком.'],
+        'modal.close': ['Закрыть', 'Schließen', 'Close', 'Закрити'],
+
+        // Kopfzeile & Status
+        'hdr.capital': ['Капитал', 'Kapital', 'Capital', 'Капітал'],
+        'hdr.settings': ['Настройки', 'Einstellungen', 'Settings', 'Налаштування'],
+        'hdr.ticker': ['Котировки', 'Kurse', 'Quotes', 'Котирування'],
+        'hdr.lang': ['Язык', 'Sprache', 'Language', 'Мова'],
+        'sync.connecting': ['Подключение к источникам цен…', 'Verbinde mit Kursquellen…', 'Connecting to price sources…', 'Підключення до джерел цін…'],
+        'sync.cache': ['Показаны сохранённые цены, подключение к Binance…', 'Gespeicherte Kurse, verbinde mit Binance…', 'Showing saved prices, connecting to Binance…', 'Показано збережені ціни, підключення до Binance…'],
+        'sync.ws': ['Онлайн: Binance WebSocket, цены в реальном времени', 'Online: Binance WebSocket, Kurse in Echtzeit', 'Online: Binance WebSocket, real-time prices', 'Онлайн: Binance WebSocket, ціни в реальному часі'],
+        'sync.rest': ['Онлайн: Binance REST, обновление каждые 15 секунд', 'Online: Binance REST, Aktualisierung alle 15 Sekunden', 'Online: Binance REST, updates every 15 seconds', 'Онлайн: Binance REST, оновлення кожні 15 секунд'],
+        'sync.fallback': ['Резерв: CoinGecko (Binance недоступен), обновление каждые 15 секунд', 'Ersatzquelle: CoinGecko (Binance nicht erreichbar), alle 15 Sekunden', 'Fallback: CoinGecko (Binance unavailable), every 15 seconds', 'Резерв: CoinGecko (Binance недоступний), кожні 15 секунд'],
+        'sync.offline': ['Нет соединения — показаны последние сохранённые цены', 'Keine Verbindung — zuletzt gespeicherte Kurse', 'No connection — showing last saved prices', 'Немає з’єднання — показано останні збережені ціни'],
+        'sync.l.cache': ['КЭШ', 'CACHE', 'CACHE', 'КЕШ'],
+
+        // Zeit
+        'ago.now': ['только что', 'gerade eben', 'just now', 'щойно'],
+        'ago.s': ['{n} с назад', 'vor {n} s', '{n}s ago', '{n} с тому'],
+        'ago.m': ['{n} мин назад', 'vor {n} Min.', '{n} min ago', '{n} хв тому'],
+        'ago.h': ['{n} ч назад', 'vor {n} Std.', '{n} h ago', '{n} год тому'],
+        'age.m': ['{n} мин', '{n} Min.', '{n} min', '{n} хв'],
+        'age.h': ['{n} ч', '{n} Std.', '{n} h', '{n} год'],
+        'age.d': ['{n} дн', '{n} T.', '{n} d', '{n} дн'],
+        'age.mo': ['{n} мес', '{n} Mon.', '{n} mo', '{n} міс'],
+
+        // Fehler
+        'err.timeout': ['таймаут ответа', 'Zeitüberschreitung', 'request timed out', 'час очікування вичерпано'],
+        'err.region': ['недоступно в вашем регионе', 'in deiner Region nicht verfügbar', 'not available in your region', 'недоступно у вашому регіоні'],
+        'err.rate': ['лимит запросов, повтор позже', 'Anfragelimit, später erneut', 'rate limited, retrying later', 'ліміт запитів, повтор пізніше'],
+        'err.cors': ['нет доступа из браузера (CORS/сеть)', 'vom Browser nicht erreichbar (CORS/Netz)', 'not reachable from the browser (CORS/network)', 'немає доступу з браузера (CORS/мережа)'],
+        'err.nodata': ['нет данных', 'keine Daten', 'no data', 'немає даних'],
+        'err.generic': ['ошибка', 'Fehler', 'error', 'помилка'],
+        'err.binance': ['нет живых данных Binance', 'keine Live-Daten von Binance', 'no live Binance data', 'немає живих даних Binance'],
+        'err.ws': ['WebSocket недоступен', 'WebSocket nicht verfügbar', 'WebSocket unavailable', 'WebSocket недоступний'],
+        'err.wsclosed': ['соединение прервано', 'Verbindung unterbrochen', 'connection lost', 'з’єднання перервано'],
+        'err.wsnoaccess': ['нет доступа (регион или сеть)', 'kein Zugriff (Region oder Netz)', 'no access (region or network)', 'немає доступу (регіон або мережа)'],
+
+        // Allgemeine Buttons
+        'btn.refresh': ['↻ Обновить', '↻ Aktualisieren', '↻ Refresh', '↻ Оновити'],
+        'btn.loading': ['Загрузка…', 'Lädt…', 'Loading…', 'Завантаження…'],
+        'btn.retry': ['Повторить', 'Erneut versuchen', 'Retry', 'Повторити'],
+        'btn.target': ['🎯 Цель', '🎯 Ziel', '🎯 Target', '🎯 Ціль'],
+        'btn.settarget': ['🎯 Поставить цель', '🎯 Ziel setzen', '🎯 Set target', '🎯 Поставити ціль'],
+        'btn.details': ['Детали', 'Details', 'Details', 'Деталі'],
+        'btn.open': ['Открыть', 'Öffnen', 'Open', 'Відкрити'],
+        'btn.chart': ['📈 График', '📈 Chart', '📈 Chart', '📈 Графік'],
+        'btn.prices': ['Цены', 'Kurse', 'Prices', 'Ціни'],
+        'btn.calc': ['Расчёт', 'Berechnung', 'Details', 'Розрахунок'],
+        'sum.updated': ['Обновлено:', 'Aktualisiert:', 'Updated:', 'Оновлено:'],
+        'upd.at': ['Обновлено {t}.', 'Aktualisiert {t}.', 'Updated {t}.', 'Оновлено {t}.'],
+        'toast.loading': ['Данные ещё загружаются', 'Daten werden noch geladen', 'Data is still loading', 'Дані ще завантажуються'],
+
+        // Tabellenköpfe
+        'th.fav': ['Избранное', 'Favorit', 'Favorite', 'Обране'],
+        'th.action': ['Действие', 'Aktion', 'Action', 'Дія'],
+        'th.actions': ['Действия', 'Aktionen', 'Actions', 'Дії'],
+        'th.pair': ['Пара', 'Paar', 'Pair', 'Пара'],
+        'th.buy': ['Купить (ask)', 'Kaufen (Ask)', 'Buy (ask)', 'Купити (ask)'],
+        'th.sell': ['Продать (bid)', 'Verkaufen (Bid)', 'Sell (bid)', 'Продати (bid)'],
+        'th.spread': ['Спред', 'Spread', 'Spread', 'Спред'],
+        'th.net': ['Чистый результат', 'Nettoergebnis', 'Net result', 'Чистий результат'],
+        'th.coin': ['Монета', 'Coin', 'Coin', 'Монета'],
+        'th.price': ['Цена', 'Kurs', 'Price', 'Ціна'],
+        'th.24h': ['24ч', '24h', '24h', '24год'],
+        'th.7d': ['7 дней', '7 Tage', '7 days', '7 днів'],
+        'th.mcap': ['Капитализация', 'Marktkap.', 'Market cap', 'Капіталізація'],
+        'th.yourcap': ['На ваш капитал', 'Für dein Kapital', 'For your capital', 'На ваш капітал'],
+        'th.token': ['Токен', 'Token', 'Token', 'Токен'],
+        'th.liq': ['Ликвидность', 'Liquidität', 'Liquidity', 'Ліквідність'],
+        'th.vol': ['Объём 24ч', 'Volumen 24h', 'Volume 24h', 'Обсяг 24год'],
+        'th.age': ['Возраст', 'Alter', 'Age', 'Вік'],
+        'th.risk': ['Риск', 'Risiko', 'Risk', 'Ризик'],
+
+        // Arbitrage
+        'p2p.sub': ['Реальные цены стакана (bid / ask) с 8 бирж. Результат считается после торговых комиссий обеих бирж и комиссии вывода монеты.', 'Echte Orderbuch-Kurse (Bid / Ask) von 8 Börsen. Das Ergebnis ist nach den Handelsgebühren beider Börsen und der Auszahlungsgebühr berechnet.', 'Real order book prices (bid / ask) from 8 exchanges. Results are after trading fees on both exchanges and the coin withdrawal fee.', 'Реальні ціни стакана (bid / ask) з 8 бірж. Результат рахується після торгових комісій обох бірж і комісії виведення монети.'],
+        'p2p.capital': ['Капитал (USDT)', 'Kapital (USDT)', 'Capital (USDT)', 'Капітал (USDT)'],
+        'p2p.exlabel': ['Биржи (покупка и продажа только на выбранных)', 'Börsen (Kauf und Verkauf nur auf ausgewählten)', 'Exchanges (buy and sell only on selected)', 'Біржі (купівля й продаж лише на вибраних)'],
+        'p2p.selall': ['Выбрать все', 'Alle wählen', 'Select all', 'Вибрати всі'],
+        'p2p.selnone': ['Сбросить', 'Keine', 'Clear', 'Скинути'],
+        'p2p.onlyprofit': ['Только прибыльные связки', 'Nur profitable Paare', 'Profitable routes only', 'Лише прибуткові зв’язки'],
+        'p2p.search': ['Поиск монеты', 'Coin suchen', 'Search coin', 'Пошук монети'],
+        'p2p.search.ph': ['Например: SOL, BTC, ETH…', 'z. B. SOL, BTC, ETH…', 'e.g. SOL, BTC, ETH…', 'Наприклад: SOL, BTC, ETH…'],
+        'p2p.allcoins': ['Все монеты', 'Alle Coins', 'All coins', 'Усі монети'],
+        'ex.all': ['Все биржи · онлайн {on}/{n}', 'Alle Börsen · online {on}/{n}', 'All exchanges · online {on}/{n}', 'Усі біржі · онлайн {on}/{n}'],
+        'ex.none': ['Биржи не выбраны', 'Keine Börse gewählt', 'No exchanges selected', 'Біржі не вибрано'],
+        'ex.some': ['Выбрано бирж: {n}', 'Gewählte Börsen: {n}', 'Exchanges selected: {n}', 'Вибрано бірж: {n}'],
+        'ex.title.ok': ['Онлайн · пар: {n} · комиссия {fee}%', 'Online · Paare: {n} · Gebühr {fee}%', 'Online · pairs: {n} · fee {fee}%', 'Онлайн · пар: {n} · комісія {fee}%'],
+        'ex.title.err': ['Недоступна: {err}', 'Nicht erreichbar: {err}', 'Unavailable: {err}', 'Недоступна: {err}'],
+        'p2p.hint.select': ['Выберите хотя бы две биржи в фильтре.', 'Wähle mindestens zwei Börsen im Filter.', 'Select at least two exchanges in the filter.', 'Виберіть щонайменше дві біржі у фільтрі.'],
+        'p2p.hint.none': ['Сейчас нет связок с прибылью после комиссий. Для ликвидных монет это нормально: спреды между крупными биржами обычно меньше суммы торговых комиссий и комиссии вывода.', 'Aktuell ist keine Kombination nach Gebühren profitabel. Bei liquiden Coins ist das normal: Die Spreads zwischen großen Börsen sind meist kleiner als Handels- und Auszahlungsgebühren zusammen.', 'No route is profitable after fees right now. That is normal for liquid coins: spreads between major exchanges are usually smaller than trading plus withdrawal fees.', 'Зараз немає зв’язок із прибутком після комісій. Для ліквідних монет це нормально: спреди між великими біржами зазвичай менші за суму торгових комісій і комісії виведення.'],
+        'p2p.hint.cap': ['Капитал не указан — расчёт показан для $1,000.', 'Kein Kapital angegeben — Berechnung für $1,000.', 'No capital entered — showing results for $1,000.', 'Капітал не вказано — розрахунок для $1,000.'],
+        'p2p.empty.profit': ['Прибыльных связок под выбранные фильтры нет', 'Keine profitablen Paare für diese Filter', 'No profitable routes for these filters', 'Прибуткових зв’язок під вибрані фільтри немає'],
+        'p2p.empty': ['Нет пар под выбранные фильтры', 'Keine Paare für diese Filter', 'No pairs match these filters', 'Немає пар під вибрані фільтри'],
+        'p2p.priceson': ['цены с {n} бирж', 'Kurse von {n} Börsen', 'prices from {n} exchanges', 'ціни з {n} бірж'],
+        'p2p.pricecount': ['бирж с ценой: {n}', 'Börsen mit Kurs: {n}', 'exchanges with price: {n}', 'бірж із ціною: {n}'],
+        'p2p.insufficient': ['Недостаточно данных: нужны цены минимум с двух выбранных бирж', 'Zu wenig Daten: Kurse von mindestens zwei gewählten Börsen nötig', 'Not enough data: prices from at least two selected exchanges needed', 'Недостатньо даних: потрібні ціни щонайменше з двох вибраних бірж'],
+        'p2p.ofcap': ['{v} от капитала', '{v} vom Kapital', '{v} of capital', '{v} від капіталу'],
+        'p2p.calc.aria': ['Расчёт {p}', 'Berechnung {p}', 'Calculation {p}', 'Розрахунок {p}'],
+        'p2p.card.buy': ['Купить · {ex}', 'Kauf · {ex}', 'Buy · {ex}', 'Купити · {ex}'],
+        'p2p.card.sell': ['Продать · {ex}', 'Verkauf · {ex}', 'Sell · {ex}', 'Продати · {ex}'],
+        'p2p.card.result': ['Результат', 'Ergebnis', 'Result', 'Результат'],
+        'p2p.loading': ['Загружаю цены с бирж…', 'Lade Kurse der Börsen…', 'Loading exchange prices…', 'Завантажую ціни з бірж…'],
+        'p2p.sum.online': ['Бирж онлайн:', 'Börsen online:', 'Exchanges online:', 'Бірж онлайн:'],
+        'p2p.sum.profit': ['Прибыльных связок:', 'Profitable Paare:', 'Profitable routes:', 'Прибуткових зв’язок:'],
+        'p2p.sum.wd': ['Комиссия вывода:', 'Auszahlungsgebühr:', 'Withdrawal fee:', 'Комісія виведення:'],
+        'wd.on': ['учитывается', 'berücksichtigt', 'included', 'враховується'],
+        'wd.off': ['не учитывается', 'nicht berücksichtigt', 'not included', 'не враховується'],
+        'arb.st.nopair': ['нет пары', 'kein Paar', 'no pair', 'немає пари'],
+        'arb.st.loading': ['загрузка', 'lädt', 'loading', 'завантаження'],
+        'arb.st.down': ['недоступна', 'nicht erreichbar', 'unavailable', 'недоступна'],
+        'arb.st.noprice': ['нет цены', 'kein Kurs', 'no price', 'немає ціни'],
+        'arb.st.outlier': ['отклонение', 'Ausreißer', 'outlier', 'відхилення'],
+        'arb.st.online': ['онлайн', 'online', 'online', 'онлайн'],
+        'arb.st.off': ['выключена', 'deaktiviert', 'disabled', 'вимкнена'],
+        'arb.title': ['Арбитраж {p}', 'Arbitrage {p}', 'Arbitrage {p}', 'Арбітраж {p}'],
+        'arb.capital': ['Капитал', 'Kapital', 'Capital', 'Капітал'],
+        'arb.buyon': ['Покупка на {ex} по ask {p}', 'Kauf auf {ex} zum Ask {p}', 'Buy on {ex} at ask {p}', 'Купівля на {ex} за ask {p}'],
+        'arb.feebuy': ['Комиссия покупки ({f}%)', 'Kaufgebühr ({f}%)', 'Buy fee ({f}%)', 'Комісія купівлі ({f}%)'],
+        'arb.wd': ['Комиссия вывода (~{n} {c})', 'Auszahlungsgebühr (~{n} {c})', 'Withdrawal fee (~{n} {c})', 'Комісія виведення (~{n} {c})'],
+        'arb.sellon': ['Продажа на {ex} по bid {p}', 'Verkauf auf {ex} zum Bid {p}', 'Sell on {ex} at bid {p}', 'Продаж на {ex} за bid {p}'],
+        'arb.feesell': ['Комиссия продажи ({f}%)', 'Verkaufsgebühr ({f}%)', 'Sell fee ({f}%)', 'Комісія продажу ({f}%)'],
+        'arb.spread': ['Спред до комиссий', 'Spread vor Gebühren', 'Spread before fees', 'Спред до комісій'],
+        'arb.buybtn': ['Купить на {ex} ↗', 'Auf {ex} kaufen ↗', 'Buy on {ex} ↗', 'Купити на {ex} ↗'],
+        'arb.sellbtn': ['Продать на {ex} ↗', 'Auf {ex} verkaufen ↗', 'Sell on {ex} ↗', 'Продати на {ex} ↗'],
+        'arb.need2': ['Для расчёта нужны цены минимум с двух выбранных бирж.', 'Für die Berechnung braucht es Kurse von mindestens zwei gewählten Börsen.', 'At least two selected exchanges with prices are needed.', 'Для розрахунку потрібні ціни щонайменше з двох вибраних бірж.'],
+        'arb.th.ex': ['Биржа', 'Börse', 'Exchange', 'Біржа'],
+        'arb.th.bid': ['Bid (продажа)', 'Bid (Verkauf)', 'Bid (sell)', 'Bid (продаж)'],
+        'arb.th.ask': ['Ask (покупка)', 'Ask (Kauf)', 'Ask (buy)', 'Ask (купівля)'],
+        'arb.th.fee': ['Комиссия', 'Gebühr', 'Fee', 'Комісія'],
+        'arb.th.status': ['Статус', 'Status', 'Status', 'Статус'],
+        'arb.note1': ['Расчёт по лучшей цене стакана без учёта глубины: на крупный капитал средняя цена будет хуже.', 'Berechnet mit dem besten Orderbuch-Kurs ohne Markttiefe: Bei großem Kapital wird der Durchschnittskurs schlechter.', 'Based on the best order book price without depth: with large capital the average fill will be worse.', 'Розрахунок за найкращою ціною стакана без урахування глибини: на великий капітал середня ціна буде гіршою.'],
+        'arb.note2': ['Перевод между биржами занимает от минут до часа — за это время спред может исчезнуть.', 'Ein Transfer zwischen Börsen dauert Minuten bis eine Stunde — der Spread kann in der Zeit verschwinden.', 'Transfers between exchanges take minutes to an hour — the spread may disappear meanwhile.', 'Переказ між біржами триває від хвилин до години — за цей час спред може зникнути.'],
+        'arb.note3': ['Перед переводом проверьте, что вывод и депозит в нужной сети открыты. Комиссии бирж можно изменить в настройках (иконка профиля).', 'Prüfe vor dem Transfer, dass Auszahlung und Einzahlung im gewählten Netz offen sind. Börsengebühren lassen sich in den Einstellungen ändern (Profil-Symbol).', 'Before transferring, check that withdrawals and deposits on that network are open. Exchange fees can be changed in settings (profile icon).', 'Перед переказом перевірте, що виведення й депозит у потрібній мережі відкриті. Комісії бірж можна змінити в налаштуваннях (іконка профілю).'],
+
+        // Kurse
+        'cur.sub': ['Цены Binance в реальном времени. График за 7 дней и капитализация — CoinGecko. Эти же цены используются в арбитраже, сигналах и целях.', 'Binance-Kurse in Echtzeit. 7-Tage-Chart und Marktkapitalisierung von CoinGecko. Dieselben Kurse nutzen Arbitrage, Signale und Ziele.', 'Real-time Binance prices. 7-day chart and market cap from CoinGecko. The same prices feed arbitrage, signals and targets.', 'Ціни Binance у реальному часі. Графік за 7 днів і капіталізація — CoinGecko. Ці ж ціни використовуються в арбітражі, сигналах і цілях.'],
+        'cur.oncap': ['На капитал:', 'Mit Kapital:', 'With capital:', 'На капітал:'],
+        'cur.toast': ['Курсы обновляются…', 'Kurse werden aktualisiert…', 'Refreshing prices…', 'Курси оновлюються…'],
+
+        // Signale
+        'sig.sub': ['Автоматический расчёт по свечам Binance: тренд EMA 20/50, импульс RSI 14, цели по волатильности ATR 14. Это не прогноз и не финансовая рекомендация.', 'Automatisch berechnet aus Binance-Kerzen: Trend EMA 20/50, Momentum RSI 14, Ziele nach Volatilität ATR 14. Keine Prognose und keine Finanzberatung.', 'Calculated automatically from Binance candles: EMA 20/50 trend, RSI 14 momentum, ATR 14 volatility targets. Not a forecast or financial advice.', 'Автоматичний розрахунок за свічками Binance: тренд EMA 20/50, імпульс RSI 14, цілі за волатильністю ATR 14. Це не прогноз і не фінансова рекомендація.'],
+        'sig.tf.aria': ['Таймфрейм', 'Zeitrahmen', 'Timeframe', 'Таймфрейм'],
+        'sig.side.aria': ['Направление', 'Richtung', 'Direction', 'Напрямок'],
+        'sig.all': ['Все', 'Alle', 'All', 'Усі'],
+        'tf.15M': ['15 минут', '15 Minuten', '15 minutes', '15 хвилин'],
+        'tf.1H': ['1 час', '1 Stunde', '1 hour', '1 година'],
+        'tf.4H': ['4 часа', '4 Stunden', '4 hours', '4 години'],
+        'tf.1D': ['1 день', '1 Tag', '1 day', '1 день'],
+        'sig.r.long': ['EMA 20 выше EMA 50, RSI подтверждает восходящий импульс.', 'EMA 20 über EMA 50, RSI bestätigt das Aufwärtsmomentum.', 'EMA 20 above EMA 50, RSI confirms upward momentum.', 'EMA 20 вище EMA 50, RSI підтверджує висхідний імпульс.'],
+        'sig.r.short': ['EMA 20 ниже EMA 50, RSI подтверждает нисходящий импульс.', 'EMA 20 unter EMA 50, RSI bestätigt das Abwärtsmomentum.', 'EMA 20 below EMA 50, RSI confirms downward momentum.', 'EMA 20 нижче EMA 50, RSI підтверджує низхідний імпульс.'],
+        'sig.r.ob': ['RSI выше 70 — перекупленность, вход по тренду рискован.', 'RSI über 70 — überkauft, ein Einstieg mit dem Trend ist riskant.', 'RSI above 70 — overbought, entering with the trend is risky.', 'RSI вище 70 — перекупленість, вхід за трендом ризикований.'],
+        'sig.r.os': ['RSI ниже 30 — перепроданность, возможен отскок.', 'RSI unter 30 — überverkauft, eine Gegenbewegung ist möglich.', 'RSI below 30 — oversold, a bounce is possible.', 'RSI нижче 30 — перепроданість, можливий відскок.'],
+        'sig.r.upnc': ['Тренд вверх, но RSI ниже 50 — нет подтверждения.', 'Aufwärtstrend, aber RSI unter 50 — keine Bestätigung.', 'Uptrend, but RSI below 50 — not confirmed.', 'Тренд угору, але RSI нижче 50 — немає підтвердження.'],
+        'sig.r.downnc': ['Тренд вниз, но RSI выше 50 — нет подтверждения.', 'Abwärtstrend, aber RSI über 50 — keine Bestätigung.', 'Downtrend, but RSI above 50 — not confirmed.', 'Тренд униз, але RSI вище 50 — немає підтвердження.'],
+        'sig.neutral': ['НЕЙТРАЛЬНО', 'NEUTRAL', 'NEUTRAL', 'НЕЙТРАЛЬНО'],
+        'sig.neutral.l': ['Нейтрально', 'Neutral', 'Neutral', 'Нейтрально'],
+        'sig.loaderr': ['Не удалось загрузить свечи: {err}', 'Kerzen konnten nicht geladen werden: {err}', 'Could not load candles: {err}', 'Не вдалося завантажити свічки: {err}'],
+        'sig.loading': ['Загружаю свечи Binance…', 'Lade Binance-Kerzen…', 'Loading Binance candles…', 'Завантажую свічки Binance…'],
+        'sig.sum.tf': ['Таймфрейм:', 'Zeitrahmen:', 'Timeframe:', 'Таймфрейм:'],
+        'sig.sum.none': ['Без сигнала:', 'Ohne Signal:', 'No signal:', 'Без сигналу:'],
+        'sig.sum.calc': ['Расчёт:', 'Berechnet:', 'Calculated:', 'Розрахунок:'],
+        'sig.empty': ['Нет сигналов с выбранным направлением на этом таймфрейме', 'Keine Signale mit dieser Richtung auf diesem Zeitrahmen', 'No signals in this direction on this timeframe', 'Немає сигналів із вибраним напрямком на цьому таймфреймі'],
+        'sig.more.aria': ['Подробнее {c}', 'Details {c}', 'Details {c}', 'Детальніше {c}'],
+        'sig.livep': ['Цена (live)', 'Kurs (live)', 'Price (live)', 'Ціна (live)'],
+        'sig.tp': ['Цель TP', 'Ziel TP', 'Target TP', 'Ціль TP'],
+        'sig.sl': ['Стоп SL', 'Stop SL', 'Stop SL', 'Стоп SL'],
+        'sig.trend': ['Тренд EMA:', 'EMA-Trend:', 'EMA trend:', 'Тренд EMA:'],
+        'sig.vol': ['волатильность ATR:', 'Volatilität ATR:', 'ATR volatility:', 'волатильність ATR:'],
+        'sig.favlabel': ['{c} сигнал', '{c} Signal', '{c} signal', '{c} сигнал'],
+        'sig.chart.loading': ['Загрузка графика…', 'Chart wird geladen…', 'Loading chart…', 'Завантаження графіка…'],
+        'sig.dir': ['Направление', 'Richtung', 'Direction', 'Напрямок'],
+        'sig.tpl': ['Take Profit (2×ATR)'],
+        'sig.sll': ['Stop Loss (1×ATR)'],
+        'sig.unavail': ['Индикаторы для этой монеты сейчас недоступны.', 'Indikatoren für diesen Coin sind gerade nicht verfügbar.', 'Indicators for this coin are currently unavailable.', 'Індикатори для цієї монети зараз недоступні.'],
+        'sig.m1': ['LONG — EMA 20 выше EMA 50 и RSI между 50 и 70; SHORT — EMA 20 ниже EMA 50 и RSI между 30 и 50.', 'LONG — EMA 20 über EMA 50 und RSI zwischen 50 und 70; SHORT — EMA 20 unter EMA 50 und RSI zwischen 30 und 50.', 'LONG — EMA 20 above EMA 50 and RSI between 50 and 70; SHORT — EMA 20 below EMA 50 and RSI between 30 and 50.', 'LONG — EMA 20 вище EMA 50 і RSI між 50 та 70; SHORT — EMA 20 нижче EMA 50 і RSI між 30 та 50.'],
+        'sig.m2': ['Цели считаются от текущей цены: TP = 2 × ATR, SL = 1 × ATR (соотношение 2 : 1).', 'Ziele ab aktuellem Kurs: TP = 2 × ATR, SL = 1 × ATR (Verhältnis 2 : 1).', 'Targets from the current price: TP = 2 × ATR, SL = 1 × ATR (2 : 1 ratio).', 'Цілі від поточної ціни: TP = 2 × ATR, SL = 1 × ATR (співвідношення 2 : 1).'],
+        'sig.m3': ['Индикаторы запаздывают и не гарантируют результат. Это не финансовая рекомендация.', 'Indikatoren laufen dem Markt hinterher und garantieren nichts. Keine Finanzberatung.', 'Indicators lag the market and guarantee nothing. Not financial advice.', 'Індикатори запізнюються й не гарантують результату. Це не фінансова рекомендація.'],
+        'sig.openbn': ['Открыть на Binance ↗', 'Auf Binance öffnen ↗', 'Open on Binance ↗', 'Відкрити на Binance ↗'],
+        'sig.tvfail': ['График TradingView не загрузился.', 'TradingView-Chart konnte nicht geladen werden.', 'TradingView chart failed to load.', 'Графік TradingView не завантажився.'],
+
+        // Memecoins
+        'meme.sub': ['Трендовые и новые пулы с GeckoTerminal, включая Pump.fun / PumpSwap. Оценка риска — простая эвристика по ликвидности, возрасту и активности, а не аудит контракта.', 'Trend- und neue Pools von GeckoTerminal, inklusive Pump.fun / PumpSwap. Die Risikoeinschätzung ist eine einfache Heuristik aus Liquidität, Alter und Aktivität — kein Vertrags-Audit.', 'Trending and new pools from GeckoTerminal, including Pump.fun / PumpSwap. The risk rating is a simple heuristic from liquidity, age and activity — not a contract audit.', 'Трендові та нові пули з GeckoTerminal, включно з Pump.fun / PumpSwap. Оцінка ризику — проста евристика за ліквідністю, віком і активністю, а не аудит контракту.'],
+        'meme.refresh': ['↻ Обновить пулы', '↻ Pools aktualisieren', '↻ Refresh pools', '↻ Оновити пули'],
+        'meme.net': ['Сеть', 'Netzwerk', 'Network', 'Мережа'],
+        'meme.sort': ['Сортировка', 'Sortierung', 'Sort', 'Сортування'],
+        'meme.sort.default': ['По умолчанию', 'Standard', 'Default', 'За замовчуванням'],
+        'meme.sort.vol': ['Объём 24ч', 'Volumen 24h', 'Volume 24h', 'Обсяг 24год'],
+        'meme.sort.liq': ['Ликвидность', 'Liquidität', 'Liquidity', 'Ліквідність'],
+        'meme.sort.ch24': ['Рост 24ч', 'Anstieg 24h', 'Gain 24h', 'Зростання 24год'],
+        'meme.sort.new': ['Сначала новые', 'Neueste zuerst', 'Newest first', 'Спочатку нові'],
+        'meme.mode': ['Подборка', 'Auswahl', 'Selection', 'Добірка'],
+        'meme.trending': ['🔥 Тренды', '🔥 Trends', '🔥 Trending', '🔥 Тренди'],
+        'meme.new': ['🆕 Новые пулы', '🆕 Neue Pools', '🆕 New pools', '🆕 Нові пули'],
+        'meme.search': ['Поиск токена', 'Token suchen', 'Search token', 'Пошук токена'],
+        'meme.search.ph': ['Название или адрес…', 'Name oder Adresse…', 'Name or address…', 'Назва або адреса…'],
+        'meme.find': ['Найти', 'Suchen', 'Search', 'Знайти'],
+        'meme.src': ['Источник:', 'Quelle:', 'Source:', 'Джерело:'],
+        'meme.src.search': ['поиск «{q}»', 'Suche „{q}“', 'search “{q}”', 'пошук «{q}»'],
+        'meme.src.new': ['новые пулы', 'neue Pools', 'new pools', 'нові пули'],
+        'meme.src.trending': ['тренды', 'Trends', 'trending', 'тренди'],
+        'meme.reset': ['✕ Сбросить', '✕ Zurücksetzen', '✕ Clear', '✕ Скинути'],
+        'meme.loading': ['Загрузка пулов…', 'Pools werden geladen…', 'Loading pools…', 'Завантаження пулів…'],
+        'meme.loaderr': ['Не удалось загрузить пулы: {err}', 'Pools konnten nicht geladen werden: {err}', 'Could not load pools: {err}', 'Не вдалося завантажити пули: {err}'],
+        'meme.nothing': ['Ничего не найдено', 'Nichts gefunden', 'Nothing found', 'Нічого не знайдено'],
+        'meme.1h': ['1ч', '1h', '1h', '1год'],
+        'meme.details.aria': ['Детали {n}', 'Details {n}', 'Details {n}', 'Деталі {n}'],
+        'meme.risk': ['Риск:', 'Risiko:', 'Risk:', 'Ризик:'],
+        'meme.notfound': ['Данные токена недоступны — обновите список', 'Token-Daten nicht verfügbar — bitte Liste aktualisieren', 'Token data unavailable — refresh the list', 'Дані токена недоступні — оновіть список'],
+        'meme.chart': ['График {n}', 'Chart {n}', 'Chart {n}', 'Графік {n}'],
+        'meme.ch': ['1ч / 24ч', '1h / 24h', '1h / 24h', '1год / 24год'],
+        'meme.poolage': ['Возраст пула', 'Pool-Alter', 'Pool age', 'Вік пулу'],
+        'meme.txs': ['Сделки 24ч (пок./прод.)', 'Trades 24h (Kauf/Verk.)', 'Trades 24h (buy/sell)', 'Угоди 24год (куп./прод.)'],
+        'meme.venue': ['Площадка', 'Handelsplatz', 'Venue', 'Майданчик'],
+        'meme.riskh': ['Оценка риска (эвристика)', 'Risikoeinschätzung (Heuristik)', 'Risk rating (heuristic)', 'Оцінка ризику (евристика)'],
+        'meme.noflags': ['Явных тревожных признаков по ликвидности и возрасту нет. Это не проверка контракта: мемкоины остаются очень рискованными.', 'Keine klaren Warnsignale bei Liquidität und Alter. Das ist keine Vertragsprüfung: Memecoins bleiben sehr riskant.', 'No obvious red flags in liquidity or age. This is not a contract check: memecoins remain very risky.', 'Явних тривожних ознак за ліквідністю та віком немає. Це не перевірка контракту: мемкоїни залишаються дуже ризикованими.'],
+        'meme.addr': ['Адрес токена:', 'Token-Adresse:', 'Token address:', 'Адреса токена:'],
+        'risk.liqlow': ['Низкая ликвидность ({v})', 'Niedrige Liquidität ({v})', 'Low liquidity ({v})', 'Низька ліквідність ({v})'],
+        'risk.liqmid': ['Ликвидность ниже $100K ({v})', 'Liquidität unter $100K ({v})', 'Liquidity below $100K ({v})', 'Ліквідність нижче $100K ({v})'],
+        'risk.ageunk': ['Возраст пула неизвестен', 'Pool-Alter unbekannt', 'Pool age unknown', 'Вік пулу невідомий'],
+        'risk.age1d': ['Пулу меньше суток ({v})', 'Pool jünger als ein Tag ({v})', 'Pool younger than a day ({v})', 'Пулу менше доби ({v})'],
+        'risk.age7d': ['Пулу меньше недели ({v})', 'Pool jünger als eine Woche ({v})', 'Pool younger than a week ({v})', 'Пулу менше тижня ({v})'],
+        'risk.sells': ['Продаж заметно больше, чем покупок ({s} / {b} за 24ч)', 'Deutlich mehr Verkäufe als Käufe ({s} / {b} in 24h)', 'Noticeably more sells than buys ({s} / {b} in 24h)', 'Продажів помітно більше, ніж купівель ({s} / {b} за 24год)'],
+        'risk.fdv': ['FDV в {x}× больше ликвидности', 'FDV {x}× höher als die Liquidität', 'FDV is {x}× the liquidity', 'FDV у {x}× більший за ліквідність'],
+        'risk.vol': ['Экстремальная волатильность за 24ч', 'Extreme Volatilität in 24h', 'Extreme 24h volatility', 'Екстремальна волатильність за 24год'],
+        'risk.high': ['Высокий', 'Hoch', 'High', 'Високий'],
+        'risk.medium': ['Средний', 'Mittel', 'Medium', 'Середній'],
+        'risk.moderate': ['Умеренный', 'Moderat', 'Moderate', 'Помірний'],
+        'risk.noflags': ['Явных тревожных признаков нет — риск мемкоинов всё равно высокий', 'Keine klaren Warnsignale — Memecoins bleiben trotzdem sehr riskant', 'No obvious red flags — memecoins are still very risky', 'Явних тривожних ознак немає — ризик мемкоїнів усе одно високий'],
+
+        // Ziele
+        'tgt.noprice': ['Цена ещё не загружена', 'Kurs noch nicht geladen', 'Price not loaded yet', 'Ціна ще не завантажена'],
+        'tgt.nodata': ['Данные токена недоступны', 'Token-Daten nicht verfügbar', 'Token data unavailable', 'Дані токена недоступні'],
+        'tgt.title': ['Новая цель: {l}', 'Neues Ziel: {l}', 'New target: {l}', 'Нова ціль: {l}'],
+        'tgt.now': ['Цена сейчас', 'Aktueller Kurs', 'Current price', 'Ціна зараз'],
+        'tgt.quick': ['Быстрый выбор', 'Schnellauswahl', 'Quick pick', 'Швидкий вибір'],
+        'tgt.price': ['Целевая цена (USD)', 'Zielkurs (USD)', 'Target price (USD)', 'Цільова ціна (USD)'],
+        'tgt.amount': ['Сумма позиции (USDT)', 'Positionsgröße (USDT)', 'Position size (USDT)', 'Сума позиції (USDT)'],
+        'tgt.create': ['🎯 Создать цель', '🎯 Ziel erstellen', '🎯 Create target', '🎯 Створити ціль'],
+        'tgt.note': ['Цель выше текущей цены сработает при росте, ниже — при падении (как стоп). Проверка идёт по живым ценам, пока терминал открыт в браузере.', 'Ein Ziel über dem aktuellen Kurs löst bei Anstieg aus, darunter bei Fall (wie ein Stop). Geprüft wird mit Live-Kursen, solange das Terminal im Browser offen ist.', 'A target above the current price triggers on a rise, below it on a drop (like a stop). It is checked against live prices while the terminal is open in the browser.', 'Ціль вище поточної ціни спрацює при зростанні, нижче — при падінні (як стоп). Перевірка йде за живими цінами, поки термінал відкритий у браузері.'],
+        'tgt.enter': ['Укажите цену и сумму', 'Kurs und Betrag angeben', 'Enter price and amount', 'Вкажіть ціну та суму'],
+        'tgt.change': ['Изменение цены', 'Kursänderung', 'Price change', 'Зміна ціни'],
+        'tgt.posat': ['Позиция при достижении', 'Position bei Erreichen', 'Position when hit', 'Позиція при досягненні'],
+        'tgt.result': ['Результат', 'Ergebnis', 'Result', 'Результат'],
+        'tgt.invalid': ['Укажите корректную цену и сумму', 'Bitte gültigen Kurs und Betrag angeben', 'Enter a valid price and amount', 'Вкажіть коректну ціну та суму'],
+        'tgt.same': ['Цель должна отличаться от текущей цены', 'Das Ziel muss vom aktuellen Kurs abweichen', 'The target must differ from the current price', 'Ціль має відрізнятися від поточної ціни'],
+        'tgt.created.chat': ['Цель создана: {l} — {p} ({pct} от {e}). Сообщу, когда цена дойдёт.', 'Ziel erstellt: {l} — {p} ({pct} ab {e}). Ich melde mich, sobald der Kurs es erreicht.', 'Target created: {l} — {p} ({pct} from {e}). I will tell you when the price gets there.', 'Ціль створено: {l} — {p} ({pct} від {e}). Повідомлю, коли ціна дійде.'],
+        'tgt.created.toast': ['🎯 Цель для {l} создана — см. «{s}»', '🎯 Ziel für {l} erstellt — siehe „{s}“', '🎯 Target for {l} created — see “{s}”', '🎯 Ціль для {l} створено — див. «{s}»'],
+        'tgt.hit': ['🎯 Цель достигнута: {l} — {p} ({pct}). Позиция {a} → {v}.', '🎯 Ziel erreicht: {l} — {p} ({pct}). Position {a} → {v}.', '🎯 Target hit: {l} — {p} ({pct}). Position {a} → {v}.', '🎯 Ціль досягнута: {l} — {p} ({pct}). Позиція {a} → {v}.'],
+        'tgt.notif': ['CryptoPro: цель достигнута', 'CryptoPro: Ziel erreicht', 'CryptoPro: target hit', 'CryptoPro: ціль досягнута'],
+        'tgt.empty': ['Целей пока нет.<br>Нажмите «🎯 Цель» у монеты, сигнала или мемкоина.', 'Noch keine Ziele.<br>Tippe bei einem Coin, Signal oder Memecoin auf „🎯 Ziel“.', 'No targets yet.<br>Tap “🎯 Target” on a coin, signal or memecoin.', 'Цілей поки немає.<br>Натисніть «🎯 Ціль» біля монети, сигналу чи мемкоїна.'],
+        'tgt.hitbadge': ['✅ Достигнута', '✅ Erreicht', '✅ Hit', '✅ Досягнута'],
+        'tgt.active': ['Активна', 'Aktiv', 'Active', 'Активна'],
+        'tgt.del': ['Удалить цель {l}', 'Ziel {l} löschen', 'Delete target {l}', 'Видалити ціль {l}'],
+        'tgt.delt': ['Удалить', 'Löschen', 'Delete', 'Видалити'],
+        'tgt.entry': ['Вход {e} → цель {t}', 'Einstieg {e} → Ziel {t}', 'Entry {e} → target {t}', 'Вхід {e} → ціль {t}'],
+        'tgt.hitat': ['Сработала:', 'Ausgelöst:', 'Triggered:', 'Спрацювала:'],
+        'tgt.nowl': ['Сейчас:', 'Aktuell:', 'Now:', 'Зараз:'],
+        'tgt.panel': ['🎯 Мои цели', '🎯 Meine Ziele', '🎯 My targets', '🎯 Мої цілі'],
+        'tgt.clear': ['Убрать достигнутые', 'Erreichte entfernen', 'Remove hit', 'Прибрати досягнуті'],
+        'tgt.panelnote': ['Цель создаётся кнопкой «🎯 Цель» у монеты, сигнала или мемкоина. Оповещения приходят, пока терминал открыт в браузере.', 'Ziele legst du mit „🎯 Ziel“ bei einem Coin, Signal oder Memecoin an. Benachrichtigungen kommen, solange das Terminal im Browser offen ist.', 'Create a target with “🎯 Target” on a coin, signal or memecoin. Alerts arrive while the terminal is open in the browser.', 'Ціль створюється кнопкою «🎯 Ціль» біля монети, сигналу чи мемкоїна. Сповіщення приходять, поки термінал відкритий у браузері.'],
+        'tgt.cleared': ['Убрано достигнутых целей: {n}', 'Erreichte Ziele entfernt: {n}', 'Removed hit targets: {n}', 'Прибрано досягнутих цілей: {n}'],
+        'tgt.nohit': ['Достигнутых целей нет', 'Keine erreichten Ziele', 'No hit targets', 'Досягнутих цілей немає'],
+
+        // Favoriten
+        'fav.sub': ['Сохранённые монеты, арбитражные пары, сигналы и токены с актуальными значениями.', 'Gespeicherte Coins, Arbitrage-Paare, Signale und Token mit aktuellen Werten.', 'Saved coins, arbitrage pairs, signals and tokens with live values.', 'Збережені монети, арбітражні пари, сигнали й токени з актуальними значеннями.'],
+        'fav.empty': ['Избранное пока пусто. Нажмите ★ у монеты, пары, сигнала или токена.', 'Noch keine Favoriten. Tippe auf ★ bei einem Coin, Paar, Signal oder Token.', 'No favorites yet. Tap ★ on a coin, pair, signal or token.', 'Обране поки порожнє. Натисніть ★ біля монети, пари, сигналу чи токена.'],
+        'fav.kind.coin': ['Монета', 'Coin', 'Coin', 'Монета'],
+        'fav.kind.arb': ['Арбитраж', 'Arbitrage', 'Arbitrage', 'Арбітраж'],
+        'fav.kind.sig': ['Сигнал', 'Signal', 'Signal', 'Сигнал'],
+        'fav.kind.meme': ['Мемкоин', 'Memecoin', 'Memecoin', 'Мемкоїн'],
+        'fav.24h': ['за 24ч', 'in 24h', 'in 24h', 'за 24год'],
+        'fav.loading': ['Загрузка данных…', 'Daten werden geladen…', 'Loading data…', 'Завантаження даних…'],
+        'fav.arb': ['{b} → {s} · спред {sp} · итог {n}', '{b} → {s} · Spread {sp} · Ergebnis {n}', '{b} → {s} · spread {sp} · result {n}', '{b} → {s} · спред {sp} · підсумок {n}'],
+        'fav.insufficient': ['Недостаточно данных', 'Zu wenig Daten', 'Not enough data', 'Недостатньо даних'],
+        'fav.nosig': ['Индикаторы ещё не загружены', 'Indikatoren noch nicht geladen', 'Indicators not loaded yet', 'Індикатори ще не завантажені'],
+        'fav.remove': ['Удалить из избранного', 'Aus Favoriten entfernen', 'Remove from favorites', 'Видалити з обраного'],
+        'fav.removed': ['Удалено из избранного', 'Aus Favoriten entfernt', 'Removed from favorites', 'Видалено з обраного'],
+        'fav.added': ['⭐ Добавлено в избранное', '⭐ Zu Favoriten hinzugefügt', '⭐ Added to favorites', '⭐ Додано до обраного'],
+        'fav.aria': ['В избранное: {l}', 'Favorit: {l}', 'Favorite: {l}', 'До обраного: {l}'],
+        'fav.title': ['Избранное', 'Favorit', 'Favorite', 'Обране'],
+        'fav.in': ['★ В избранном', '★ In Favoriten', '★ In favorites', '★ В обраному'],
+        'fav.add': ['☆ В избранное', '☆ Zu Favoriten', '☆ Add to favorites', '☆ До обраного'],
+
+        // Assistent
+        'ai.sub': ['Локальный помощник отвечает по живым данным терминала и следит за вашими целями. Это не ИИ и не финансовый советник.', 'Der lokale Assistent antwortet mit den Live-Daten des Terminals und überwacht deine Ziele. Er ist keine KI und keine Finanzberatung.', 'The local assistant answers from the terminal’s live data and watches your targets. It is not an AI and not financial advice.', 'Локальний помічник відповідає за живими даними термінала й стежить за вашими цілями. Це не ШІ і не фінансовий радник.'],
+        'ai.ph': ['Например: цена SOL, сигнал BTC, арбитраж', 'z. B.: Kurs SOL, Signal BTC, Arbitrage', 'e.g. SOL price, BTC signal, arbitrage', 'Наприклад: ціна SOL, сигнал BTC, арбітраж'],
+        'ai.aria': ['Сообщение ассистенту', 'Nachricht an den Assistenten', 'Message to the assistant', 'Повідомлення асистенту'],
+        'ai.send': ['Отправить', 'Senden', 'Send', 'Надіслати'],
+        'chip.prices': ['💱 Цены BTC, ETH, SOL', '💱 Kurse BTC, ETH, SOL', '💱 BTC, ETH, SOL prices', '💱 Ціни BTC, ETH, SOL'],
+        'q.prices': ['Цены BTC, ETH и SOL', 'Kurse von BTC, ETH und SOL', 'Prices of BTC, ETH and SOL', 'Ціни BTC, ETH і SOL'],
+        'chip.arb': ['📈 Лучший арбитраж', '📈 Beste Arbitrage', '📈 Best arbitrage', '📈 Найкращий арбітраж'],
+        'q.arb': ['Лучший арбитраж сейчас', 'Beste Arbitrage gerade', 'Best arbitrage right now', 'Найкращий арбітраж зараз'],
+        'chip.sig': ['📊 Сигналы', '📊 Signale', '📊 Signals', '📊 Сигнали'],
+        'q.sig': ['Сигналы по индикаторам', 'Signale nach Indikatoren', 'Signals from indicators', 'Сигнали за індикаторами'],
+        'chip.meme': ['🚀 Тренды мемкоинов', '🚀 Memecoins im Trend', '🚀 Trending memecoins', '🚀 Тренди мемкоїнів'],
+        'q.meme': ['Трендовые мемкоины', 'Memecoins im Trend', 'Trending memecoins', 'Трендові мемкоїни'],
+        'chip.tgt': ['🎯 Мои цели', '🎯 Meine Ziele', '🎯 My targets', '🎯 Мої цілі'],
+        'q.tgt': ['Мои цели', 'Meine Ziele', 'My targets', 'Мої цілі'],
+        'chip.fee': ['💸 Комиссии', '💸 Gebühren', '💸 Fees', '💸 Комісії'],
+        'q.fee': ['Какие комиссии учитываются?', 'Welche Gebühren werden berücksichtigt?', 'Which fees are included?', 'Які комісії враховуються?'],
+        'ai.greet': ['Привет! Я локальный ассистент терминала: отвечаю по живым данным — ценам, арбитражу, сигналам и мемкоинам — и слежу за вашими ценовыми целями.\n\nСпросите, например: «цена SOL», «лучший арбитраж» или «сигнал BTC». Я не ИИ и не даю финансовых советов.', 'Hallo! Ich bin der lokale Assistent des Terminals: Ich antworte mit Live-Daten zu Kursen, Arbitrage, Signalen und Memecoins und überwache deine Preisziele.\n\nFrag zum Beispiel: „Kurs SOL“, „beste Arbitrage“ oder „Signal BTC“. Ich bin keine KI und gebe keine Finanzberatung.', 'Hi! I am the terminal’s local assistant: I answer from live data on prices, arbitrage, signals and memecoins, and I watch your price targets.\n\nTry: “SOL price”, “best arbitrage” or “BTC signal”. I am not an AI and do not give financial advice.', 'Привіт! Я локальний асистент термінала: відповідаю за живими даними — цінами, арбітражем, сигналами й мемкоїнами — і стежу за вашими ціновими цілями.\n\nСпитайте, наприклад: «ціна SOL», «найкращий арбітраж» або «сигнал BTC». Я не ШІ й не даю фінансових порад.'],
+        'ai.thinking': ['Смотрю данные…', 'Schaue in die Daten…', 'Checking the data…', 'Дивлюся дані…'],
+        'ai.fail': ['Не удалось получить данные. Попробуйте ещё раз чуть позже.', 'Daten konnten nicht abgerufen werden. Bitte gleich nochmal versuchen.', 'Could not fetch the data. Please try again shortly.', 'Не вдалося отримати дані. Спробуйте ще раз трохи пізніше.'],
+        'ai.help': ['Я понимаю такие запросы:\n• «цена SOL» или «курс BTC и ETH»\n• «лучший арбитраж» или «арбитраж XRP»\n• «сигнал BTC» или «сигналы»\n• «трендовые мемкоины»\n• «мои цели»\n• «какие комиссии учитываются»\n\nЦель можно поставить кнопкой «🎯 Цель» у любой монеты, сигнала или мемкоина.', 'Ich verstehe zum Beispiel:\n• „Kurs SOL“ oder „Preis BTC und ETH“\n• „beste Arbitrage“ oder „Arbitrage XRP“\n• „Signal BTC“ oder „Signale“\n• „Memecoins im Trend“\n• „meine Ziele“\n• „welche Gebühren werden berücksichtigt“\n\nEin Ziel setzt du mit „🎯 Ziel“ bei jedem Coin, Signal oder Memecoin.', 'I understand requests like:\n• “SOL price” or “BTC and ETH price”\n• “best arbitrage” or “XRP arbitrage”\n• “BTC signal” or “signals”\n• “trending memecoins”\n• “my targets”\n• “which fees are included”\n\nSet a target with “🎯 Target” on any coin, signal or memecoin.', 'Я розумію такі запити:\n• «ціна SOL» або «курс BTC і ETH»\n• «найкращий арбітраж» або «арбітраж XRP»\n• «сигнал BTC» або «сигнали»\n• «трендові мемкоїни»\n• «мої цілі»\n• «які комісії враховуються»\n\nЦіль можна поставити кнопкою «🎯 Ціль» біля будь-якої монети, сигналу чи мемкоїна.'],
+        'ai.price.loading': ['{c}: цена ещё загружается', '{c}: Kurs wird noch geladen', '{c}: price still loading', '{c}: ціна ще завантажується'],
+        'ai.price.line': ['{c}: {p} ({ch} за 24ч)', '{c}: {p} ({ch} in 24h)', '{c}: {p} ({ch} in 24h)', '{c}: {p} ({ch} за 24год)'],
+        'ai.fromcache': [' — из кэша', ' — aus dem Cache', ' — cached', ' — з кешу'],
+        'ai.source': ['Источник: {s}.', 'Quelle: {s}.', 'Source: {s}.', 'Джерело: {s}.'],
+        'src.ws': ['Binance (реальное время)', 'Binance (Echtzeit)', 'Binance (real time)', 'Binance (реальний час)'],
+        'src.cache': ['кэш', 'Cache', 'cache', 'кеш'],
+        'ai.arb.nodata': ['Пока недостаточно цен с бирж для расчёта. Попробуйте через минуту.', 'Noch nicht genug Börsenkurse für die Berechnung. Versuch es in einer Minute erneut.', 'Not enough exchange prices yet. Try again in a minute.', 'Поки недостатньо цін з бірж для розрахунку. Спробуйте за хвилину.'],
+        'ai.arb.head': ['Лучшие связки на капитал {cap}:', 'Beste Paare für Kapital {cap}:', 'Best routes for capital {cap}:', 'Найкращі зв’язки на капітал {cap}:'],
+        'ai.arb.line': ['{c}: купить на {b} {a} → продать на {s} {bid}, спред {sp}, итог {n}', '{c}: kaufen auf {b} {a} → verkaufen auf {s} {bid}, Spread {sp}, Ergebnis {n}', '{c}: buy on {b} {a} → sell on {s} {bid}, spread {sp}, result {n}', '{c}: купити на {b} {a} → продати на {s} {bid}, спред {sp}, підсумок {n}'],
+        'ai.arb.foot': ['Прибыльных после комиссий: {p} из {n}. Итог = продажа по bid − покупка по ask − торговые комиссии обеих бирж − комиссия вывода.', 'Profitabel nach Gebühren: {p} von {n}. Ergebnis = Verkauf zum Bid − Kauf zum Ask − Handelsgebühren beider Börsen − Auszahlungsgebühr.', 'Profitable after fees: {p} of {n}. Result = sell at bid − buy at ask − trading fees on both exchanges − withdrawal fee.', 'Прибуткових після комісій: {p} з {n}. Підсумок = продаж за bid − купівля за ask − торгові комісії обох бірж − комісія виведення.'],
+        'ai.sig.na': ['Индикаторы сейчас недоступны — не удалось загрузить свечи Binance.', 'Indikatoren gerade nicht verfügbar — Binance-Kerzen konnten nicht geladen werden.', 'Indicators unavailable — could not load Binance candles.', 'Індикатори зараз недоступні — не вдалося завантажити свічки Binance.'],
+        'ai.sig.none': ['На таймфрейме {tf} сейчас нет монет с подтверждённым сигналом. Откройте раздел «{s}», чтобы посмотреть все индикаторы.', 'Auf dem Zeitrahmen {tf} hat gerade kein Coin ein bestätigtes Signal. Im Bereich „{s}“ siehst du alle Indikatoren.', 'No coin has a confirmed signal on {tf} right now. Open “{s}” to see all indicators.', 'На таймфреймі {tf} зараз немає монет із підтвердженим сигналом. Відкрийте розділ «{s}», щоб переглянути всі індикатори.'],
+        'ai.sig.foot': ['Расчёт по EMA 20/50, RSI 14 и ATR 14. Это не финансовая рекомендация.', 'Berechnet aus EMA 20/50, RSI 14 und ATR 14. Keine Finanzberatung.', 'Based on EMA 20/50, RSI 14 and ATR 14. Not financial advice.', 'Розрахунок за EMA 20/50, RSI 14 і ATR 14. Це не фінансова рекомендація.'],
+        'ai.meme.na': ['Список пулов сейчас недоступен. Попробуйте обновить раздел «{s}».', 'Die Pool-Liste ist gerade nicht verfügbar. Aktualisiere den Bereich „{s}“.', 'The pool list is unavailable. Try refreshing “{s}”.', 'Список пулів зараз недоступний. Спробуйте оновити розділ «{s}».'],
+        'ai.meme.head': ['Топ по объёму ({net}, {src}):', 'Top nach Volumen ({net}, {src}):', 'Top by volume ({net}, {src}):', 'Топ за обсягом ({net}, {src}):'],
+        'ai.meme.line': ['{n}: {p}, 24ч {ch}, ликвидность {l}, риск: {r}', '{n}: {p}, 24h {ch}, Liquidität {l}, Risiko: {r}', '{n}: {p}, 24h {ch}, liquidity {l}, risk: {r}', '{n}: {p}, 24год {ch}, ліквідність {l}, ризик: {r}'],
+        'ai.meme.foot': ['Мемкоины крайне волатильны — используйте только деньги, которые готовы потерять.', 'Memecoins sind extrem volatil — setze nur Geld ein, dessen Verlust du verkraften kannst.', 'Memecoins are extremely volatile — only use money you can afford to lose.', 'Мемкоїни вкрай волатильні — використовуйте лише гроші, які готові втратити.'],
+        'ai.tgt.none': ['Целей пока нет. Нажмите «🎯 Цель» у монеты, сигнала или мемкоина — я сообщу, когда цена дойдёт.', 'Noch keine Ziele. Tippe bei einem Coin, Signal oder Memecoin auf „🎯 Ziel“ — ich melde mich, sobald der Kurs es erreicht.', 'No targets yet. Tap “🎯 Target” on a coin, signal or memecoin — I will tell you when the price gets there.', 'Цілей поки немає. Натисніть «🎯 Ціль» біля монети, сигналу чи мемкоїна — я повідомлю, коли ціна дійде.'],
+        'ai.tgt.head': ['Активных целей: {n}', 'Aktive Ziele: {n}', 'Active targets: {n}', 'Активних цілей: {n}'],
+        'ai.tgt.line': ['• {l}: цель {t}, сейчас {c}', '• {l}: Ziel {t}, aktuell {c}', '• {l}: target {t}, now {c}', '• {l}: ціль {t}, зараз {c}'],
+        'ai.tgt.hit': ['Достигнуто: {n}', 'Erreicht: {n}', 'Hit: {n}', 'Досягнуто: {n}'],
+        'ai.fees': ['Торговые комиссии (тейкер): {f}.\nКомиссия вывода монеты: {w} — это ориентировочные значения сети.\nВсё можно изменить в настройках (иконка профиля справа вверху).', 'Handelsgebühren (Taker): {f}.\nAuszahlungsgebühr: {w} — das sind ungefähre Netzwerkwerte.\nAlles lässt sich in den Einstellungen ändern (Profil-Symbol oben rechts).', 'Trading fees (taker): {f}.\nWithdrawal fee: {w} — these are approximate network values.\nYou can change everything in settings (profile icon, top right).', 'Торгові комісії (тейкер): {f}.\nКомісія виведення монети: {w} — це орієнтовні значення мережі.\nУсе можна змінити в налаштуваннях (іконка профілю праворуч угорі).'],
+
+        // Einstellungen
+        'set.title': ['⚙️ Настройки', '⚙️ Einstellungen', '⚙️ Settings', '⚙️ Налаштування'],
+        'set.lang': ['Язык интерфейса', 'Sprache der Oberfläche', 'Interface language', 'Мова інтерфейсу'],
+        'set.name': ['Имя (для аватара)', 'Name (für den Avatar)', 'Name (for the avatar)', 'Ім’я (для аватара)'],
+        'set.name.ph': ['Например: Alex Trader', 'z. B. Alex Trader', 'e.g. Alex Trader', 'Наприклад: Alex Trader'],
+        'set.fees': ['Торговые комиссии бирж (тейкер, %) — укажите свой уровень', 'Handelsgebühren der Börsen (Taker, %) — trage deine Stufe ein', 'Exchange trading fees (taker, %) — enter your tier', 'Торгові комісії бірж (тейкер, %) — вкажіть свій рівень'],
+        'set.fee.aria': ['Комиссия {ex}', 'Gebühr {ex}', 'Fee {ex}', 'Комісія {ex}'],
+        'set.wd': ['Учитывать комиссию вывода монеты в арбитраже', 'Auszahlungsgebühr in der Arbitrage berücksichtigen', 'Include the coin withdrawal fee in arbitrage', 'Враховувати комісію виведення монети в арбітражі'],
+        'set.notif': ['Системные уведомления: {s}', 'Systembenachrichtigungen: {s}', 'System notifications: {s}', 'Системні сповіщення: {s}'],
+        'set.notif.granted': ['включены', 'aktiviert', 'enabled', 'увімкнені'],
+        'set.notif.denied': ['запрещены в браузере', 'im Browser blockiert', 'blocked in the browser', 'заборонені в браузері'],
+        'set.notif.default': ['не включены', 'nicht aktiviert', 'not enabled', 'не увімкнені'],
+        'set.notif.unsupported': ['не поддерживаются', 'nicht unterstützt', 'not supported', 'не підтримуються'],
+        'set.enable': ['Включить', 'Aktivieren', 'Enable', 'Увімкнути'],
+        'set.feesreset': ['Сбросить комиссии', 'Gebühren zurücksetzen', 'Reset fees', 'Скинути комісії'],
+        'set.reset': ['Удалить избранное и цели', 'Favoriten und Ziele löschen', 'Delete favorites and targets', 'Видалити обране й цілі'],
+        'set.note': ['Настройки, избранное и цели хранятся только в этом браузере.', 'Einstellungen, Favoriten und Ziele werden nur in diesem Browser gespeichert.', 'Settings, favorites and targets are stored only in this browser.', 'Налаштування, обране й цілі зберігаються лише в цьому браузері.'],
+        'set.feesreset.toast': ['Комиссии сброшены к стандартным', 'Gebühren auf Standard zurückgesetzt', 'Fees reset to defaults', 'Комісії скинуто до стандартних'],
+        'set.confirm': ['Удалить всё избранное и все цели?', 'Alle Favoriten und Ziele löschen?', 'Delete all favorites and targets?', 'Видалити все обране й усі цілі?'],
+        'set.deleted': ['Избранное и цели удалены', 'Favoriten und Ziele gelöscht', 'Favorites and targets deleted', 'Обране й цілі видалено']
+    };
+
+    let lang = 'ru';
+    function t(key, vars) {
+        const e = STR[key];
+        let s = e ? (e[LANG_IDX[lang]] ?? e[2] ?? e[0]) : key;
+        if (vars) s = s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] ?? m));
+        return s;
+    }
+    const errText = (code) => (STR[code] ? t(code) : String(code || t('err.generic')));
+    function detectLang(saved) {
+        if (LANGS[saved]) return saved;
+        const list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+        for (const l of list) {
+            const c = String(l).slice(0, 2).toLowerCase();
+            if (LANGS[c]) return c;
+            if (c === 'be' || c === 'kk') return 'ru';
+        }
+        return 'en';
+    }
 
     /* =====================================================================
        Konfiguration
@@ -1033,15 +1435,15 @@
 
     // wd = ungefähre Netzwerk-Auszahlungsgebühr in Coin-Einheiten (variiert je nach Börse und Netz)
     const COINS = {
-        BTC:  { name: 'Bitcoin',       color: '#F7931A', glyph: '₿', cg: 'bitcoin',          wd: 0.0002, kraken: 'XBTUSDT', aliases: ['биткоин', 'биток', 'биткойн', 'bitcoin'] },
-        ETH:  { name: 'Ethereum',      color: '#627EEA', glyph: 'Ξ', cg: 'ethereum',         wd: 0.0015, aliases: ['эфир', 'эфириум', 'ethereum'] },
+        BTC:  { name: 'Bitcoin',       color: '#F7931A', glyph: '₿', cg: 'bitcoin',          wd: 0.0002, kraken: 'XBTUSDT', aliases: ['биткоин', 'биток', 'биткойн', 'біткоїн', 'біткойн', 'bitcoin'] },
+        ETH:  { name: 'Ethereum',      color: '#627EEA', glyph: 'Ξ', cg: 'ethereum',         wd: 0.0015, aliases: ['эфир', 'эфириум', 'ефір', 'етер', 'ethereum', 'ether'] },
         SOL:  { name: 'Solana',        color: '#9945FF', glyph: 'S', cg: 'solana',           wd: 0.01,   aliases: ['солана', 'solana'] },
-        XRP:  { name: 'XRP',           color: '#4b5563', glyph: 'X', cg: 'ripple',           wd: 0.25,   aliases: ['рипл', 'ripple'] },
+        XRP:  { name: 'XRP',           color: '#4b5563', glyph: 'X', cg: 'ripple',           wd: 0.25,   aliases: ['рипл', 'ріпл', 'ripple'] },
         GRAM: { name: 'Gram (ex-TON)', color: '#0098EA', glyph: 'G', cg: 'the-open-network', wd: 0.05,   kraken: 'TONUSDT', krakenBase: 'TON', no: ['Coinbase'], aliases: ['ton', 'тон', 'грам', 'toncoin'] },
-        SUI:  { name: 'Sui',           color: '#4DA2FF', glyph: 'S', cg: 'sui',              wd: 0.1,    no: ['Kraken', 'Coinbase'], aliases: ['суи'] },
+        SUI:  { name: 'Sui',           color: '#4DA2FF', glyph: 'S', cg: 'sui',              wd: 0.1,    no: ['Kraken', 'Coinbase'], aliases: ['суи', 'суї'] },
         DOGE: { name: 'Dogecoin',      color: '#C2A633', glyph: 'Ð', cg: 'dogecoin',         wd: 5,      kraken: 'XDGUSDT', aliases: ['доге', 'додж', 'dogecoin'] },
         AVAX: { name: 'Avalanche',     color: '#E84142', glyph: 'A', cg: 'avalanche-2',      wd: 0.01,   aliases: ['авакс', 'avalanche'] },
-        LINK: { name: 'Chainlink',     color: '#2A5ADA', glyph: '⬡', cg: 'chainlink',        wd: 0.5,    aliases: ['линк', 'chainlink'] },
+        LINK: { name: 'Chainlink',     color: '#2A5ADA', glyph: '⬡', cg: 'chainlink',        wd: 0.5,    aliases: ['линк', 'лінк', 'chainlink'] },
         ADA:  { name: 'Cardano',       color: '#0033AD', glyph: '₳', cg: 'cardano',          wd: 1,      aliases: ['кардано', 'cardano'] }
     };
     const COIN_CODES = Object.keys(COINS);
@@ -1060,10 +1462,10 @@
     const EX_NAMES = Object.keys(EXCHANGES);
 
     const TF = {
-        '15M': { api: '15m', tv: '15',  ttl: 60e3,  label: '15 минут' },
-        '1H':  { api: '1h',  tv: '60',  ttl: 120e3, label: '1 час' },
-        '4H':  { api: '4h',  tv: '240', ttl: 300e3, label: '4 часа' },
-        '1D':  { api: '1d',  tv: 'D',   ttl: 600e3, label: '1 день' }
+        '15M': { api: '15m', tv: '15',  ttl: 60e3 },
+        '1H':  { api: '1h',  tv: '60',  ttl: 120e3 },
+        '4H':  { api: '4h',  tv: '240', ttl: 300e3 },
+        '1D':  { api: '1d',  tv: 'D',   ttl: 600e3 }
     };
 
     const NETWORKS = {
@@ -1073,14 +1475,16 @@
         eth:    { label: 'Ethereum', ds: 'ethereum' }
     };
 
-    const TITLES = {
-        p2p: 'Межбиржевой арбитраж',
-        currencies: 'Курсы монет',
-        trading: 'Технические сигналы',
-        memecoins: 'Мемкоины и DEX',
-        assistant: 'Ассистент и цели',
-        favorites: 'Избранное'
+    const TAB_TITLE = {
+        p2p: 'title.p2p',
+        currencies: 'title.cur',
+        trading: 'title.sig',
+        memecoins: 'title.meme',
+        assistant: 'title.ai',
+        favorites: 'title.fav'
     };
+
+    const CHIPS = [['chip.prices', 'q.prices'], ['chip.arb', 'q.arb'], ['chip.sig', 'q.sig'], ['chip.meme', 'q.meme'], ['chip.tgt', 'q.tgt'], ['chip.fee', 'q.fee']];
 
     /* =====================================================================
        Hilfsfunktionen
@@ -1172,21 +1576,21 @@
     function fmtAge(ts) {
         if (!ts) return '—';
         const m = (Date.now() - ts) / 60e3;
-        if (m < 60) return `${Math.max(1, Math.round(m))} мин`;
+        if (m < 60) return t('age.m', { n: Math.max(1, Math.round(m)) });
         const h = m / 60;
-        if (h < 48) return `${Math.round(h)} ч`;
+        if (h < 48) return t('age.h', { n: Math.round(h) });
         const d = h / 24;
-        if (d < 60) return `${Math.round(d)} дн`;
-        return `${Math.round(d / 30)} мес`;
+        if (d < 60) return t('age.d', { n: Math.round(d) });
+        return t('age.mo', { n: Math.round(d / 30) });
     }
     function timeAgo(ts) {
         if (!ts) return '—';
         const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
-        if (s < 5) return 'только что';
-        if (s < 60) return `${s} с назад`;
+        if (s < 5) return t('ago.now');
+        if (s < 60) return t('ago.s', { n: s });
         const m = Math.round(s / 60);
-        if (m < 60) return `${m} мин назад`;
-        return `${Math.round(m / 60)} ч назад`;
+        if (m < 60) return t('ago.m', { n: m });
+        return t('ago.h', { n: Math.round(m / 60) });
     }
     const pctClass = (v) => v == null ? 'muted' : v >= 0 ? 'up' : 'down';
     function hashColor(str) {
@@ -1195,8 +1599,8 @@
         return `hsl(${h}, 55%, 42%)`;
     }
     function debounce(fn, ms) {
-        let t;
-        return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+        let timer;
+        return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
     }
 
     async function fetchJson(url, ms = 7000) {
@@ -1210,14 +1614,16 @@
             clearTimeout(timer);
         }
     }
+    // Liefert einen Fehlercode, der erst beim Anzeigen übersetzt wird
     function describeError(e) {
         const msg = String(e && e.message || e || '');
-        if (e && e.name === 'AbortError') return 'таймаут ответа';
-        if (/HTTP (403|451)/.test(msg)) return 'недоступно в вашем регионе';
-        if (/HTTP 429/.test(msg)) return 'лимит запросов, повтор позже';
+        if (e && e.name === 'AbortError') return 'err.timeout';
+        if (/HTTP (403|451)/.test(msg)) return 'err.region';
+        if (/HTTP 429/.test(msg)) return 'err.rate';
         if (/HTTP/.test(msg)) return msg;
-        if (/fetch|network|load/i.test(msg)) return 'нет доступа из браузера (CORS/сеть)';
-        return msg || 'ошибка';
+        if (/fetch|network|load/i.test(msg)) return 'err.cors';
+        if (STR[msg]) return msg;
+        return msg || 'err.generic';
     }
 
     /* =====================================================================
@@ -1238,6 +1644,7 @@
             withdrawFees: true,
             enabledEx: EX_NAMES.slice(),
             onlyProfit: false,
+            lang: '',
             ...savedSettings
         },
         favorites: LS.get('cp_favorites', []),
@@ -1248,13 +1655,15 @@
         sigSide: 'ALL',
         signals: {},         // tf -> { t, data: { code: analysis } }
         sigError: {},
+        sigTried: {},
         sigPromise: null,
         memes: { network: 'solana', mode: 'trending', query: '', sort: 'default', list: [], t: 0, tried: 0, key: '', loading: false, error: '', req: 0 },
-        sigTried: {},
         memePools: {},       // id -> pool (für Favoriten/Ziele)
-        memeTrackedT: 0
+        memeTrackedT: 0,
+        draft: null
     };
     state.settings.enabledEx = (state.settings.enabledEx || []).filter(e => EXCHANGES[e]);
+    lang = detectLang(state.settings.lang);
 
     function saveSettings() { LS.set('cp_settings', state.settings); }
     function getCapital() {
@@ -1280,10 +1689,11 @@
     }
 
     let lastFocus = null;
-    function openModal(titleHtml, bodyHtml) {
+    function openModal(titleHtml, bodyHtml, kind = '') {
         const modal = $('#modal');
         $('#modal-title').innerHTML = titleHtml;
         $('#modal-body').innerHTML = bodyHtml;
+        modal.dataset.kind = kind;
         if (!modal.classList.contains('open')) lastFocus = document.activeElement;
         modal.classList.add('open');
         modal.setAttribute('aria-hidden', 'false');
@@ -1295,6 +1705,7 @@
         if (!modal.classList.contains('open')) return;
         modal.classList.remove('open');
         modal.setAttribute('aria-hidden', 'true');
+        modal.dataset.kind = '';
         document.body.style.overflow = '';
         state.draft = null;
         setTimeout(() => { if (!modal.classList.contains('open')) $('#modal-body').innerHTML = ''; }, 200);
@@ -1317,7 +1728,7 @@
     }
     function starBtn(id, label) {
         const fav = isFav(id);
-        return `<button class="star-btn ${fav ? 'favorited' : ''}" data-action="fav" data-id="${esc(id)}" aria-pressed="${fav}" aria-label="В избранное: ${esc(label)}" title="Избранное">★</button>`;
+        return `<button class="star-btn ${fav ? 'favorited' : ''}" data-action="fav" data-id="${esc(id)}" aria-pressed="${fav}" aria-label="${esc(t('fav.aria', { l: label }))}" title="${esc(t('fav.title'))}">★</button>`;
     }
     function sparkline(values, wide = false) {
         if (!Array.isArray(values) || values.length < 2) return '<span class="muted">—</span>';
@@ -1332,14 +1743,48 @@
 
     // Platzhalter, falls ein Coin-/Token-Bild nicht lädt
     document.addEventListener('error', (e) => {
-        const t = e.target;
-        if (t && t.tagName === 'IMG' && t.parentElement && t.parentElement.matches('.coin-icon, .token-icon')) t.remove();
+        const el = e.target;
+        if (el && el.tagName === 'IMG' && el.parentElement && el.parentElement.matches('.coin-icon, .token-icon')) el.remove();
     }, true);
 
     function updateBadges() {
-        const active = state.targets.filter(t => t.status === 'active').length;
+        const active = state.targets.filter(tg => tg.status === 'active').length;
         $$('[data-badge="targets"]').forEach(el => { el.textContent = active ? String(active) : ''; });
         $$('[data-badge="favorites"]').forEach(el => { el.textContent = state.favorites.length ? String(state.favorites.length) : ''; });
+    }
+
+    /* =====================================================================
+       Übersetzung anwenden
+       ===================================================================== */
+    function applyI18n() {
+        document.documentElement.lang = lang;
+        $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+        $$('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+        $$('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+        $$('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
+        const meta = $('meta[name="description"]');
+        if (meta) meta.setAttribute('content', t('meta.desc'));
+        $('#lang-select').value = lang;
+        $('#chat-chips').innerHTML = CHIPS.map(([label, prompt]) => `<button class="chip" data-action="chat-prompt" data-text="${esc(t(prompt))}">${esc(t(label))}</button>`).join('');
+    }
+    function setLang(next) {
+        if (!LANGS[next] || next === lang) return;
+        const settingsOpen = modalOpen() && $('#modal').dataset.kind === 'settings';
+        lang = next;
+        state.settings.lang = next;
+        saveSettings();
+        applyI18n();
+        renderChrome();
+        renderCapital();
+        patchExchangeStatus();
+        renderSyncStatus();
+        renderTargets();
+        setArbButtonBusy(state.arb.loading);
+        const greet = $('#chat-box [data-greet]');
+        if (greet) greet.textContent = t('ai.greet');
+        switchTab(state.tab, false);
+        if (settingsOpen) openSettings();
+        else closeModal();
     }
 
     /* =====================================================================
@@ -1442,21 +1887,13 @@
         return `<span class="${cls}" data-live="change" data-code="${code}">${v == null ? '—' : fmtPct(v)}</span>`;
     };
 
-    const SYNC_MODES = {
-        connecting: ['…', 'Подключение к источникам цен…'],
-        cache: ['КЭШ', 'Показаны сохранённые цены, подключение к Binance…'],
-        ws: ['LIVE', 'Онлайн: Binance WebSocket, цены в реальном времени'],
-        rest: ['LIVE', 'Онлайн: Binance REST, обновление каждые 15 секунд'],
-        fallback: ['CG', 'Резерв: CoinGecko (Binance недоступен), обновление каждые 15 секунд'],
-        offline: ['OFFLINE', 'Нет соединения — показаны последние сохранённые цены']
-    };
+    const SYNC_LABEL = { connecting: '…', ws: 'LIVE', rest: 'LIVE', fallback: 'CG', offline: 'OFFLINE' };
     function renderSyncStatus() {
         let mode = Feed.mode;
         if (mode === 'connecting' && Object.keys(state.prices).length) mode = 'cache';
-        const [label, title] = SYNC_MODES[mode] || SYNC_MODES.connecting;
         $('#sync-dot').dataset.state = mode;
-        $('#sync-text').textContent = label;
-        $('#sync-pill').title = title;
+        $('#sync-text').textContent = mode === 'cache' ? t('sync.l.cache') : SYNC_LABEL[mode];
+        $('#sync-pill').title = t('sync.' + mode);
         $('#sync-age').textContent = state.lastPriceT ? timeAgo(state.lastPriceT) : '';
     }
 
@@ -1523,14 +1960,14 @@
                 const syms = JSON.stringify(COIN_CODES.map(c => c + 'USDT'));
                 const list = await fetchJson(`${BINANCE_REST}/ticker/24hr?symbols=${encodeURIComponent(syms)}`);
                 let n = 0;
-                (Array.isArray(list) ? list : []).forEach(t => {
-                    const code = String(t.symbol).replace(/USDT$/, '');
-                    if (COINS[code] && +t.lastPrice > 0) {
-                        setPrice(code, +t.lastPrice, +t.priceChangePercent, +t.bidPrice, +t.askPrice, 'rest');
+                (Array.isArray(list) ? list : []).forEach(tk => {
+                    const code = String(tk.symbol).replace(/USDT$/, '');
+                    if (COINS[code] && +tk.lastPrice > 0) {
+                        setPrice(code, +tk.lastPrice, +tk.priceChangePercent, +tk.bidPrice, +tk.askPrice, 'rest');
                         n++;
                     }
                 });
-                if (!n) throw new Error('пустой ответ');
+                if (!n) throw new Error('err.nodata');
                 if (!this.wsHealthy()) this.setMode('rest');
             } catch (_) {
                 try {
@@ -1541,7 +1978,7 @@
                         const e = data[COINS[code].cg];
                         if (e && e.usd > 0) { setPrice(code, e.usd, Number(e.usd_24h_change), null, null, 'cg'); n++; }
                     });
-                    if (!n) throw new Error('пустой ответ');
+                    if (!n) throw new Error('err.nodata');
                     if (!this.wsHealthy()) this.setMode('fallback');
                 } catch (_) {
                     if (!this.wsHealthy()) this.setMode('offline');
@@ -1603,7 +2040,7 @@
             if (r.status === 'fulfilled' && r.value[1]) quotes[r.value[0]] = r.value[1];
             else if (r.status === 'rejected' && !firstError) firstError = r.reason;
         });
-        if (!Object.keys(quotes).length) throw firstError || new Error('нет данных');
+        if (!Object.keys(quotes).length) throw firstError || new Error('err.nodata');
         return quotes;
     };
     const waitFor = (cond, ms) => new Promise(resolve => {
@@ -1631,7 +2068,7 @@
             try {
                 ws = new WebSocket('wss://stream.bybit.com/v5/public/spot');
             } catch (_) {
-                this.error = 'WebSocket недоступен';
+                this.error = 'err.ws';
                 return;
             }
             this.ws = ws;
@@ -1659,7 +2096,7 @@
                 clearInterval(this.ping);
                 if (this.ws !== ws) return;
                 this.ws = null;
-                this.error = this.t ? 'соединение прервано' : 'нет доступа (регион или сеть)';
+                this.error = this.t ? 'err.wsclosed' : 'err.wsnoaccess';
                 const delay = Math.min(120e3, 2000 * 2 ** this.retries);
                 this.retries = Math.min(this.retries + 1, 8);
                 this.timer = setTimeout(() => this.connect(), delay);
@@ -1679,7 +2116,7 @@
         Bybit: async () => {
             BybitFeed.ensure();
             await waitFor(() => BybitFeed.healthy() || (!BybitFeed.ws && BybitFeed.error), 4000);
-            if (!BybitFeed.healthy()) throw new Error(BybitFeed.error || 'нет данных');
+            if (!BybitFeed.healthy()) throw new Error(BybitFeed.error || 'err.nodata');
             return { ...BybitFeed.quotes };
         },
         'Gate.io': perCoin(
@@ -1700,12 +2137,12 @@
             const j = await fetchJson(`https://api.kraken.com/0/public/Ticker?pair=${Object.keys(map).join(',')}`);
             if (j.error && j.error.length) throw new Error(j.error.join(', '));
             const quotes = {};
-            Object.entries(j.result || {}).forEach(([key, t]) => {
+            Object.entries(j.result || {}).forEach(([key, tk]) => {
                 const code = map[key];
-                const q = quote(t.b && t.b[0], t.a && t.a[0]);
+                const q = quote(tk.b && tk.b[0], tk.a && tk.a[0]);
                 if (code && q) quotes[code] = q;
             });
-            if (!Object.keys(quotes).length) throw new Error('нет данных');
+            if (!Object.keys(quotes).length) throw new Error('err.nodata');
             return quotes;
         },
         Coinbase: perCoin(
@@ -1721,7 +2158,7 @@
             if (p && (p.src === 'ws' || p.src === 'rest') && Date.now() - p.t < 120e3 && p.bid && p.ask) quotes[code] = { bid: p.bid, ask: p.ask };
         });
         const ok = Object.keys(quotes).length > 0;
-        state.ex.Binance = { status: ok ? 'ok' : 'error', quotes, t: Date.now(), error: ok ? '' : 'нет живых данных Binance', fails: 0, nextTry: 0 };
+        state.ex.Binance = { status: ok ? 'ok' : 'error', quotes, t: Date.now(), error: ok ? '' : 'err.binance', fails: 0, nextTry: 0 };
     }
     function freshQuote(ex, code) {
         const s = state.ex[ex];
@@ -1767,7 +2204,7 @@
         const btn = $('#arb-refresh-btn');
         if (!btn) return;
         btn.disabled = busy;
-        btn.textContent = busy ? 'Загрузка…' : '↻ Обновить';
+        btn.textContent = busy ? t('btn.loading') : t('btn.refresh');
     }
 
     /* =====================================================================
@@ -1819,7 +2256,7 @@
             <button class="tick" data-action="tab" data-tab="currencies" title="${esc(COINS[code].name)}">
                 ${coinIcon(code, 'sm')}<b>${code}</b>${livePrice(code)}${liveChange(code, false)}
             </button>`).join('');
-        $('#coin-chips-bar').innerHTML = `<button class="coin-chip ${state.coinQuery ? '' : 'active'}" data-action="coin-chip" data-code="">Все монеты</button>` +
+        $('#coin-chips-bar').innerHTML = `<button class="coin-chip ${state.coinQuery ? '' : 'active'}" data-action="coin-chip" data-code="">${esc(t('p2p.allcoins'))}</button>` +
             COIN_CODES.map(code => `<button class="coin-chip ${state.coinQuery === code ? 'active' : ''}" data-action="coin-chip" data-code="${code}">${coinIcon(code, 'sm')} ${code}</button>`).join('');
     }
     function renderAvatar() {
@@ -1848,16 +2285,16 @@
             const dot = $('.status-dot', el);
             const st = s ? s.status : 'idle';
             dot.className = `status-dot ${st}`;
-            el.title = st === 'ok' ? `Онлайн · пар: ${Object.keys(s.quotes).length} · комиссия ${exFee(el.dataset.ex)}%`
-                : st === 'error' ? `Недоступна: ${s.error}` : 'Загрузка…';
+            el.title = st === 'ok' ? t('ex.title.ok', { n: Object.keys(s.quotes).length, fee: exFee(el.dataset.ex) })
+                : st === 'error' ? t('ex.title.err', { err: errText(s.error) }) : t('btn.loading');
         });
         updateExLabel();
     }
     function updateExLabel() {
         const n = state.settings.enabledEx.length;
         const online = EX_NAMES.filter(ex => state.ex[ex] && state.ex[ex].status === 'ok').length;
-        const label = n === EX_NAMES.length ? `Все биржи · онлайн ${online}/${EX_NAMES.length}` : n === 0 ? 'Биржи не выбраны' : `Выбрано бирж: ${n}`;
-        $('#dropdown-label').textContent = label;
+        $('#dropdown-label').textContent = n === EX_NAMES.length ? t('ex.all', { on: online, n: EX_NAMES.length })
+            : n === 0 ? t('ex.none') : t('ex.some', { n });
     }
     function toggleDropdown(open) {
         const panel = $('#dropdown-panel');
@@ -1889,13 +2326,13 @@
 
         const profitable = state.arb.rows.filter(r => r.best && r.best.net > 0).length;
         let hint = '';
-        if (!state.settings.enabledEx.length) hint = '<div class="hint warn">Выберите хотя бы две биржи в фильтре.</div>';
-        else if (!profitable) hint = '<div class="hint">Сейчас нет связок с прибылью после комиссий. Для ликвидных монет это нормально: спреды между крупными биржами обычно меньше суммы торговых комиссий и комиссии вывода.</div>';
-        if (!getCapital()) hint += '<div class="hint warn">Капитал не указан — расчёт показан для $1,000.</div>';
+        if (!state.settings.enabledEx.length) hint = `<div class="hint warn">${esc(t('p2p.hint.select'))}</div>`;
+        else if (!profitable) hint = `<div class="hint">${esc(t('p2p.hint.none'))}</div>`;
+        if (!getCapital()) hint += `<div class="hint warn">${esc(t('p2p.hint.cap'))}</div>`;
         $('#arb-hint').innerHTML = hint;
 
         if (!rows.length) {
-            const msg = state.settings.onlyProfit ? 'Прибыльных связок под выбранные фильтры нет' : 'Нет пар под выбранные фильтры';
+            const msg = esc(t(state.settings.onlyProfit ? 'p2p.empty.profit' : 'p2p.empty'));
             tbody.innerHTML = `<tr><td colspan="7" class="empty">${msg}</td></tr>`;
             grid.innerHTML = `<div class="empty">${msg}</div>`;
             return;
@@ -1907,100 +2344,100 @@
             if (!b) {
                 return `<tr class="dim">
                     <td>${starBtn('arb:' + r.code, pair)}</td>
-                    <td><div class="pair-cell">${coinIcon(r.code)}<div><strong>${pair}</strong><span class="sub">цена есть на ${r.quotes.length} бирж.</span></div></div></td>
-                    <td colspan="4">Недостаточно данных: нужны цены минимум с двух выбранных бирж</td>
-                    <td><button class="secondary-btn sm" data-action="arb-open" data-code="${r.code}">Цены</button></td>
+                    <td><div class="pair-cell">${coinIcon(r.code)}<div><strong>${pair}</strong><span class="sub">${esc(t('p2p.pricecount', { n: r.quotes.length }))}</span></div></div></td>
+                    <td colspan="4">${esc(t('p2p.insufficient'))}</td>
+                    <td><button class="secondary-btn sm" data-action="arb-open" data-code="${r.code}">${esc(t('btn.prices'))}</button></td>
                 </tr>`;
             }
             return `<tr>
                 <td>${starBtn('arb:' + r.code, pair)}</td>
-                <td><div class="pair-cell">${coinIcon(r.code)}<div><strong>${pair}</strong><span class="sub">цены с ${r.quotes.length} бирж</span></div></div></td>
+                <td><div class="pair-cell">${coinIcon(r.code)}<div><strong>${pair}</strong><span class="sub">${esc(t('p2p.priceson', { n: r.quotes.length }))}</span></div></div></td>
                 <td class="num">${fmtUsd(b.ask)}<div class="ex-cell">${exBadge(b.buyEx)} ${esc(b.buyEx)} · ${exFee(b.buyEx)}%</div></td>
                 <td class="num">${fmtUsd(b.bid)}<div class="ex-cell">${exBadge(b.sellEx)} ${esc(b.sellEx)} · ${exFee(b.sellEx)}%</div></td>
                 <td><span class="badge num ${b.spreadPct > 0 ? 'badge-green' : 'badge-red'}">${fmtPct(b.spreadPct, 3)}</span></td>
-                <td class="num strong ${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)}<span class="sub">${fmtPct(b.netPct, 3)} от капитала</span></td>
-                <td><button class="primary-btn sm" data-action="arb-open" data-code="${r.code}">Расчёт</button></td>
+                <td class="num strong ${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)}<span class="sub">${esc(t('p2p.ofcap', { v: fmtPct(b.netPct, 3) }))}</span></td>
+                <td><button class="primary-btn sm" data-action="arb-open" data-code="${r.code}">${esc(t('btn.calc'))}</button></td>
             </tr>`;
         }).join('');
 
         grid.innerHTML = rows.map(r => {
             const b = r.best;
             const pair = `${r.code}/USDT`;
-            return `<div class="signal-card" data-action="arb-open" data-code="${r.code}" role="button" tabindex="0" aria-label="Расчёт ${pair}">
+            return `<div class="signal-card" data-action="arb-open" data-code="${r.code}" role="button" tabindex="0" aria-label="${esc(t('p2p.calc.aria', { p: pair }))}">
                 <div class="card-top">
                     <div class="pair-name">${coinIcon(r.code)} ${pair} ${b ? `<span class="badge num ${b.spreadPct > 0 ? 'badge-green' : 'badge-red'}">${fmtPct(b.spreadPct, 3)}</span>` : ''}</div>
                     ${starBtn('arb:' + r.code, pair)}
                 </div>
                 ${b ? `
                 <div class="metrics">
-                    <div class="metric"><span>Купить · ${esc(b.buyEx)}</span><strong>${fmtUsd(b.ask)}</strong></div>
-                    <div class="metric"><span>Продать · ${esc(b.sellEx)}</span><strong>${fmtUsd(b.bid)}</strong></div>
-                    <div class="metric"><span>Результат</span><strong class="${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)}</strong></div>
-                </div>` : `<div class="reason">Недостаточно данных: цена есть на ${r.quotes.length} бирж.</div>`}
+                    <div class="metric"><span>${esc(t('p2p.card.buy', { ex: b.buyEx }))}</span><strong>${fmtUsd(b.ask)}</strong></div>
+                    <div class="metric"><span>${esc(t('p2p.card.sell', { ex: b.sellEx }))}</span><strong>${fmtUsd(b.bid)}</strong></div>
+                    <div class="metric"><span>${esc(t('p2p.card.result'))}</span><strong class="${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)}</strong></div>
+                </div>` : `<div class="reason">${esc(t('p2p.insufficient'))} (${esc(t('p2p.pricecount', { n: r.quotes.length }))})</div>`}
             </div>`;
         }).join('');
     }
     function renderArbSummary() {
         const el = $('#arb-summary');
-        if (!state.arb.t) { el.innerHTML = '<span>Загружаю цены с бирж…</span>'; return; }
+        if (!state.arb.t) { el.innerHTML = `<span>${esc(t('p2p.loading'))}</span>`; return; }
         const online = EX_NAMES.filter(ex => state.ex[ex] && state.ex[ex].status === 'ok').length;
         const profitable = state.arb.rows.filter(r => r.best && r.best.net > 0).length;
         el.innerHTML = `
-            <span>Бирж онлайн: <b>${online}/${EX_NAMES.length}</b></span>
-            <span>Прибыльных связок: <b class="${profitable ? 'up' : ''}">${profitable}/${COIN_CODES.length}</b></span>
-            <span>Комиссия вывода: <b>${state.settings.withdrawFees ? 'учитывается' : 'не учитывается'}</b></span>
-            <span>Обновлено: <b data-ago="${state.arb.t}">${timeAgo(state.arb.t)}</b></span>`;
+            <span>${esc(t('p2p.sum.online'))} <b>${online}/${EX_NAMES.length}</b></span>
+            <span>${esc(t('p2p.sum.profit'))} <b class="${profitable ? 'up' : ''}">${profitable}/${COIN_CODES.length}</b></span>
+            <span>${esc(t('p2p.sum.wd'))} <b>${esc(t(state.settings.withdrawFees ? 'wd.on' : 'wd.off'))}</b></span>
+            <span>${esc(t('sum.updated'))} <b data-ago="${state.arb.t}">${timeAgo(state.arb.t)}</b></span>`;
     }
 
     function openArbModal(code) {
         const row = state.arb.rows.find(r => r.code === code);
-        if (!row) { toast('Данные ещё загружаются', 'info'); return; }
+        if (!row) { toast(t('toast.loading')); return; }
         const b = row.best;
         const quoteRows = EX_NAMES.map(ex => {
             const s = state.ex[ex];
             const q = freshQuote(ex, code);
             const enabled = state.settings.enabledEx.includes(ex);
             let status;
-            if (!supports(ex, code)) status = '<span class="muted">нет пары</span>';
-            else if (!s || s.status === 'idle') status = '<span class="muted">загрузка</span>';
-            else if (s.status === 'error') status = `<span class="down" title="${esc(s.error)}">недоступна</span>`;
-            else if (!q) status = '<span class="muted">нет цены</span>';
-            else if (!row.quotes.some(x => x.ex === ex) && enabled) status = '<span class="down">отклонение</span>';
-            else status = enabled ? '<span class="up">онлайн</span>' : '<span class="muted">выключена</span>';
+            if (!supports(ex, code)) status = `<span class="muted">${esc(t('arb.st.nopair'))}</span>`;
+            else if (!s || s.status === 'idle') status = `<span class="muted">${esc(t('arb.st.loading'))}</span>`;
+            else if (s.status === 'error') status = `<span class="down" title="${esc(errText(s.error))}">${esc(t('arb.st.down'))}</span>`;
+            else if (!q) status = `<span class="muted">${esc(t('arb.st.noprice'))}</span>`;
+            else if (!row.quotes.some(x => x.ex === ex) && enabled) status = `<span class="down">${esc(t('arb.st.outlier'))}</span>`;
+            else status = enabled ? `<span class="up">${esc(t('arb.st.online'))}</span>` : `<span class="muted">${esc(t('arb.st.off'))}</span>`;
             const cls = b && ex === b.buyEx ? 'buy' : b && ex === b.sellEx ? 'sell' : '';
             return `<tr class="${cls}"><td><div class="pair-cell">${exBadge(ex)} ${esc(ex)}</div></td><td class="num right">${q ? fmtUsd(q.bid) : '—'}</td><td class="num right">${q ? fmtUsd(q.ask) : '—'}</td><td class="num right">${exFee(ex)}%</td><td>${status}</td></tr>`;
         }).join('');
 
         const calc = b ? `
             <div class="calc-box">
-                <div class="calc-row"><span>Капитал</span><strong class="num">${fmtUsd(b.capital)}</strong></div>
-                <div class="calc-row"><span>Покупка на ${esc(b.buyEx)} по ask ${fmtUsd(b.ask)}</span><strong class="num">${fmtUnits(b.coinsBought)} ${code}</strong></div>
-                <div class="calc-row"><span>Комиссия покупки (${exFee(b.buyEx)}%)</span><strong class="num down">−${fmtUsd(b.feeBuyUsd)}</strong></div>
-                <div class="calc-row"><span>Комиссия вывода (~${b.wdCoin} ${code})</span><strong class="num ${b.wdUsd ? 'down' : 'muted'}">${b.wdUsd ? '−' + fmtUsd(b.wdUsd) : 'не учитывается'}</strong></div>
-                <div class="calc-row"><span>Продажа на ${esc(b.sellEx)} по bid ${fmtUsd(b.bid)}</span><strong class="num">${fmtUnits(b.coinsArrived)} ${code}</strong></div>
-                <div class="calc-row"><span>Комиссия продажи (${exFee(b.sellEx)}%)</span><strong class="num down">−${fmtUsd(b.feeSellUsd)}</strong></div>
-                <div class="calc-row"><span>Спред до комиссий</span><strong class="num ${b.spreadPct >= 0 ? 'up' : 'down'}">${fmtPct(b.spreadPct, 3)}</strong></div>
-                <div class="calc-row total"><span>Чистый результат</span><strong class="num ${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)} (${fmtPct(b.netPct, 3)})</strong></div>
+                <div class="calc-row"><span>${esc(t('arb.capital'))}</span><strong class="num">${fmtUsd(b.capital)}</strong></div>
+                <div class="calc-row"><span>${esc(t('arb.buyon', { ex: b.buyEx, p: fmtUsd(b.ask) }))}</span><strong class="num">${fmtUnits(b.coinsBought)} ${code}</strong></div>
+                <div class="calc-row"><span>${esc(t('arb.feebuy', { f: exFee(b.buyEx) }))}</span><strong class="num down">−${fmtUsd(b.feeBuyUsd)}</strong></div>
+                <div class="calc-row"><span>${esc(t('arb.wd', { n: COINS[code].wd, c: code }))}</span><strong class="num ${b.wdUsd ? 'down' : 'muted'}">${b.wdUsd ? '−' + fmtUsd(b.wdUsd) : esc(t('wd.off'))}</strong></div>
+                <div class="calc-row"><span>${esc(t('arb.sellon', { ex: b.sellEx, p: fmtUsd(b.bid) }))}</span><strong class="num">${fmtUnits(b.coinsArrived)} ${code}</strong></div>
+                <div class="calc-row"><span>${esc(t('arb.feesell', { f: exFee(b.sellEx) }))}</span><strong class="num down">−${fmtUsd(b.feeSellUsd)}</strong></div>
+                <div class="calc-row"><span>${esc(t('arb.spread'))}</span><strong class="num ${b.spreadPct >= 0 ? 'up' : 'down'}">${fmtPct(b.spreadPct, 3)}</strong></div>
+                <div class="calc-row total"><span>${esc(t('th.net'))}</span><strong class="num ${b.net >= 0 ? 'up' : 'down'}">${fmtMoney(b.net)} (${fmtPct(b.netPct, 3)})</strong></div>
             </div>
             <div class="btn-row">
-                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES[b.buyEx].trade(code)))}" target="_blank" rel="noopener noreferrer">Купить на ${esc(b.buyEx)} ↗</a>
-                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES[b.sellEx].trade(code)))}" target="_blank" rel="noopener noreferrer">Продать на ${esc(b.sellEx)} ↗</a>
-            </div>` : '<div class="hint warn">Для расчёта нужны цены минимум с двух выбранных бирж.</div>';
+                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES[b.buyEx].trade(code)))}" target="_blank" rel="noopener noreferrer">${esc(t('arb.buybtn', { ex: b.buyEx }))}</a>
+                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES[b.sellEx].trade(code)))}" target="_blank" rel="noopener noreferrer">${esc(t('arb.sellbtn', { ex: b.sellEx }))}</a>
+            </div>` : `<div class="hint warn">${esc(t('arb.need2'))}</div>`;
 
-        openModal(`${coinIcon(code)} Арбитраж ${code}/USDT`, `
+        openModal(`${coinIcon(code)} ${esc(t('arb.title', { p: code + '/USDT' }))}`, `
             ${calc}
             <div class="table-container">
                 <table class="quote-table">
-                    <thead><tr><th>Биржа</th><th class="right">Bid (продажа)</th><th class="right">Ask (покупка)</th><th class="right">Комиссия</th><th>Статус</th></tr></thead>
+                    <thead><tr><th>${esc(t('arb.th.ex'))}</th><th class="right">${esc(t('arb.th.bid'))}</th><th class="right">${esc(t('arb.th.ask'))}</th><th class="right">${esc(t('arb.th.fee'))}</th><th>${esc(t('arb.th.status'))}</th></tr></thead>
                     <tbody>${quoteRows}</tbody>
                 </table>
             </div>
             <ul class="list">
-                <li>Расчёт по лучшей цене стакана без учёта глубины: на крупный капитал средняя цена будет хуже.</li>
-                <li>Перевод между биржами занимает от минут до часа — за это время спред может исчезнуть.</li>
-                <li>Перед переводом проверьте, что вывод и депозит в нужной сети открыты. Комиссии бирж можно изменить в настройках (иконка профиля).</li>
+                <li>${esc(t('arb.note1'))}</li>
+                <li>${esc(t('arb.note2'))}</li>
+                <li>${esc(t('arb.note3'))}</li>
             </ul>
-            <p class="note">Обновлено ${timeAgo(state.arb.t)}.</p>`);
+            <p class="note">${esc(t('upd.at', { t: timeAgo(state.arb.t) }))}</p>`);
     }
 
     /* =====================================================================
@@ -2015,20 +2452,20 @@
             : (x.m.mcap || 0);
         list.sort((a, b) => (val(a) - val(b)) * dir);
 
-        const th = (key, label, cls = '') => {
+        const th = (key, labelKey, cls = '') => {
             const active = sortKey === key;
             const arrow = active ? (dir < 0 ? '↓' : '↑') : '';
-            return `<th class="${cls}"><button class="th-sort ${active ? 'active' : ''}" data-action="cur-sort" data-key="${key}">${label} ${arrow}</button></th>`;
+            return `<th class="${cls}"><button class="th-sort ${active ? 'active' : ''}" data-action="cur-sort" data-key="${key}">${esc(t(labelKey))} ${arrow}</button></th>`;
         };
         $('#currencies-head').innerHTML = `<tr>
-            <th class="col-star"><span class="sr-only">Избранное</span></th>
-            <th>Монета</th>
-            ${th('price', 'Цена', 'right')}
-            ${th('change', '24ч')}
-            ${th('ch7d', '7 дней')}
-            ${th('mcap', 'Капитализация')}
-            <th>На ваш капитал</th>
-            <th><span class="sr-only">Действие</span></th>
+            <th class="col-star"><span class="sr-only">${esc(t('th.fav'))}</span></th>
+            <th>${esc(t('th.coin'))}</th>
+            ${th('price', 'th.price', 'right')}
+            ${th('change', 'th.24h')}
+            ${th('ch7d', 'th.7d')}
+            ${th('mcap', 'th.mcap')}
+            <th>${esc(t('th.yourcap'))}</th>
+            <th><span class="sr-only">${esc(t('th.action'))}</span></th>
         </tr>`;
 
         $('#currencies-table-body').innerHTML = list.map(({ code, p, m }) => `
@@ -2040,7 +2477,7 @@
                 <td><div class="pair-cell">${sparkline(m.spark)}<span class="num ${pctClass(m.ch7d)}" style="font-size:.75rem">${fmtPct(m.ch7d, 1)}</span></div></td>
                 <td class="num">${fmtCompact(m.mcap)}</td>
                 <td><span class="num" data-live="units" data-code="${code}">${p ? `${fmtUnits(getCapital() / p.price)} ${code}` : skel()}</span></td>
-                <td><button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">🎯 Цель</button></td>
+                <td><button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">${esc(t('btn.target'))}</button></td>
             </tr>`).join('');
 
         $('#currencies-card-grid').innerHTML = list.map(({ code, p, m }) => `
@@ -2055,8 +2492,8 @@
                 </div>
                 ${sparkline(m.spark, true)}
                 <div class="card-row">
-                    <span class="muted">На капитал: <span class="num" data-live="units" data-code="${code}">${p ? `${fmtUnits(getCapital() / p.price)} ${code}` : '—'}</span></span>
-                    <button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">🎯 Цель</button>
+                    <span class="muted">${esc(t('cur.oncap'))} <span class="num" data-live="units" data-code="${code}">${p ? `${fmtUnits(getCapital() / p.price)} ${code}` : '—'}</span></span>
+                    <button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">${esc(t('btn.target'))}</button>
                 </div>
             </div>`).join('');
     }
@@ -2102,12 +2539,12 @@
         const close = c[c.length - 1];
         const up = ema20 > ema50;
         let side = 'NEUTRAL', reason;
-        if (up && r >= 50 && r <= 70) { side = 'LONG'; reason = 'EMA 20 выше EMA 50, RSI подтверждает восходящий импульс.'; }
-        else if (!up && r >= 30 && r <= 50) { side = 'SHORT'; reason = 'EMA 20 ниже EMA 50, RSI подтверждает нисходящий импульс.'; }
-        else if (r > 70) reason = 'RSI выше 70 — перекупленность, вход по тренду рискован.';
-        else if (r < 30) reason = 'RSI ниже 30 — перепроданность, возможен отскок.';
-        else reason = up ? 'Тренд вверх, но RSI ниже 50 — нет подтверждения.' : 'Тренд вниз, но RSI выше 50 — нет подтверждения.';
-        return { close, ema20, ema50, rsi: r, atr: a, atrPct: a / close * 100, gapPct: (ema20 / ema50 - 1) * 100, side, reason, spark: c.slice(-60) };
+        if (up && r >= 50 && r <= 70) { side = 'LONG'; reason = 'sig.r.long'; }
+        else if (!up && r >= 30 && r <= 50) { side = 'SHORT'; reason = 'sig.r.short'; }
+        else if (r > 70) reason = 'sig.r.ob';
+        else if (r < 30) reason = 'sig.r.os';
+        else reason = up ? 'sig.r.upnc' : 'sig.r.downnc';
+        return { close, ema20, ema50, rsi: r, atr: a, atrPct: a / close * 100, gapPct: (ema20 / ema50 - 1) * 100, side, reason };
     }
     function signalLevels(code, sig) {
         const p = state.prices[code];
@@ -2116,6 +2553,7 @@
         if (sig.side === 'SHORT') return { entry, tp: entry - 2 * sig.atr, sl: entry + sig.atr };
         return { entry, tp: null, sl: null };
     }
+    const sideLabel = (side, upper = true) => side === 'NEUTRAL' ? t(upper ? 'sig.neutral' : 'sig.neutral.l') : side;
 
     function loadSignals(force = false) {
         const tf = state.tf;
@@ -2130,7 +2568,10 @@
             const data = {};
             results.forEach(r => { if (r.status === 'fulfilled' && r.value[1]) data[r.value[0]] = r.value[1]; });
             if (Object.keys(data).length) { state.signals[tf] = { t: Date.now(), data }; state.sigError[tf] = ''; }
-            else state.sigError[tf] = describeError(results.find(r => r.status === 'rejected')?.reason || 'нет данных');
+            else {
+                const failed = results.find(r => r.status === 'rejected');
+                state.sigError[tf] = describeError(failed ? failed.reason : 'err.nodata');
+            }
         })().finally(() => {
             if (state.sigPromise === promise) state.sigPromise = null;
             if (state.tab === 'trading' && state.tf === tf) renderSignals();
@@ -2152,9 +2593,9 @@
         if (!cache) {
             if (state.sigError[state.tf] && !state.sigPromise) {
                 summary.innerHTML = '';
-                grid.innerHTML = `<div class="error-box" style="grid-column:1/-1">Не удалось загрузить свечи: ${esc(state.sigError[state.tf])}<button class="secondary-btn" data-action="sig-refresh">Повторить</button></div>`;
+                grid.innerHTML = `<div class="error-box" style="grid-column:1/-1">${esc(t('sig.loaderr', { err: errText(state.sigError[state.tf]) }))}<button class="secondary-btn" data-action="sig-refresh">${esc(t('btn.retry'))}</button></div>`;
             } else {
-                summary.innerHTML = '<span>Загружаю свечи Binance…</span>';
+                summary.innerHTML = `<span>${esc(t('sig.loading'))}</span>`;
                 grid.innerHTML = Array.from({ length: 6 }, () => '<div class="skel skel-card"></div>').join('');
             }
             return;
@@ -2162,47 +2603,46 @@
 
         const entries = COIN_CODES.filter(c => cache.data[c]).map(code => ({ code, sig: cache.data[code] }));
         const order = { LONG: 0, SHORT: 0, NEUTRAL: 1 };
-        let list = entries.filter(x => state.sigSide === 'ALL' || x.sig.side === state.sigSide);
+        const list = entries.filter(x => state.sigSide === 'ALL' || x.sig.side === state.sigSide);
         list.sort((a, b) => order[a.sig.side] - order[b.sig.side] || Math.abs(b.sig.gapPct) - Math.abs(a.sig.gapPct));
 
         const longs = entries.filter(x => x.sig.side === 'LONG').length;
         const shorts = entries.filter(x => x.sig.side === 'SHORT').length;
         summary.innerHTML = `
-            <span>Таймфрейм: <b>${TF[state.tf].label}</b></span>
+            <span>${esc(t('sig.sum.tf'))} <b>${esc(t('tf.' + state.tf))}</b></span>
             <span>LONG: <b class="up">${longs}</b></span>
             <span>SHORT: <b class="down">${shorts}</b></span>
-            <span>Без сигнала: <b>${entries.length - longs - shorts}</b></span>
-            <span>Расчёт: <b data-ago="${cache.t}">${timeAgo(cache.t)}</b></span>`;
+            <span>${esc(t('sig.sum.none'))} <b>${entries.length - longs - shorts}</b></span>
+            <span>${esc(t('sig.sum.calc'))} <b data-ago="${cache.t}">${timeAgo(cache.t)}</b></span>`;
 
         if (!list.length) {
-            grid.innerHTML = '<div class="empty" style="grid-column:1/-1">Нет сигналов с выбранным направлением на этом таймфрейме</div>';
+            grid.innerHTML = `<div class="empty" style="grid-column:1/-1">${esc(t('sig.empty'))}</div>`;
             return;
         }
 
         grid.innerHTML = list.map(({ code, sig }) => {
             const lv = signalLevels(code, sig);
             const sideBadge = sig.side === 'LONG' ? 'badge-green' : sig.side === 'SHORT' ? 'badge-red' : 'badge-grey';
-            const sideLabel = sig.side === 'NEUTRAL' ? 'НЕЙТРАЛЬНО' : sig.side;
             const tpPct = lv.tp ? (lv.tp / lv.entry - 1) * 100 : null;
             const slPct = lv.sl ? (lv.sl / lv.entry - 1) * 100 : null;
-            return `<div class="signal-card" data-action="sig-open" data-code="${code}" role="button" tabindex="0" aria-label="Подробнее ${code}">
+            return `<div class="signal-card" data-action="sig-open" data-code="${code}" role="button" tabindex="0" aria-label="${esc(t('sig.more.aria', { c: code }))}">
                 <div class="card-top">
-                    <div class="pair-name">${coinIcon(code)} ${code}/USDT <span class="badge ${sideBadge}">${sideLabel}</span><span class="badge badge-yellow">${state.tf}</span></div>
-                    ${starBtn('sig:' + code, code + ' сигнал')}
+                    <div class="pair-name">${coinIcon(code)} ${code}/USDT <span class="badge ${sideBadge}">${esc(sideLabel(sig.side))}</span><span class="badge badge-yellow">${state.tf}</span></div>
+                    ${starBtn('sig:' + code, t('sig.favlabel', { c: code }))}
                 </div>
                 <div class="metrics">
-                    <div class="metric"><span>Цена (live)</span>${livePrice(code)}</div>
-                    <div class="metric"><span>Цель TP</span><strong class="up">${lv.tp ? fmtUsd(lv.tp) : '—'}</strong>${tpPct != null ? `<small class="up">${fmtPct(tpPct)}</small>` : ''}</div>
-                    <div class="metric"><span>Стоп SL</span><strong class="down">${lv.sl ? fmtUsd(lv.sl) : '—'}</strong>${slPct != null ? `<small class="down">${fmtPct(slPct)}</small>` : ''}</div>
+                    <div class="metric"><span>${esc(t('sig.livep'))}</span>${livePrice(code)}</div>
+                    <div class="metric"><span>${esc(t('sig.tp'))}</span><strong class="up">${lv.tp ? fmtUsd(lv.tp) : '—'}</strong>${tpPct != null ? `<small class="up">${fmtPct(tpPct)}</small>` : ''}</div>
+                    <div class="metric"><span>${esc(t('sig.sl'))}</span><strong class="down">${lv.sl ? fmtUsd(lv.sl) : '—'}</strong>${slPct != null ? `<small class="down">${fmtPct(slPct)}</small>` : ''}</div>
                 </div>
                 <div>
                     <div class="card-row" style="margin-bottom:6px"><span class="muted">RSI 14</span><strong class="num">${sig.rsi.toFixed(1)}</strong></div>
                     <div class="rsi-bar"><i style="left:${clamp(sig.rsi, 0, 100)}%"></i></div>
                 </div>
-                <div class="reason">${esc(sig.reason)} Тренд EMA: <span class="num ${sig.gapPct >= 0 ? 'up' : 'down'}">${fmtPct(sig.gapPct)}</span>, волатильность ATR: <span class="num">${sig.atrPct.toFixed(2)}%</span>.</div>
+                <div class="reason">${esc(t(sig.reason))} ${esc(t('sig.trend'))} <span class="num ${sig.gapPct >= 0 ? 'up' : 'down'}">${fmtPct(sig.gapPct)}</span>, ${esc(t('sig.vol'))} <span class="num">${sig.atrPct.toFixed(2)}%</span>.</div>
                 <div class="btn-row">
-                    <button class="secondary-btn sm" data-action="sig-open" data-code="${code}">📈 График</button>
-                    <button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">🎯 Цель</button>
+                    <button class="secondary-btn sm" data-action="sig-open" data-code="${code}">${esc(t('btn.chart'))}</button>
+                    <button class="primary-btn sm" data-action="target" data-kind="coin" data-key="${code}">${esc(t('btn.target'))}</button>
                 </div>
             </div>`;
         }).join('');
@@ -2230,26 +2670,26 @@
         const sig = cache && cache.data[code];
         const lv = sig ? signalLevels(code, sig) : null;
         openModal(`${coinIcon(code)} ${code}/USDT · ${tf}`, `
-            <div class="chart-box" id="tv_chart"><div class="loader"><div class="spinner"></div><span>Загрузка графика…</span></div></div>
+            <div class="chart-box" id="tv_chart"><div class="loader"><div class="spinner"></div><span>${esc(t('sig.chart.loading'))}</span></div></div>
             ${sig ? `
             <div class="stat-grid">
-                <div class="stat"><span>Цена (live)</span>${livePrice(code, 'strong')}</div>
-                <div class="stat"><span>Направление</span><strong class="${sig.side === 'LONG' ? 'up' : sig.side === 'SHORT' ? 'down' : ''}">${sig.side === 'NEUTRAL' ? 'Нейтрально' : sig.side}</strong></div>
-                <div class="stat"><span>Take Profit (2×ATR)</span><strong class="up">${lv.tp ? fmtUsd(lv.tp) : '—'}</strong></div>
-                <div class="stat"><span>Stop Loss (1×ATR)</span><strong class="down">${lv.sl ? fmtUsd(lv.sl) : '—'}</strong></div>
+                <div class="stat"><span>${esc(t('sig.livep'))}</span>${livePrice(code, 'strong')}</div>
+                <div class="stat"><span>${esc(t('sig.dir'))}</span><strong class="${sig.side === 'LONG' ? 'up' : sig.side === 'SHORT' ? 'down' : ''}">${esc(sideLabel(sig.side, false))}</strong></div>
+                <div class="stat"><span>${esc(t('sig.tpl'))}</span><strong class="up">${lv.tp ? fmtUsd(lv.tp) : '—'}</strong></div>
+                <div class="stat"><span>${esc(t('sig.sll'))}</span><strong class="down">${lv.sl ? fmtUsd(lv.sl) : '—'}</strong></div>
                 <div class="stat"><span>EMA 20 / EMA 50</span><strong>${fmtUsd(sig.ema20)} / ${fmtUsd(sig.ema50)}</strong></div>
                 <div class="stat"><span>RSI 14</span><strong>${sig.rsi.toFixed(1)}</strong></div>
                 <div class="stat"><span>ATR 14</span><strong>${fmtUsd(sig.atr)} (${sig.atrPct.toFixed(2)}%)</strong></div>
             </div>
-            <div class="hint">${esc(sig.reason)}</div>` : '<div class="hint warn">Индикаторы для этой монеты сейчас недоступны.</div>'}
+            <div class="hint">${esc(t(sig.reason))}</div>` : `<div class="hint warn">${esc(t('sig.unavail'))}</div>`}
             <ul class="list">
-                <li>LONG — EMA 20 выше EMA 50 и RSI между 50 и 70; SHORT — EMA 20 ниже EMA 50 и RSI между 30 и 50.</li>
-                <li>Цели считаются от текущей цены: TP = 2 × ATR, SL = 1 × ATR (соотношение 2 : 1).</li>
-                <li>Индикаторы запаздывают и не гарантируют результат. Это не финансовая рекомендация.</li>
+                <li>${esc(t('sig.m1'))}</li>
+                <li>${esc(t('sig.m2'))}</li>
+                <li>${esc(t('sig.m3'))}</li>
             </ul>
             <div class="btn-row">
-                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES.Binance.trade(code)))}" target="_blank" rel="noopener noreferrer">Открыть на Binance ↗</a>
-                <button class="primary-btn" data-action="target" data-kind="coin" data-key="${code}">🎯 Поставить цель</button>
+                <a class="secondary-btn" href="${esc(safeUrl(EXCHANGES.Binance.trade(code)))}" target="_blank" rel="noopener noreferrer">${esc(t('sig.openbn'))}</a>
+                <button class="primary-btn" data-action="target" data-kind="coin" data-key="${code}">${esc(t('btn.settarget'))}</button>
             </div>`);
 
         loadTradingView().then(() => {
@@ -2263,14 +2703,14 @@
                 timezone: 'Etc/UTC',
                 theme: 'dark',
                 style: '1',
-                locale: 'ru',
+                locale: TV_LOCALE[lang],
                 allow_symbol_change: false,
                 hide_side_toolbar: true,
                 container_id: 'tv_chart'
             });
         }).catch(() => {
             const box = document.getElementById('tv_chart');
-            if (box) box.innerHTML = '<div class="error-box">График TradingView не загрузился.</div>';
+            if (box) box.innerHTML = `<div class="error-box">${esc(t('sig.tvfail'))}</div>`;
         });
     }
 
@@ -2319,29 +2759,26 @@
             return pool;
         }).filter(Boolean);
     }
+    // Risikofaktoren werden als Schlüssel gespeichert und erst beim Anzeigen übersetzt
     function assessRisk(p) {
         const f = [];
-        if (p.liq == null || p.liq < 20000) f.push([2, `Низкая ликвидность (${fmtCompact(p.liq)})`]);
-        else if (p.liq < 100000) f.push([1, `Ликвидность ниже $100K (${fmtCompact(p.liq)})`]);
+        if (p.liq == null || p.liq < 20000) f.push([2, 'risk.liqlow', { v: fmtCompact(p.liq) }]);
+        else if (p.liq < 100000) f.push([1, 'risk.liqmid', { v: fmtCompact(p.liq) }]);
         const ageH = p.created ? (Date.now() - p.created) / 36e5 : null;
-        if (ageH == null) f.push([1, 'Возраст пула неизвестен']);
-        else if (ageH < 24) f.push([2, `Пулу меньше суток (${fmtAge(p.created)})`]);
-        else if (ageH < 24 * 7) f.push([1, `Пулу меньше недели (${fmtAge(p.created)})`]);
-        if (p.sells > 0 && p.sells > p.buys * 1.5) f.push([1, `Продаж заметно больше, чем покупок (${p.sells} / ${p.buys} за 24ч)`]);
-        if (p.fdv && p.liq && p.fdv / p.liq > 50) f.push([1, `FDV в ${Math.round(p.fdv / p.liq)}× больше ликвидности`]);
-        if (p.ch24 != null && Math.abs(p.ch24) > 300) f.push([1, 'Экстремальная волатильность за 24ч']);
+        if (ageH == null) f.push([1, 'risk.ageunk']);
+        else if (ageH < 24) f.push([2, 'risk.age1d', { age: p.created }]);
+        else if (ageH < 24 * 7) f.push([1, 'risk.age7d', { age: p.created }]);
+        if (p.sells > 0 && p.sells > p.buys * 1.5) f.push([1, 'risk.sells', { s: p.sells, b: p.buys }]);
+        if (p.fdv && p.liq && p.fdv / p.liq > 50) f.push([1, 'risk.fdv', { x: Math.round(p.fdv / p.liq) }]);
+        if (p.ch24 != null && Math.abs(p.ch24) > 300) f.push([1, 'risk.vol']);
         const level = f.some(x => x[0] === 2) ? 'high' : f.length ? 'medium' : 'moderate';
-        return { level, factors: f.map(x => x[1]) };
+        return { level, factors: f.map(x => ({ k: x[1], v: x[2] || {} })) };
     }
-    const RISK = {
-        high: ['Высокий', 'badge-red'],
-        medium: ['Средний', 'badge-yellow'],
-        moderate: ['Умеренный', 'badge-blue']
-    };
+    const riskFactorText = (f) => t(f.k, f.v.age ? { ...f.v, v: fmtAge(f.v.age) } : f.v);
+    const RISK = { high: 'badge-red', medium: 'badge-yellow', moderate: 'badge-blue' };
     function riskBadge(risk) {
-        const [label, cls] = RISK[risk.level];
-        const title = risk.factors.length ? risk.factors.join('; ') : 'Явных тревожных признаков нет — риск мемкоинов всё равно высокий';
-        return `<span class="badge ${cls}" title="${esc(title)}">${label}</span>`;
+        const title = risk.factors.length ? risk.factors.map(riskFactorText).join('; ') : t('risk.noflags');
+        return `<span class="badge ${RISK[risk.level]}" title="${esc(title)}">${esc(t('risk.' + risk.level))}</span>`;
     }
     function dexBadge(p) {
         const isPump = /pump/i.test(p.dexId);
@@ -2381,7 +2818,7 @@
             m.t = Date.now();
             m.key = key;
             m.error = '';
-            m.list.forEach(p => { if (state.memePools[p.id] || isFav(p.id) || state.targets.some(t => t.ref === p.id)) state.memePools[p.id] = p; });
+            m.list.forEach(p => { if (state.memePools[p.id] || isFav(p.id) || state.targets.some(tg => tg.ref === p.id)) state.memePools[p.id] = p; });
             checkTargets();
             patchTargets();
         }).catch(e => {
@@ -2403,25 +2840,28 @@
         const status = $('#meme-status');
         $$('#meme-mode .seg-btn').forEach(b => b.classList.toggle('active', !m.query && b.dataset.mode === m.mode));
 
-        const source = m.query ? `поиск «${esc(m.query)}» <button class="secondary-btn sm" data-action="meme-clear">✕ Сбросить</button>` : (m.mode === 'new' ? 'новые пулы' : 'тренды');
-        status.innerHTML = `<span>Источник: <b>GeckoTerminal</b> · ${esc(NETWORKS[m.network].label)} · ${source}</span>` +
-            (m.t && m.key === memeKey() && !m.loading ? `<span>Обновлено: <b data-ago="${m.t}">${timeAgo(m.t)}</b></span>` : '') +
-            (m.loading ? '<span>Загрузка…</span>' : '');
+        const source = m.query
+            ? `${esc(t('meme.src.search', { q: m.query }))} <button class="secondary-btn sm" data-action="meme-clear">${esc(t('meme.reset'))}</button>`
+            : esc(t(m.mode === 'new' ? 'meme.src.new' : 'meme.src.trending'));
+        status.innerHTML = `<span>${esc(t('meme.src'))} <b>GeckoTerminal</b> · ${esc(NETWORKS[m.network].label)} · ${source}</span>` +
+            (m.t && m.key === memeKey() && !m.loading ? `<span>${esc(t('sum.updated'))} <b data-ago="${m.t}">${timeAgo(m.t)}</b></span>` : '') +
+            (m.loading ? `<span>${esc(t('btn.loading'))}</span>` : '');
 
         if (m.loading && !m.list.length) {
-            tbody.innerHTML = `<tr><td colspan="9"><div class="loader"><div class="spinner"></div><span>Загрузка пулов…</span></div></td></tr>`;
-            grid.innerHTML = `<div class="loader"><div class="spinner"></div><span>Загрузка пулов…</span></div>`;
+            const loader = `<div class="loader"><div class="spinner"></div><span>${esc(t('meme.loading'))}</span></div>`;
+            tbody.innerHTML = `<tr><td colspan="9">${loader}</td></tr>`;
+            grid.innerHTML = loader;
             return;
         }
         if (m.error && !m.list.length) {
-            const box = `<div class="error-box">Не удалось загрузить пулы: ${esc(m.error)}<button class="secondary-btn" data-action="meme-refresh">Повторить</button></div>`;
+            const box = `<div class="error-box">${esc(t('meme.loaderr', { err: errText(m.error) }))}<button class="secondary-btn" data-action="meme-refresh">${esc(t('btn.retry'))}</button></div>`;
             tbody.innerHTML = `<tr><td colspan="9">${box}</td></tr>`;
             grid.innerHTML = box;
             return;
         }
         if (!m.list.length) {
-            tbody.innerHTML = `<tr><td colspan="9" class="empty">Ничего не найдено</td></tr>`;
-            grid.innerHTML = `<div class="empty">Ничего не найдено</div>`;
+            tbody.innerHTML = `<tr><td colspan="9" class="empty">${esc(t('meme.nothing'))}</td></tr>`;
+            grid.innerHTML = `<div class="empty">${esc(t('meme.nothing'))}</div>`;
             return;
         }
 
@@ -2433,74 +2873,74 @@
             new: (a, b) => (b.created || 0) - (a.created || 0)
         }[m.sort];
         if (by) list.sort(by);
+        const chBadge = (v) => `<span class="badge num ${v == null ? 'badge-grey' : v >= 0 ? 'badge-green' : 'badge-red'}">${fmtPct(v, 1)}</span>`;
 
         tbody.innerHTML = list.map(p => `
             <tr>
                 <td>${starBtn(p.id, p.name)}</td>
                 <td><div class="pair-cell">${tokenIcon(p)}<div><strong>${esc(p.name)}</strong><span class="sub">${dexBadge(p)} ${esc(p.tokenName)}</span></div></div></td>
-                <td class="num right">${fmtUsd(p.price)}<span class="sub ${pctClass(p.ch1h)}">1ч ${fmtPct(p.ch1h, 1)}</span></td>
-                <td><span class="badge num ${p.ch24 == null ? 'badge-grey' : p.ch24 >= 0 ? 'badge-green' : 'badge-red'}">${fmtPct(p.ch24, 1)}</span></td>
+                <td class="num right">${fmtUsd(p.price)}<span class="sub ${pctClass(p.ch1h)}">${esc(t('meme.1h'))} ${fmtPct(p.ch1h, 1)}</span></td>
+                <td>${chBadge(p.ch24)}</td>
                 <td class="num">${fmtCompact(p.liq)}</td>
                 <td class="num">${fmtCompact(p.vol24)}</td>
-                <td>${fmtAge(p.created)}</td>
+                <td>${esc(fmtAge(p.created))}</td>
                 <td>${riskBadge(p.risk)}</td>
                 <td><div class="btn-inline">
-                    <button class="secondary-btn sm" data-action="meme-open" data-id="${esc(p.id)}">Детали</button>
-                    <button class="primary-btn sm" data-action="target" data-kind="meme" data-key="${esc(p.id)}">🎯 Цель</button>
+                    <button class="secondary-btn sm" data-action="meme-open" data-id="${esc(p.id)}">${esc(t('btn.details'))}</button>
+                    <button class="primary-btn sm" data-action="target" data-kind="meme" data-key="${esc(p.id)}">${esc(t('btn.target'))}</button>
                 </div></td>
             </tr>`).join('');
 
         grid.innerHTML = list.map(p => `
-            <div class="signal-card" data-action="meme-open" data-id="${esc(p.id)}" role="button" tabindex="0" aria-label="Детали ${esc(p.name)}">
+            <div class="signal-card" data-action="meme-open" data-id="${esc(p.id)}" role="button" tabindex="0" aria-label="${esc(t('meme.details.aria', { n: p.name }))}">
                 <div class="card-top">
                     <div class="pair-name">${tokenIcon(p, 'lg')}<div><div>${esc(p.name)}</div><span class="sub">${dexBadge(p)}</span></div></div>
                     ${starBtn(p.id, p.name)}
                 </div>
                 <div class="card-row">
                     <strong class="num" style="font-size:1.05rem">${fmtUsd(p.price)}</strong>
-                    <span class="badge num ${p.ch24 == null ? 'badge-grey' : p.ch24 >= 0 ? 'badge-green' : 'badge-red'}">${fmtPct(p.ch24, 1)}</span>
+                    ${chBadge(p.ch24)}
                 </div>
                 <div class="metrics">
-                    <div class="metric"><span>Ликвидность</span><strong>${fmtCompact(p.liq)}</strong></div>
-                    <div class="metric"><span>Объём 24ч</span><strong>${fmtCompact(p.vol24)}</strong></div>
-                    <div class="metric"><span>Возраст</span><strong>${fmtAge(p.created)}</strong></div>
+                    <div class="metric"><span>${esc(t('th.liq'))}</span><strong>${fmtCompact(p.liq)}</strong></div>
+                    <div class="metric"><span>${esc(t('th.vol'))}</span><strong>${fmtCompact(p.vol24)}</strong></div>
+                    <div class="metric"><span>${esc(t('th.age'))}</span><strong>${esc(fmtAge(p.created))}</strong></div>
                 </div>
                 <div class="card-row">
-                    <span class="muted">Риск: ${riskBadge(p.risk)}</span>
-                    <button class="primary-btn sm" data-action="target" data-kind="meme" data-key="${esc(p.id)}">🎯 Цель</button>
+                    <span class="muted">${esc(t('meme.risk'))} ${riskBadge(p.risk)}</span>
+                    <button class="primary-btn sm" data-action="target" data-kind="meme" data-key="${esc(p.id)}">${esc(t('btn.target'))}</button>
                 </div>
             </div>`).join('');
     }
 
     function openMemeModal(id) {
         const p = findMeme(id);
-        if (!p) { toast('Данные токена недоступны — обновите список', 'error'); return; }
+        if (!p) { toast(t('meme.notfound'), 'error'); return; }
         const links = memeLinks(p);
         const gtAddr = /^[A-Za-z0-9]+$/.test(p.address) ? p.address : '';
-        const [riskLabel, riskCls] = RISK[p.risk.level];
         openModal(`${tokenIcon(p)} ${esc(p.name)}`, `
-            ${gtAddr ? `<iframe class="chart-box" src="https://www.geckoterminal.com/${p.network}/pools/${gtAddr}?embed=1&info=0&swaps=0&light_chart=0" title="График ${esc(p.name)}" loading="lazy" referrerpolicy="no-referrer" allow="clipboard-write"></iframe>` : ''}
+            ${gtAddr ? `<iframe class="chart-box" src="https://www.geckoterminal.com/${p.network}/pools/${gtAddr}?embed=1&info=0&swaps=0&light_chart=0" title="${esc(t('meme.chart', { n: p.name }))}" loading="lazy" referrerpolicy="no-referrer" allow="clipboard-write"></iframe>` : ''}
             <div class="stat-grid">
-                <div class="stat"><span>Цена</span><strong>${fmtUsd(p.price)}</strong></div>
-                <div class="stat"><span>1ч / 24ч</span><strong><span class="${pctClass(p.ch1h)}">${fmtPct(p.ch1h, 1)}</span> / <span class="${pctClass(p.ch24)}">${fmtPct(p.ch24, 1)}</span></strong></div>
-                <div class="stat"><span>Ликвидность</span><strong>${fmtCompact(p.liq)}</strong></div>
-                <div class="stat"><span>Объём 24ч</span><strong>${fmtCompact(p.vol24)}</strong></div>
+                <div class="stat"><span>${esc(t('th.price'))}</span><strong>${fmtUsd(p.price)}</strong></div>
+                <div class="stat"><span>${esc(t('meme.ch'))}</span><strong><span class="${pctClass(p.ch1h)}">${fmtPct(p.ch1h, 1)}</span> / <span class="${pctClass(p.ch24)}">${fmtPct(p.ch24, 1)}</span></strong></div>
+                <div class="stat"><span>${esc(t('th.liq'))}</span><strong>${fmtCompact(p.liq)}</strong></div>
+                <div class="stat"><span>${esc(t('th.vol'))}</span><strong>${fmtCompact(p.vol24)}</strong></div>
                 <div class="stat"><span>FDV</span><strong>${fmtCompact(p.fdv)}</strong></div>
-                <div class="stat"><span>Возраст пула</span><strong>${fmtAge(p.created)}</strong></div>
-                <div class="stat"><span>Сделки 24ч (пок./прод.)</span><strong>${p.buys} / ${p.sells}</strong></div>
-                <div class="stat"><span>Площадка</span><strong>${esc(p.dexName || p.dexId)}</strong></div>
+                <div class="stat"><span>${esc(t('meme.poolage'))}</span><strong>${esc(fmtAge(p.created))}</strong></div>
+                <div class="stat"><span>${esc(t('meme.txs'))}</span><strong>${p.buys} / ${p.sells}</strong></div>
+                <div class="stat"><span>${esc(t('meme.venue'))}</span><strong>${esc(p.dexName || p.dexId)}</strong></div>
             </div>
             <div class="calc-box">
-                <div class="calc-row"><span>Оценка риска (эвристика)</span><span class="badge ${riskCls}">${riskLabel}</span></div>
-                ${p.risk.factors.length ? `<ul class="list">${p.risk.factors.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : '<p class="note">Явных тревожных признаков по ликвидности и возрасту нет. Это не проверка контракта: мемкоины остаются очень рискованными.</p>'}
+                <div class="calc-row"><span>${esc(t('meme.riskh'))}</span><span class="badge ${RISK[p.risk.level]}">${esc(t('risk.' + p.risk.level))}</span></div>
+                ${p.risk.factors.length ? `<ul class="list">${p.risk.factors.map(f => `<li>${esc(riskFactorText(f))}</li>`).join('')}</ul>` : `<p class="note">${esc(t('meme.noflags'))}</p>`}
             </div>
-            ${p.tokenAddress ? `<p class="note">Адрес токена: <span class="mono" style="word-break:break-all">${esc(p.tokenAddress)}</span></p>` : ''}
+            ${p.tokenAddress ? `<p class="note">${esc(t('meme.addr'))} <span class="mono" style="word-break:break-all">${esc(p.tokenAddress)}</span></p>` : ''}
             <div class="btn-row">
                 ${links.map(([label, url]) => `<a class="secondary-btn" href="${esc(safeUrl(url))}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}
             </div>
             <div class="btn-row">
-                <button class="secondary-btn" data-action="fav" data-id="${esc(p.id)}">${isFav(p.id) ? '★ В избранном' : '☆ В избранное'}</button>
-                <button class="primary-btn" data-action="target" data-kind="meme" data-key="${esc(p.id)}">🎯 Поставить цель</button>
+                <button class="secondary-btn" data-action="fav" data-id="${esc(p.id)}">${esc(t(isFav(p.id) ? 'fav.in' : 'fav.add'))}</button>
+                <button class="primary-btn" data-action="target" data-kind="meme" data-key="${esc(p.id)}">${esc(t('btn.settarget'))}</button>
             </div>`);
     }
 
@@ -2508,7 +2948,7 @@
         if (Date.now() - state.memeTrackedT < 5000) return;
         state.memeTrackedT = Date.now();
         const ids = new Set([
-            ...state.targets.filter(t => t.kind === 'meme' && t.status === 'active').map(t => t.ref),
+            ...state.targets.filter(tg => tg.kind === 'meme' && tg.status === 'active').map(tg => tg.ref),
             ...state.favorites.filter(f => f.kind === 'meme').map(f => f.id)
         ]);
         if (!ids.size) return;
@@ -2531,13 +2971,15 @@
     /* =====================================================================
        Ziele / Preisalarme
        ===================================================================== */
-    function currentPriceFor(t) {
-        if (t.kind === 'coin') {
-            const p = state.prices[t.code];
+    function currentPriceFor(tg) {
+        if (tg.kind === 'coin') {
+            const p = state.prices[tg.code];
             return p ? { price: p.price, live: isLivePrice(p) } : null;
         }
-        const listed = state.memes.list.find(p => p.id === t.ref);
-        const p = listed && state.memes.t ? { price: listed.price, t: state.memes.t } : state.memePools[t.ref] ? { price: state.memePools[t.ref].price, t: state.memePools[t.ref].fetchedAt || state.memes.t } : null;
+        const listed = state.memes.list.find(p => p.id === tg.ref);
+        const pool = state.memePools[tg.ref];
+        const p = listed && state.memes.t ? { price: listed.price, t: state.memes.t }
+            : pool ? { price: pool.price, t: pool.fetchedAt || state.memes.t } : null;
         return p ? { price: p.price, live: Date.now() - (p.t || 0) < 10 * 60e3 } : null;
     }
 
@@ -2545,13 +2987,13 @@
         let entry, label, presets;
         if (kind === 'coin') {
             const p = state.prices[key];
-            if (!p) { toast('Цена ещё не загружена', 'error'); return; }
+            if (!p) { toast(t('tgt.noprice'), 'error'); return; }
             entry = p.price;
             label = `${key}/USDT`;
             presets = [['+5%', 1.05], ['+10%', 1.1], ['+25%', 1.25], ['×2', 2], ['−5%', 0.95], ['−10%', 0.9]];
         } else {
             const p = findMeme(key);
-            if (!p) { toast('Данные токена недоступны', 'error'); return; }
+            if (!p) { toast(t('tgt.nodata'), 'error'); return; }
             entry = p.price;
             label = p.name;
             presets = [['×2', 2], ['×3', 3], ['×5', 5], ['×10', 10], ['−30%', 0.7], ['−50%', 0.5]];
@@ -2559,27 +3001,27 @@
         const mult = kind === 'coin' ? 1.1 : 2;
         state.draft = { kind, key, entry, label };
         const icon = kind === 'coin' ? coinIcon(key) : tokenIcon(findMeme(key));
-        openModal(`${icon} Новая цель: ${esc(label)}`, `
+        openModal(`${icon} ${esc(t('tgt.title', { l: label }))}`, `
             <div class="calc-box">
-                <div class="calc-row"><span>Цена сейчас</span><strong class="num">${fmtUsd(entry)}</strong></div>
+                <div class="calc-row"><span>${esc(t('tgt.now'))}</span><strong class="num">${fmtUsd(entry)}</strong></div>
             </div>
             <div class="control-group">
-                <span class="control-label">Быстрый выбор</span>
+                <span class="control-label">${esc(t('tgt.quick'))}</span>
                 <div class="preset-pills">${presets.map(([l, m]) => `<button class="preset-pill ${m === mult ? 'active' : ''}" data-action="tgt-preset" data-mult="${m}">${l}</button>`).join('')}</div>
             </div>
             <div class="form-grid">
                 <div class="control-group">
-                    <label class="control-label" for="tgt-price">Целевая цена (USD)</label>
+                    <label class="control-label" for="tgt-price">${esc(t('tgt.price'))}</label>
                     <input type="number" id="tgt-price" class="mono" step="any" min="0" inputmode="decimal" value="${+(entry * mult).toPrecision(6)}">
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="tgt-amount">Сумма позиции (USDT)</label>
+                    <label class="control-label" for="tgt-amount">${esc(t('tgt.amount'))}</label>
                     <input type="number" id="tgt-amount" class="mono" step="any" min="0" inputmode="decimal" value="${getCapital() || 100}">
                 </div>
             </div>
             <div class="calc-box" id="tgt-preview"></div>
-            <button class="primary-btn" data-action="tgt-create">🎯 Создать цель</button>
-            <p class="note">Цель выше текущей цены сработает при росте, ниже — при падении (как стоп). Проверка идёт по живым ценам, пока терминал открыт в браузере${'Notification' in window ? '; можно включить системные уведомления' : ''}.</p>`);
+            <button class="primary-btn" data-action="tgt-create">${esc(t('tgt.create'))}</button>
+            <p class="note">${esc(t('tgt.note'))}</p>`, 'target');
         updateTargetPreview();
     }
     function updateTargetPreview() {
@@ -2588,13 +3030,13 @@
         if (!d || !box) return;
         const target = num($('#tgt-price').value);
         const amount = num($('#tgt-amount').value);
-        if (!(target > 0) || !(amount > 0)) { box.innerHTML = '<div class="calc-row"><span>Укажите цену и сумму</span></div>'; return; }
+        if (!(target > 0) || !(amount > 0)) { box.innerHTML = `<div class="calc-row"><span>${esc(t('tgt.enter'))}</span></div>`; return; }
         const ratio = target / d.entry;
         const value = amount * ratio;
         box.innerHTML = `
-            <div class="calc-row"><span>Изменение цены</span><strong class="num ${ratio >= 1 ? 'up' : 'down'}">${fmtPct((ratio - 1) * 100)} (×${ratio.toFixed(2)})</strong></div>
-            <div class="calc-row"><span>Позиция при достижении</span><strong class="num">${fmtUsd(amount)} → ${fmtUsd(value)}</strong></div>
-            <div class="calc-row total"><span>Результат</span><strong class="num ${value >= amount ? 'up' : 'down'}">${fmtMoney(value - amount)}</strong></div>`;
+            <div class="calc-row"><span>${esc(t('tgt.change'))}</span><strong class="num ${ratio >= 1 ? 'up' : 'down'}">${fmtPct((ratio - 1) * 100)} (×${ratio.toFixed(2)})</strong></div>
+            <div class="calc-row"><span>${esc(t('tgt.posat'))}</span><strong class="num">${fmtUsd(amount)} → ${fmtUsd(value)}</strong></div>
+            <div class="calc-row total"><span>${esc(t('tgt.result'))}</span><strong class="num ${value >= amount ? 'up' : 'down'}">${fmtMoney(value - amount)}</strong></div>`;
         $$('[data-action="tgt-preset"]').forEach(b => b.classList.toggle('active', Math.abs(Number(b.dataset.mult) - ratio) < 1e-4));
     }
     function createTarget() {
@@ -2602,9 +3044,9 @@
         if (!d) return;
         const target = num($('#tgt-price').value);
         const amount = num($('#tgt-amount').value);
-        if (!(target > 0) || !(amount > 0)) { toast('Укажите корректную цену и сумму', 'error'); return; }
-        if (Math.abs(target / d.entry - 1) < 0.0005) { toast('Цель должна отличаться от текущей цены', 'error'); return; }
-        const t = {
+        if (!(target > 0) || !(amount > 0)) { toast(t('tgt.invalid'), 'error'); return; }
+        if (Math.abs(target / d.entry - 1) < 0.0005) { toast(t('tgt.same'), 'error'); return; }
+        const tg = {
             id: 'tgt_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
             kind: d.kind,
             label: d.label,
@@ -2614,36 +3056,36 @@
             createdAt: Date.now(),
             status: 'active'
         };
-        if (d.kind === 'coin') t.code = d.key;
+        if (d.kind === 'coin') tg.code = d.key;
         else {
-            t.ref = d.key;
+            tg.ref = d.key;
             const p = findMeme(d.key);
             if (p) state.memePools[p.id] = p;
         }
-        state.targets.unshift(t);
+        state.targets.unshift(tg);
         LS.set('cp_targets', state.targets);
         closeModal();
         updateBadges();
         renderTargets();
-        appendChat('ai', `Цель создана: ${t.label} — ${fmtUsd(t.target)} (${fmtPct((t.target / t.entry - 1) * 100)} от ${fmtUsd(t.entry)}). Сообщу, когда цена дойдёт.`);
-        toast(`🎯 Цель для ${t.label} создана — см. «Ассистент и цели»`, 'success');
+        appendChat('ai', t('tgt.created.chat', { l: tg.label, p: fmtUsd(tg.target), pct: fmtPct((tg.target / tg.entry - 1) * 100), e: fmtUsd(tg.entry) }));
+        toast(t('tgt.created.toast', { l: tg.label, s: t('title.ai') }), 'success');
         if ('Notification' in window && Notification.permission === 'default') {
             Notification.requestPermission().catch(() => { /* abgelehnt */ });
         }
     }
     function checkTargets() {
         let changed = false;
-        state.targets.forEach(t => {
-            if (t.status !== 'active') return;
-            const cur = currentPriceFor(t);
+        state.targets.forEach(tg => {
+            if (tg.status !== 'active') return;
+            const cur = currentPriceFor(tg);
             if (!cur || !cur.live) return;
-            const up = t.target >= t.entry;
-            if ((up && cur.price >= t.target) || (!up && cur.price <= t.target)) {
-                t.status = 'hit';
-                t.hitAt = Date.now();
-                t.hitPrice = cur.price;
+            const up = tg.target >= tg.entry;
+            if ((up && cur.price >= tg.target) || (!up && cur.price <= tg.target)) {
+                tg.status = 'hit';
+                tg.hitAt = Date.now();
+                tg.hitPrice = cur.price;
                 changed = true;
-                notifyHit(t);
+                notifyHit(tg);
             }
         });
         if (changed) {
@@ -2652,58 +3094,58 @@
             renderTargets();
         }
     }
-    function notifyHit(t) {
-        const ratio = t.hitPrice / t.entry;
-        const msg = `🎯 Цель достигнута: ${t.label} — ${fmtUsd(t.hitPrice)} (${fmtPct((ratio - 1) * 100)}). Позиция ${fmtUsd(t.amount)} → ${fmtUsd(t.amount * ratio)}.`;
+    function notifyHit(tg) {
+        const ratio = tg.hitPrice / tg.entry;
+        const msg = t('tgt.hit', { l: tg.label, p: fmtUsd(tg.hitPrice), pct: fmtPct((ratio - 1) * 100), a: fmtUsd(tg.amount), v: fmtUsd(tg.amount * ratio) });
         toast(msg, 'success', 8000);
         appendChat('system', msg);
         if ('Notification' in window && Notification.permission === 'granted') {
-            try { new Notification('CryptoPro: цель достигнута', { body: msg }); } catch (_) { /* nicht unterstützt */ }
+            try { new Notification(t('tgt.notif'), { body: msg }); } catch (_) { /* nicht unterstützt */ }
         }
     }
     function renderTargets() {
         const box = $('#targets-list');
         if (!box) return;
         if (!state.targets.length) {
-            box.innerHTML = '<div class="empty">Целей пока нет.<br>Нажмите «🎯 Цель» у монеты, сигнала или мемкоина.</div>';
+            box.innerHTML = `<div class="empty">${t('tgt.empty')}</div>`;
             return;
         }
         const list = state.targets.slice().sort((a, b) => (a.status === 'active' ? 0 : 1) - (b.status === 'active' ? 0 : 1) || b.createdAt - a.createdAt);
-        box.innerHTML = list.map(t => {
-            const hit = t.status === 'hit';
-            const tPct = (t.target / t.entry - 1) * 100;
-            return `<div class="target-item ${hit ? 'hit' : ''}" data-tid="${esc(t.id)}">
+        box.innerHTML = list.map(tg => {
+            const hit = tg.status === 'hit';
+            const tPct = (tg.target / tg.entry - 1) * 100;
+            return `<div class="target-item ${hit ? 'hit' : ''}" data-tid="${esc(tg.id)}">
                 <div class="target-top">
-                    <strong title="${esc(t.label)}">${esc(t.label)}</strong>
-                    <span class="badge ${hit ? 'badge-green' : 'badge-yellow'}">${hit ? '✅ Достигнута' : 'Активна'}</span>
-                    <button class="icon-btn" data-action="tgt-del" data-id="${esc(t.id)}" aria-label="Удалить цель ${esc(t.label)}" title="Удалить">✕</button>
+                    <strong title="${esc(tg.label)}">${esc(tg.label)}</strong>
+                    <span class="badge ${hit ? 'badge-green' : 'badge-yellow'}">${esc(t(hit ? 'tgt.hitbadge' : 'tgt.active'))}</span>
+                    <button class="icon-btn" data-action="tgt-del" data-id="${esc(tg.id)}" aria-label="${esc(t('tgt.del', { l: tg.label }))}" title="${esc(t('tgt.delt'))}">✕</button>
                 </div>
-                <div class="target-meta"><span>Вход ${fmtUsd(t.entry)} → цель ${fmtUsd(t.target)}</span><span class="${tPct >= 0 ? 'up' : 'down'}">${fmtPct(tPct)}</span></div>
+                <div class="target-meta"><span>${esc(t('tgt.entry', { e: fmtUsd(tg.entry), t: fmtUsd(tg.target) }))}</span><span class="${tPct >= 0 ? 'up' : 'down'}">${fmtPct(tPct)}</span></div>
                 <div class="progress"><div class="progress-fill" data-tprog style="width:0%"></div></div>
-                <div class="target-foot"><span>${hit ? 'Сработала' : 'Сейчас'}: <b data-tcur>—</b> <span data-tchg></span></span><span>${fmtUsd(t.amount)} → <b>${fmtUsd(t.amount * t.target / t.entry)}</b></span></div>
+                <div class="target-foot"><span>${esc(t(hit ? 'tgt.hitat' : 'tgt.nowl'))} <b data-tcur>—</b> <span data-tchg></span></span><span>${fmtUsd(tg.amount)} → <b>${fmtUsd(tg.amount * tg.target / tg.entry)}</b></span></div>
             </div>`;
         }).join('');
         patchTargets();
     }
     function patchTargets() {
         $$('#targets-list [data-tid]').forEach(el => {
-            const t = state.targets.find(x => x.id === el.dataset.tid);
-            if (!t) return;
-            const cur = t.status === 'hit' ? { price: t.hitPrice } : currentPriceFor(t);
+            const tg = state.targets.find(x => x.id === el.dataset.tid);
+            if (!tg) return;
+            const cur = tg.status === 'hit' ? { price: tg.hitPrice } : currentPriceFor(tg);
             const fill = $('[data-tprog]', el);
             const curEl = $('[data-tcur]', el);
             const chgEl = $('[data-tchg]', el);
             if (!cur) { curEl.textContent = '—'; return; }
-            const progress = t.status === 'hit' ? 1 : clamp((cur.price - t.entry) / (t.target - t.entry), 0, 1);
+            const progress = tg.status === 'hit' ? 1 : clamp((cur.price - tg.entry) / (tg.target - tg.entry), 0, 1);
             fill.style.width = (progress * 100).toFixed(1) + '%';
             curEl.textContent = fmtUsd(cur.price);
-            const chg = (cur.price / t.entry - 1) * 100;
+            const chg = (cur.price / tg.entry - 1) * 100;
             chgEl.textContent = `(${fmtPct(chg)})`;
             chgEl.className = chg >= 0 ? 'up' : 'down';
         });
     }
     function deleteTarget(id) {
-        state.targets = state.targets.filter(t => t.id !== id);
+        state.targets = state.targets.filter(tg => tg.id !== id);
         LS.set('cp_targets', state.targets);
         updateBadges();
         renderTargets();
@@ -2728,12 +3170,12 @@
         const idx = state.favorites.findIndex(f => f.id === id);
         if (idx >= 0) {
             state.favorites.splice(idx, 1);
-            toast('Удалено из избранного');
+            toast(t('fav.removed'));
         } else {
             const item = favItemFor(id);
             if (!item) return;
             state.favorites.push(item);
-            toast('⭐ Добавлено в избранное', 'success');
+            toast(t('fav.added'), 'success');
         }
         LS.set('cp_favorites', state.favorites);
         const fav = isFav(id);
@@ -2741,8 +3183,8 @@
             if (b.classList.contains('star-btn')) {
                 b.classList.toggle('favorited', fav);
                 b.setAttribute('aria-pressed', String(fav));
-            } else {
-                b.textContent = fav ? '★ В избранном' : '☆ В избранное';
+            } else if (!b.classList.contains('icon-btn')) {
+                b.textContent = t(fav ? 'fav.in' : 'fav.add');
             }
         });
         updateBadges();
@@ -2751,40 +3193,46 @@
     function renderFavorites() {
         const box = $('#favorites-list');
         if (!state.favorites.length) {
-            box.innerHTML = '<div class="panel empty">Избранное пока пусто. Нажмите ★ у монеты, пары, сигнала или токена.</div>';
+            box.innerHTML = `<div class="panel empty">${esc(t('fav.empty'))}</div>`;
             return;
         }
-        const kinds = { coin: ['Монета', 'badge-blue'], arb: ['Арбитраж', 'badge-yellow'], sig: ['Сигнал', 'badge-green'], meme: ['Мемкоин', 'badge-pump'] };
+        const kinds = { coin: 'badge-blue', arb: 'badge-yellow', sig: 'badge-green', meme: 'badge-pump' };
         box.innerHTML = state.favorites.map(f => {
-            const [kindLabel, kindCls] = kinds[f.kind] || ['—', 'badge-grey'];
             let icon = '', title = '', metric = '';
             if (f.kind === 'meme') {
                 const p = findMeme(f.id);
                 icon = tokenIcon(p || { symbol: f.symbol, image: f.image });
                 title = esc(f.label);
-                metric = p ? `${fmtUsd(p.price)} · <span class="${pctClass(p.ch24)}">${fmtPct(p.ch24, 1)} за 24ч</span> · ${esc(NETWORKS[f.network] ? NETWORKS[f.network].label : '')}` : 'Загрузка данных…';
+                metric = p ? `${fmtUsd(p.price)} · <span class="${pctClass(p.ch24)}">${fmtPct(p.ch24, 1)} ${esc(t('fav.24h'))}</span> · ${esc(NETWORKS[f.network] ? NETWORKS[f.network].label : '')}` : esc(t('fav.loading'));
             } else {
                 icon = coinIcon(f.code);
                 if (f.kind === 'coin') {
                     title = `${f.code} · ${esc(COINS[f.code].name)}`;
-                    metric = `${livePrice(f.code)} · ${liveChange(f.code, false)} за 24ч`;
+                    metric = `${livePrice(f.code)} · ${liveChange(f.code, false)} ${esc(t('fav.24h'))}`;
                 } else if (f.kind === 'arb') {
                     title = `${f.code}/USDT`;
                     const row = state.arb.rows.find(r => r.code === f.code);
                     metric = row && row.best
-                        ? `${esc(row.best.buyEx)} → ${esc(row.best.sellEx)} · спред <span class="num">${fmtPct(row.best.spreadPct, 3)}</span> · итог <span class="num ${row.best.net >= 0 ? 'up' : 'down'}">${fmtMoney(row.best.net)}</span>`
-                        : (state.arb.t ? 'Недостаточно данных' : 'Загрузка…');
+                        ? t('fav.arb', {
+                            b: esc(row.best.buyEx),
+                            s: esc(row.best.sellEx),
+                            sp: `<span class="num">${fmtPct(row.best.spreadPct, 3)}</span>`,
+                            n: `<span class="num ${row.best.net >= 0 ? 'up' : 'down'}">${fmtMoney(row.best.net)}</span>`
+                        })
+                        : esc(t(state.arb.t ? 'fav.insufficient' : 'btn.loading'));
                 } else {
                     title = `${f.code}/USDT · ${state.tf}`;
                     const sig = state.signals[state.tf] && state.signals[state.tf].data[f.code];
-                    metric = sig ? `<span class="${sig.side === 'LONG' ? 'up' : sig.side === 'SHORT' ? 'down' : ''}">${sig.side === 'NEUTRAL' ? 'Нейтрально' : sig.side}</span> · RSI <span class="num">${sig.rsi.toFixed(1)}</span>` : 'Индикаторы ещё не загружены';
+                    metric = sig
+                        ? `<span class="${sig.side === 'LONG' ? 'up' : sig.side === 'SHORT' ? 'down' : ''}">${esc(sideLabel(sig.side, false))}</span> · RSI <span class="num">${sig.rsi.toFixed(1)}</span>`
+                        : esc(t('fav.nosig'));
                 }
             }
             return `<div class="fav-item">
-                <span class="badge fav-kind ${kindCls}">${kindLabel}</span>
+                <span class="badge fav-kind ${kinds[f.kind] || 'badge-grey'}">${esc(t('fav.kind.' + f.kind))}</span>
                 <div class="fav-main">${icon}<div><strong>${title}</strong><span class="sub">${metric}</span></div></div>
-                <button class="secondary-btn sm" data-action="fav-open" data-id="${esc(f.id)}">Открыть</button>
-                <button class="icon-btn" data-action="fav" data-id="${esc(f.id)}" aria-label="Удалить из избранного" title="Удалить">✕</button>
+                <button class="secondary-btn sm" data-action="fav-open" data-id="${esc(f.id)}">${esc(t('btn.open'))}</button>
+                <button class="icon-btn" data-action="fav" data-id="${esc(f.id)}" aria-label="${esc(t('fav.remove'))}" title="${esc(t('fav.remove'))}">✕</button>
             </div>`;
         }).join('');
         if (!state.signals[state.tf] && !state.sigPromise && !state.sigError[state.tf] && state.favorites.some(f => f.kind === 'sig')) loadSignals(false);
@@ -2799,12 +3247,20 @@
     }
 
     /* =====================================================================
-       Assistent (lokal, regelbasiert)
+       Assistent (lokal, regelbasiert, mehrsprachig)
        ===================================================================== */
     const ALIASES = [];
     COIN_CODES.forEach(code => {
-        [code.toLowerCase(), ...(COINS[code].aliases || [])].forEach(a => ALIASES.push([new RegExp(`(^|[^a-zа-яё0-9])${a}`, 'i'), code]));
+        [code.toLowerCase(), ...(COINS[code].aliases || [])].forEach(a => ALIASES.push([new RegExp(`(^|[^a-zа-яёіїєґ0-9])${a}`, 'i'), code]));
     });
+    const INTENTS = {
+        targets: /цел|алерт|уведом|оповещ|ціл|сповіщ|ziel|alarm|benachricht|target|alert/,
+        fees: /комисс|комісі|gebühr|gebuehr|\bfees?\b/,
+        arb: /арбитр|арбітр|arbitra|спред|spread|связк|зв.язк|profit|профит|прибыл|прибут|gewinn/,
+        memes: /мем|meme|pump|памп|\bdex\b|токен|token|пулы|пулов|пули|\bpools?\b/,
+        signals: /сигнал|signal|тренд|\btrend|\brsi\b|индикат|індикат|indikat|indicat|\bema\b|вход|вхід|einstieg|entry|лонг|шорт|\blong\b|\bshort\b/,
+        price: /цен|цін|курс|стоит|коштує|price|preis|kurs|сколько|скільки|wie viel|how much/
+    };
     function detectCoins(text) {
         const found = [];
         ALIASES.forEach(([re, code]) => { if (re.test(text) && !found.includes(code)) found.push(code); });
@@ -2823,89 +3279,91 @@
         const value = String(text || '').trim();
         if (!value) return;
         appendChat('user', value);
-        const pending = appendChat('ai typing', 'Смотрю данные…');
+        const pending = appendChat('ai typing', t('ai.thinking'));
         let reply;
-        try { reply = await assistantReply(value); } catch (_) { reply = 'Не удалось получить данные. Попробуйте ещё раз чуть позже.'; }
+        try { reply = await assistantReply(value); } catch (_) { reply = t('ai.fail'); }
         pending.classList.remove('typing');
         pending.textContent = reply;
         $('#chat-box').scrollTop = $('#chat-box').scrollHeight;
     }
     async function assistantReply(text) {
-        const t = text.toLowerCase();
-        const codes = detectCoins(t);
-        if (/цел|алерт|уведом|оповещ/.test(t)) return targetsSummary();
-        if (/комисс|fee/.test(t)) return feesSummary();
-        if (/арбитр|спред|связк|профит/.test(t)) {
+        const q = text.toLowerCase();
+        const codes = detectCoins(q);
+        if (INTENTS.targets.test(q)) return targetsSummary();
+        if (INTENTS.fees.test(q)) return feesSummary();
+        if (INTENTS.arb.test(q)) {
             if (!state.arb.t) await refreshExchanges(true);
             return arbSummary(codes);
         }
-        if (/мем|pump|памп|dex|токен|пулы|пулов/.test(t)) {
+        if (INTENTS.memes.test(q)) {
             await loadMemes(false);
             return memeSummary();
         }
-        if (/сигнал|тренд|rsi|индикат|ema|вход|лонг|шорт|long|short/.test(t)) {
+        if (INTENTS.signals.test(q)) {
             await loadSignals(false);
             return signalSummary(codes);
         }
-        if (codes.length || /цен|курс|стоит|price|сколько/.test(t)) return priceSummary(codes.length ? codes : ['BTC', 'ETH', 'SOL']);
-        return 'Я понимаю такие запросы:\n• «цена SOL» или «курс BTC и ETH»\n• «лучший арбитраж» или «арбитраж XRP»\n• «сигнал BTC» или «сигналы»\n• «трендовые мемкоины»\n• «мои цели»\n• «какие комиссии учитываются»\n\nЦель можно поставить кнопкой «🎯 Цель» у любой монеты, сигнала или мемкоина.';
+        if (codes.length || INTENTS.price.test(q)) return priceSummary(codes.length ? codes : ['BTC', 'ETH', 'SOL']);
+        return t('ai.help');
     }
     function priceSummary(codes) {
         const lines = codes.map(code => {
             const p = state.prices[code];
-            if (!p) return `${code}: цена ещё загружается`;
-            return `${code}: ${fmtUsd(p.price)} (${fmtPct(p.change)} за 24ч)${p.src === 'cache' ? ' — из кэша' : ''}`;
+            if (!p) return t('ai.price.loading', { c: code });
+            return t('ai.price.line', { c: code, p: fmtUsd(p.price), ch: fmtPct(p.change) }) + (p.src === 'cache' ? t('ai.fromcache') : '');
         });
-        const src = { ws: 'Binance (реальное время)', rest: 'Binance', cg: 'CoinGecko', cache: 'кэш' }[(state.prices[codes[0]] || {}).src] || 'Binance';
-        return `${lines.join('\n')}\n\nИсточник: ${src}.`;
+        const srcCode = (state.prices[codes[0]] || {}).src;
+        const src = srcCode === 'ws' ? t('src.ws') : srcCode === 'cg' ? 'CoinGecko' : srcCode === 'cache' ? t('src.cache') : 'Binance';
+        return `${lines.join('\n')}\n\n${t('ai.source', { s: src })}`;
     }
     function arbSummary(codes) {
         let rows = state.arb.rows.filter(r => r.best);
         if (codes.length) rows = rows.filter(r => codes.includes(r.code));
-        if (!rows.length) return 'Пока недостаточно цен с бирж для расчёта. Попробуйте через минуту.';
+        if (!rows.length) return t('ai.arb.nodata');
         rows.sort((a, b) => b.best.net - a.best.net);
         const cap = getCapital() || 1000;
         const lines = rows.slice(0, codes.length ? rows.length : 3).map(r => {
             const b = r.best;
-            return `${r.code}: купить на ${b.buyEx} ${fmtUsd(b.ask)} → продать на ${b.sellEx} ${fmtUsd(b.bid)}, спред ${fmtPct(b.spreadPct, 3)}, итог ${fmtMoney(b.net)}`;
+            return t('ai.arb.line', { c: r.code, b: b.buyEx, a: fmtUsd(b.ask), s: b.sellEx, bid: fmtUsd(b.bid), sp: fmtPct(b.spreadPct, 3), n: fmtMoney(b.net) });
         });
         const profitable = state.arb.rows.filter(r => r.best && r.best.net > 0).length;
-        return `Лучшие связки на капитал ${fmtUsd(cap)}:\n${lines.join('\n')}\n\nПрибыльных после комиссий: ${profitable} из ${COIN_CODES.length}. Итог = продажа по bid − покупка по ask − торговые комиссии обеих бирж − комиссия вывода.`;
+        return `${t('ai.arb.head', { cap: fmtUsd(cap) })}\n${lines.join('\n')}\n\n${t('ai.arb.foot', { p: profitable, n: COIN_CODES.length })}`;
     }
     function signalSummary(codes) {
         const cache = state.signals[state.tf];
-        if (!cache) return 'Индикаторы сейчас недоступны — не удалось загрузить свечи Binance.';
+        if (!cache) return t('ai.sig.na');
         let list = COIN_CODES.filter(c => cache.data[c]);
         if (codes.length) list = list.filter(c => codes.includes(c));
         else list = list.filter(c => cache.data[c].side !== 'NEUTRAL');
-        if (!list.length) return `На таймфрейме ${state.tf} сейчас нет монет с подтверждённым сигналом. Откройте раздел «Сигналы», чтобы посмотреть все индикаторы.`;
+        if (!list.length) return t('ai.sig.none', { tf: state.tf, s: t('nav.sig') });
         const lines = list.map(code => {
             const s = cache.data[code];
             const lv = signalLevels(code, s);
-            const side = s.side === 'NEUTRAL' ? 'нейтрально' : s.side;
+            const side = s.side === 'NEUTRAL' ? t('sig.neutral.l').toLowerCase() : s.side;
             return `${code} (${state.tf}): ${side}, RSI ${s.rsi.toFixed(1)}${lv.tp ? `, TP ${fmtUsd(lv.tp)} / SL ${fmtUsd(lv.sl)}` : ''}`;
         });
-        return `${lines.join('\n')}\n\nРасчёт по EMA 20/50, RSI 14 и ATR 14. Это не финансовая рекомендация.`;
+        return `${lines.join('\n')}\n\n${t('ai.sig.foot')}`;
     }
     function memeSummary() {
         const list = state.memes.list.slice().sort((a, b) => (b.vol24 || 0) - (a.vol24 || 0)).slice(0, 5);
-        if (!list.length) return 'Список пулов сейчас недоступен. Попробуйте обновить раздел «Мемкоины».';
-        const lines = list.map(p => `${p.name}: ${fmtUsd(p.price)}, 24ч ${fmtPct(p.ch24, 1)}, ликвидность ${fmtCompact(p.liq)}, риск: ${RISK[p.risk.level][0].toLowerCase()}`);
-        return `Топ по объёму (${NETWORKS[state.memes.network].label}, ${state.memes.query ? 'поиск' : state.memes.mode === 'new' ? 'новые пулы' : 'тренды'}):\n${lines.join('\n')}\n\nМемкоины крайне волатильны — используйте только деньги, которые готовы потерять.`;
+        if (!list.length) return t('ai.meme.na', { s: t('nav.meme') });
+        const lines = list.map(p => t('ai.meme.line', { n: p.name, p: fmtUsd(p.price), ch: fmtPct(p.ch24, 1), l: fmtCompact(p.liq), r: t('risk.' + p.risk.level).toLowerCase() }));
+        const src = state.memes.query ? t('meme.src.search', { q: state.memes.query }) : t(state.memes.mode === 'new' ? 'meme.src.new' : 'meme.src.trending');
+        return `${t('ai.meme.head', { net: NETWORKS[state.memes.network].label, src })}\n${lines.join('\n')}\n\n${t('ai.meme.foot')}`;
     }
     function targetsSummary() {
-        const active = state.targets.filter(t => t.status === 'active');
-        const hit = state.targets.filter(t => t.status === 'hit');
-        if (!state.targets.length) return 'Целей пока нет. Нажмите «🎯 Цель» у монеты, сигнала или мемкоина — я сообщу, когда цена дойдёт.';
-        const lines = active.map(t => {
-            const cur = currentPriceFor(t);
-            return `• ${t.label}: цель ${fmtUsd(t.target)}, сейчас ${cur ? fmtUsd(cur.price) : '—'}`;
+        const active = state.targets.filter(tg => tg.status === 'active');
+        const hit = state.targets.filter(tg => tg.status === 'hit');
+        if (!state.targets.length) return t('ai.tgt.none');
+        const lines = active.map(tg => {
+            const cur = currentPriceFor(tg);
+            return t('ai.tgt.line', { l: tg.label, t: fmtUsd(tg.target), c: cur ? fmtUsd(cur.price) : '—' });
         });
-        return `Активных целей: ${active.length}${lines.length ? '\n' + lines.join('\n') : ''}${hit.length ? `\nДостигнуто: ${hit.length}` : ''}`;
+        return `${t('ai.tgt.head', { n: active.length })}${lines.length ? '\n' + lines.join('\n') : ''}${hit.length ? '\n' + t('ai.tgt.hit', { n: hit.length }) : ''}`;
     }
     function feesSummary() {
         const fees = EX_NAMES.map(ex => `${ex}: ${exFee(ex)}%`).join(', ');
-        return `Торговые комиссии (тейкер): ${fees}.\nКомиссия вывода монеты ${state.settings.withdrawFees ? 'учитывается' : 'отключена'} — это ориентировочные значения сети.\nВсё можно изменить в настройках (иконка профиля справа вверху).`;
+        return t('ai.fees', { f: fees, w: t(state.settings.withdrawFees ? 'wd.on' : 'wd.off') });
     }
 
     /* =====================================================================
@@ -2913,28 +3371,33 @@
        ===================================================================== */
     function openSettings() {
         const notif = 'Notification' in window ? Notification.permission : 'unsupported';
-        const notifLabel = { granted: 'включены', denied: 'запрещены в браузере', default: 'не включены', unsupported: 'не поддерживаются' }[notif];
-        openModal('⚙️ Настройки', `
-            <div class="control-group">
-                <label class="control-label" for="set-username">Имя (для аватара)</label>
-                <input type="text" id="set-username" value="${esc(state.settings.username)}" maxlength="40" placeholder="Например: Alex Trader">
-            </div>
-            <div class="control-group">
-                <span class="control-label">Торговые комиссии бирж (тейкер, %) — укажите свой уровень</span>
-                <div class="fee-grid">${EX_NAMES.map(ex => `
-                    <label>${exBadge(ex)} ${esc(ex)}<input type="number" class="mono" step="0.01" min="0" max="5" data-fee="${esc(ex)}" value="${exFee(ex)}" aria-label="Комиссия ${esc(ex)}"></label>`).join('')}
+        openModal(esc(t('set.title')), `
+            <div class="form-grid">
+                <div class="control-group">
+                    <label class="control-label" for="set-lang">${esc(t('set.lang'))}</label>
+                    <select id="set-lang">${Object.entries(LANGS).map(([code, name]) => `<option value="${code}" ${code === lang ? 'selected' : ''}>${esc(name)}</option>`).join('')}</select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="set-username">${esc(t('set.name'))}</label>
+                    <input type="text" id="set-username" value="${esc(state.settings.username)}" maxlength="40" placeholder="${esc(t('set.name.ph'))}">
                 </div>
             </div>
-            <label class="check-inline"><input type="checkbox" id="set-wd" ${state.settings.withdrawFees ? 'checked' : ''}> Учитывать комиссию вывода монеты в арбитраже</label>
+            <div class="control-group">
+                <span class="control-label">${esc(t('set.fees'))}</span>
+                <div class="fee-grid">${EX_NAMES.map(ex => `
+                    <label>${exBadge(ex)} ${esc(ex)}<input type="number" class="mono" step="0.01" min="0" max="5" data-fee="${esc(ex)}" value="${exFee(ex)}" aria-label="${esc(t('set.fee.aria', { ex }))}"></label>`).join('')}
+                </div>
+            </div>
+            <label class="check-inline"><input type="checkbox" id="set-wd" ${state.settings.withdrawFees ? 'checked' : ''}> ${esc(t('set.wd'))}</label>
             <div class="calc-box">
-                <div class="calc-row"><span>Системные уведомления: ${notifLabel}</span>
-                ${notif === 'default' ? '<button class="secondary-btn sm" data-action="notif-enable">Включить</button>' : ''}</div>
+                <div class="calc-row"><span>${esc(t('set.notif', { s: t('set.notif.' + notif) }))}</span>
+                ${notif === 'default' ? `<button class="secondary-btn sm" data-action="notif-enable">${esc(t('set.enable'))}</button>` : ''}</div>
             </div>
             <div class="btn-row">
-                <button class="secondary-btn" data-action="fees-reset">Сбросить комиссии</button>
-                <button class="secondary-btn danger-btn" data-action="reset-data">Удалить избранное и цели</button>
+                <button class="secondary-btn" data-action="fees-reset">${esc(t('set.feesreset'))}</button>
+                <button class="secondary-btn danger-btn" data-action="reset-data">${esc(t('set.reset'))}</button>
             </div>
-            <p class="note">Настройки, избранное и цели хранятся только в этом браузере.</p>`);
+            <p class="note">${esc(t('set.note'))}</p>`, 'settings');
     }
     function applySettingsChange() {
         computeArbitrage();
@@ -2946,8 +3409,8 @@
     /* =====================================================================
        Tabs & Ereignisse
        ===================================================================== */
-    function switchTab(tab) {
-        if (!TITLES[tab]) tab = 'p2p';
+    function switchTab(tab, scroll = true) {
+        if (!TAB_TITLE[tab]) tab = 'p2p';
         state.tab = tab;
         $$('.content-section').forEach(s => s.classList.toggle('active', s.id === tab));
         $$('.menu-item, .mobile-nav-item').forEach(el => {
@@ -2955,8 +3418,8 @@
             el.classList.toggle('active', on);
             if (on) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
         });
-        $('#header-title').textContent = TITLES[tab];
-        document.title = `${TITLES[tab]} · CryptoPro Terminal`;
+        $('#header-title').textContent = t(TAB_TITLE[tab]);
+        document.title = `${t(TAB_TITLE[tab])} · CryptoPro Terminal`;
         try { history.replaceState(null, '', '#/' + tab); } catch (_) { /* file:// */ }
 
         if (tab === 'p2p') { renderArbitrage(); if (Date.now() - state.arb.t > 30e3) refreshExchanges(false); }
@@ -2965,7 +3428,7 @@
         if (tab === 'memecoins') { renderMemes(); loadMemes(false); }
         if (tab === 'assistant') renderTargets();
         if (tab === 'favorites') { renderFavorites(); refreshTrackedMemes(); if (Date.now() - state.arb.t > 60e3) refreshExchanges(false); }
-        window.scrollTo({ top: 0 });
+        if (scroll) window.scrollTo({ top: 0 });
     }
 
     const ACTIONS = {
@@ -2990,7 +3453,7 @@
         },
         'arb-refresh': () => refreshExchanges(true),
         'arb-open': (el) => openArbModal(el.dataset.code),
-        'cur-refresh': () => { Feed.poll(true); loadMarket(true); toast('Курсы обновляются…'); },
+        'cur-refresh': () => { Feed.poll(true); loadMarket(true); toast(t('cur.toast')); },
         'cur-sort': (el) => {
             const key = el.dataset.key;
             state.curSort = state.curSort.key === key ? { key, dir: -state.curSort.dir } : { key, dir: -1 };
@@ -3021,11 +3484,11 @@
         'tgt-create': () => createTarget(),
         'tgt-del': (el) => deleteTarget(el.dataset.id),
         'tgt-clear': () => {
-            const n = state.targets.filter(t => t.status === 'hit').length;
-            state.targets = state.targets.filter(t => t.status !== 'hit');
+            const n = state.targets.filter(tg => tg.status === 'hit').length;
+            state.targets = state.targets.filter(tg => tg.status !== 'hit');
             LS.set('cp_targets', state.targets);
             renderTargets();
-            toast(n ? `Убрано достигнутых целей: ${n}` : 'Достигнутых целей нет');
+            toast(n ? t('tgt.cleared', { n }) : t('tgt.nohit'));
         },
         'chat-prompt': (el) => sendChat(el.dataset.text),
         'notif-enable': () => {
@@ -3037,10 +3500,10 @@
             saveSettings();
             applySettingsChange();
             openSettings();
-            toast('Комиссии сброшены к стандартным');
+            toast(t('set.feesreset.toast'));
         },
         'reset-data': () => {
-            if (!confirm('Удалить всё избранное и все цели?')) return;
+            if (!confirm(t('set.confirm'))) return;
             state.favorites = [];
             state.targets = [];
             LS.set('cp_favorites', []);
@@ -3048,8 +3511,8 @@
             updateBadges();
             renderTargets();
             closeModal();
-            switchTab(state.tab);
-            toast('Избранное и цели удалены');
+            switchTab(state.tab, false);
+            toast(t('set.deleted'));
         }
     };
 
@@ -3089,45 +3552,47 @@
     }
 
     document.addEventListener('input', (e) => {
-        const t = e.target;
-        if (t.id === 'capital-input') setCapital(parseFloat(t.value));
-        else if (t.id === 'arb-search') {
-            state.coinQuery = t.value.trim().toUpperCase();
+        const el = e.target;
+        if (el.id === 'capital-input') setCapital(parseFloat(el.value));
+        else if (el.id === 'arb-search') {
+            state.coinQuery = el.value.trim().toUpperCase();
             $$('#coin-chips-bar .coin-chip').forEach(c => c.classList.toggle('active', c.dataset.code === state.coinQuery));
             renderArbitrage();
         }
-        else if (t.id === 'tgt-price' || t.id === 'tgt-amount') updateTargetPreview();
+        else if (el.id === 'tgt-price' || el.id === 'tgt-amount') updateTargetPreview();
     });
     document.addEventListener('change', (e) => {
-        const t = e.target;
-        if (t.closest && t.closest('#ex-checkbox-grid')) {
+        const el = e.target;
+        if (el.closest && el.closest('#ex-checkbox-grid')) {
             state.settings.enabledEx = $$('#ex-checkbox-grid input:checked').map(cb => cb.value);
             saveSettings();
             updateExLabel();
             computeArbitrage();
             renderArbitrage();
-        } else if (t.id === 'only-profit') {
-            state.settings.onlyProfit = t.checked;
+        } else if (el.id === 'lang-select' || el.id === 'set-lang') {
+            setLang(el.value);
+        } else if (el.id === 'only-profit') {
+            state.settings.onlyProfit = el.checked;
             saveSettings();
             renderArbitrage();
-        } else if (t.id === 'meme-network') {
-            state.memes.network = t.value;
+        } else if (el.id === 'meme-network') {
+            state.memes.network = el.value;
             loadMemes(false);
-        } else if (t.id === 'meme-sort') {
-            state.memes.sort = t.value;
+        } else if (el.id === 'meme-sort') {
+            state.memes.sort = el.value;
             renderMemes();
-        } else if (t.id === 'set-username') {
-            state.settings.username = t.value.trim().slice(0, 40);
+        } else if (el.id === 'set-username') {
+            state.settings.username = el.value.trim().slice(0, 40);
             saveSettings();
             renderAvatar();
-        } else if (t.dataset && t.dataset.fee) {
-            const v = num(t.value);
-            if (v != null && v >= 0 && v <= 5) state.settings.fees[t.dataset.fee] = v;
-            else delete state.settings.fees[t.dataset.fee];
+        } else if (el.dataset && el.dataset.fee) {
+            const v = num(el.value);
+            if (v != null && v >= 0 && v <= 5) state.settings.fees[el.dataset.fee] = v;
+            else delete state.settings.fees[el.dataset.fee];
             saveSettings();
             applySettingsChange();
-        } else if (t.id === 'set-wd') {
-            state.settings.withdrawFees = t.checked;
+        } else if (el.id === 'set-wd') {
+            state.settings.withdrawFees = el.checked;
             saveSettings();
             applySettingsChange();
         }
@@ -3165,6 +3630,7 @@
     }
 
     function init() {
+        applyI18n();
         $('#capital-input').value = getCapital() || '';
         $('#only-profit').checked = !!state.settings.onlyProfit;
         loadPriceCache();
@@ -3174,7 +3640,7 @@
         renderExchangeGrid();
         renderSyncStatus();
         updateBadges();
-        appendChat('ai', 'Привет! Я локальный ассистент терминала: отвечаю по живым данным — ценам, арбитражу, сигналам и мемкоинам — и слежу за вашими ценовыми целями.\n\nСпросите, например: «цена SOL», «лучший арбитраж» или «сигнал BTC». Я не ИИ и не даю финансовых советов.');
+        appendChat('ai', t('ai.greet')).dataset.greet = '1';
 
         switchTab(location.hash.replace(/^#\/?/, '') || 'p2p');
         Feed.start();
